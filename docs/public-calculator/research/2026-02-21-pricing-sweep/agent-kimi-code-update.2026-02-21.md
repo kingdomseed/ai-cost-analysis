@@ -50,9 +50,19 @@ The `kimi.com/membership/landing` page renders plan names and prices in HTML (CN
 
 - **Andante:** ¥468 / year
 - **Moderato:** ¥948 / year
-- **Allegretto:** ¥1,908 / year
+- **Allegretto:** ¥1,948 / year
 
 This page also references Kimi Code as part of membership features (e.g., “Kimi Code 20× quota” appears in the plan feature list), but does not provide a token↔quota conversion.
+
+## Membership quotas + monthly pricing (official, machine-readable markdown)
+
+Kimi also publishes a membership benefits markdown file (loaded by the `kimi.com/user/agreement/*/membershipBenefits` pages) which includes:
+
+- **Monthly prices:** ¥49 / ¥99 / ¥199 / ¥699 (Andante/Moderato/Allegretto/Allegro)
+- **Annual prices:** ¥468 / ¥948 / ¥1948 / ¥6788
+- Monthly quotas for Agent, Deep Research, and PPT, plus feature flags like Agent swarm and Kimi Claw availability.
+
+This is the most precise official source we’ve found so far for membership quotas, and should be preferred over UI scraping.
 
 ## Sources (official)
 
@@ -60,4 +70,4 @@ This page also references Kimi Code as part of membership features (e.g., “Kim
 - Kimi Code docs (benefits + quota refresh): `https://www.kimi.com/coding/docs/en/benefits.html`
 - Kimi Code landing page (model text): `https://www.kimi.com/code`
 - Kimi membership pricing landing (SSR): `https://www.kimi.com/membership/landing`
-
+- Kimi membership benefits markdown (quotas + CNY monthly/annual pricing): `https://kimi-img.moonshot.cn/prod-chat-kimi/kimi/member_benefits_v2.md`

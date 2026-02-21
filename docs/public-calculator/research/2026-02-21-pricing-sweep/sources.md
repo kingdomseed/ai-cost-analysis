@@ -19,6 +19,7 @@ This file is a quick index of the **official sources** used in the sweep and whe
 - API pricing docs: `https://platform.claude.com/docs/en/about-claude/pricing`
 - Consumer usage limits: `https://support.claude.com/` (multiple articles; see agent note)
 - Captured in: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-anthropic.md`
+  - Entitlements addendum: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-claude-entitlements.2026-02-21.md`
 
 ## Azure (Azure OpenAI / Azure AI Foundry)
 
@@ -44,9 +45,12 @@ This file is a quick index of the **official sources** used in the sweep and whe
 
 - Moonshot API pricing: `https://platform.moonshot.ai/docs/pricing/chat` (and CN mirror `https://platform.moonshot.cn/docs/pricing/chat`)
 - Kimi membership benefits: `https://www.kimi.com/user/agreement/zh/membershipBenefits`
+- Kimi membership benefits markdown (machine-readable; includes CNY monthly + annual pricing + quotas): `https://kimi-img.moonshot.cn/prod-chat-kimi/kimi/member_benefits_v2.md`
+- Kimi oversea Moderato $19/month signal (event rules; includes quota appendix): `https://www.kimi.com/user/agreement/black-friday`
 - Kimi membership pricing landing (SSR): `https://www.kimi.com/membership/landing`
 - Captured in: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-moonshot.md`
   - Update note: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-moonshot-open-platform-kimi-k2.5.2026-02-21.md`
+  - Membership benefits addendum: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-kimi-membership-benefits.2026-02-21.md`
 
 ## Dev tools / wrappers
 
@@ -68,6 +72,8 @@ This file is a quick index of the **official sources** used in the sweep and whe
   - PR Reviews addendum: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-windsurf-pr-reviews.md`
   - Cursor analytics addendum: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-cursor-analytics-export.2026-02-21.md`
   - Warp credits addendum: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-warp-credits.2026-02-21.md`
+  - Cursor entitlements addendum: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-cursor-entitlements.2026-02-21.md`
+  - Windsurf entitlements addendum: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-windsurf-entitlements.2026-02-21.md`
 
 ## OpenCode (Zen gateway)
 
@@ -131,6 +137,7 @@ Additional official developer-tooling sources used in the entitlements addendum:
 - Individual plans + included premium request allowances: `https://docs.github.com/en/copilot/concepts/billing/individual-plans`
 - Premium request mechanics + model multipliers: `https://docs.github.com/en/copilot/concepts/billing/copilot-requests`
 - Captured in: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-copilot.md`
+  - Entitlements addendum: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-copilot-entitlements.2026-02-21.md`
 
 ## Amazon Q Developer
 

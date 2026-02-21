@@ -67,3 +67,4 @@ Quick reference (selected developer tools; USD, retrieved 2026-02-21):
 | OpenCode | Zen (Pay-as-you-go) | $0/mo | Prepaid USD | Pay-per-token rates deducted from a USD balance; auto-reload supported |
 | Devin | Core | $20+ | ACUs | Metered in ACUs (not tokens); pay-as-you-go pricing published |
 | Google One | Google AI Pro / Ultra | $19.99 / $249.99 | Opaque quotas | Includes higher limits for Gemini app and dev tools (Gemini CLI, Code Assist, Jules, etc.) |
+| Kimi | Moderato (overseas signal) | $19/mo | Opaque quotas | Official event rules state Moderato renews at $19/mo (outside mainland China); other tiers vary by region |

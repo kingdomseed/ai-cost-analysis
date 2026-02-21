@@ -50,6 +50,10 @@ Phase 3 (extension + dataset integration) — in progress
 ### Phase 5: Subscription entitlements inventory (value beyond token cost)
 
 - [x] Add an initial entitlements capture for Google developer tooling surfaces (Gemini Code Assist/CLI/Antigravity + Jules).
+- [x] Add an initial entitlements capture for Claude subscriptions (Artifacts/Projects/Claude Code).
+- [x] Add an initial entitlements capture for GitHub Copilot (code review + coding agent surfaces).
+- [x] Add an initial entitlements capture for Cursor (Composer/Bugbot/Background Agent surfaces).
+- [x] Add an initial entitlements capture for Windsurf (DeepWiki/Teams/PR Reviews surfaces).
 - [ ] For each subscription provider (OpenAI/ChatGPT, Anthropic/Claude, Google One AI, Moonshot/Kimi), capture “what’s included” and “where it’s accessible” as of Feb 2026.
 - [ ] Store per-provider notes in `docs/public-calculator/research/2026-02-21-pricing-sweep/` and then integrate into dataset as structured entitlements.
 - [ ] Keep entitlements sourced + date-stamped; treat as time-sensitive just like pricing.

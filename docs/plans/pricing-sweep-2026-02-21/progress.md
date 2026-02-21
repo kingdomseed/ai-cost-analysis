@@ -20,4 +20,10 @@
   - Google developer tooling (Gemini Code Assist/CLI/Antigravity + Jules): `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-google-devtool-entitlements.2026-02-21.md`
   - Cursor enterprise analytics export surface: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-cursor-analytics-export.2026-02-21.md`
   - Warp credits metering note: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-warp-credits.2026-02-21.md`
+  - Claude subscription entitlements: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-claude-entitlements.2026-02-21.md`
+  - GitHub Copilot entitlements: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-copilot-entitlements.2026-02-21.md`
+  - Cursor entitlements: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-cursor-entitlements.2026-02-21.md`
+  - Windsurf entitlements: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-windsurf-entitlements.2026-02-21.md`
 - Re-checked Windsurf PR Reviews docs and captured an explicit PR review cap (org-wide monthly cap published in the Chinese locale page); updated `gaps.md` to track the remaining UI-vs-doc mismatch.
+- Captured a user-provided PR Reviews limit statement (min(50/member, 1000 total) rolling 30 days) as **unverified** pending an official URL match.
+- Updated Kimi membership pricing/quotas in the dataset using the official `member_benefits_v2.md` table (effective 2026-02-13) and added an official oversea Moderato $19/month signal from a Kimi event rules page.

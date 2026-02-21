@@ -25,7 +25,10 @@ This sweep intentionally prefers official sources and labels anything uncertain.
 
 5) **Kimi Code: quota sizing (numeric)**
    - Official docs confirm Kimi Code is a **membership benefit** with a **7-day rolling quota refresh**, but do not publish a stable token↔quota mapping (and the UI describes both a 7-day quota cycle and a “5-hour token quota” concept without fully defining the relationship).
-   - Next: capture an official quota table by membership tier (if published) and clarify how the 5-hour token quota relates to the 7-day cycle.
+   - New: Moonshot publishes an official membership benefits table (CNY) with **monthly quotas** for Agent/Deep Research/PPT, and an oversea event rules appendix that lists **2048 Kimi Code requests/week** for Moderato. However, we still lack:
+     - a full per-tier Kimi Code request quota table (Andante/Allegretto/Allegro), and
+     - any token↔quota conversion to compare “Kimi Code requests” against token-metered APIs.
+   - Next: capture an official quota table by membership tier for Kimi Code (if published) and clarify how the 5-hour token quota relates to the 7-day cycle.
 
 6) **Bolt.new: overage pricing**
    - Bolt publishes token quotas and rollover behavior, but does not publish an explicit per-token overage price on the pricing page.
@@ -46,6 +49,7 @@ This sweep intentionally prefers official sources and labels anything uncertain.
 10) **Windsurf: “code reviews” quota discrepancy**
    - The PR Reviews docs include an explicit cap (**500 PR reviews/month org-wide**) in the Chinese locale page, but Jason’s Teams billing UI shows “50 code reviews” included (Feb 2026).
    - Next: determine whether “50 code reviews” is a separate plan entitlement bucket, a UI label for something other than PR Reviews, or a region/legacy plan artifact. Prefer an official Windsurf pricing/FAQ page that enumerates PR Review quotas by plan.
+   - New: repo owner provided an additional limit statement (`min(50 reviews per member, 1000 total)` over a rolling 30-day window) but we have not yet found an official URL containing it. Treat as **unverified** until corroborated.
 
 ## Dataset TODOs
 

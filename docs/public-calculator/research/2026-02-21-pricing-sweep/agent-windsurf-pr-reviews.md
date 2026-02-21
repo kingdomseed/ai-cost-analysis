@@ -9,6 +9,7 @@
 - PR Reviews overview (Chinese locale; contains explicit limit note): `https://docs.windsurf.com/zh/windsurf-reviews/windsurf-reviews`
 - Plan pricing (Teams/Pro): `https://windsurf.com/pricing`
 - Plans and credit usage (includes Teams add-on pricing + invoice download note): `https://docs.windsurf.com/windsurf/accounts/usage`
+ - User-provided limits capture (unverified): `docs/public-calculator/research/2026-02-21-pricing-sweep/user-windsurf-prreviews-limits-capture.2026-02-21.md`
 
 ## What PR Reviews are
 
@@ -21,7 +22,7 @@ The PR Reviews docs include operational constraints:
 - **Max files per PR:** 50 files
 - **Org-wide cap:** 500 PR reviews per month (org-wide)
 
-Note: The English locale page did not reliably surface the numeric monthly cap in our earlier capture, but the Chinese locale page includes it explicitly in a “Limitations” note. Treat “50 code reviews included” shown in billing portals as plan/UI-specific until we find a matching published plan table.
+Note: A separate limit statement was provided by the repo owner (“min(50 reviews per member, 1000 total) rolling 30 days”), but we have not yet found an official Windsurf URL that publishes it. Treat it as **unverified** until corroborated; see the user capture file above.
 
 ## Billing mechanics (what we can verify from official docs)
 

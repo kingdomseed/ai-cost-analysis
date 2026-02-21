@@ -31,3 +31,10 @@ New additions captured after the initial sweep (still dated 2026-02-21):
 - Google developer-tooling entitlements (Jules + Gemini CLI/Code Assist + Antigravity): `agent-google-devtool-entitlements.2026-02-21.md`
 - Cursor enterprise analytics export surface (Admin/Analytics APIs): `agent-cursor-analytics-export.2026-02-21.md`
 - Warp credits metering note (opaque credits; export TBD): `agent-warp-credits.2026-02-21.md`
+- Kimi membership benefits (official CNY prices + quotas; oversea Moderato $19 signal): `agent-kimi-membership-benefits.2026-02-21.md`
+- Claude subscription entitlements (Projects/Artifacts/Claude Code surfaces): `agent-claude-entitlements.2026-02-21.md`
+- GitHub Copilot entitlements (code review + agent surfaces): `agent-copilot-entitlements.2026-02-21.md`
+- Cursor entitlements (Composer/Bugbot/Background Agent surfaces): `agent-cursor-entitlements.2026-02-21.md`
+- Windsurf entitlements (DeepWiki/Teams/PR Reviews surfaces): `agent-windsurf-entitlements.2026-02-21.md`
+- Windsurf PR Reviews limits (user-provided; unverified): `user-windsurf-prreviews-limits-capture.2026-02-21.md`
+- Kimi monthly USD tiers (user-provided; unverified): `user-kimi-monthly-pricing-capture.2026-02-21.md`

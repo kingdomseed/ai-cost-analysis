@@ -56,7 +56,7 @@ If we used cloud credits (e.g., AWS credits) without detailed request logging en
 - current on-demand token rates for the meters we used to estimate effective tokens (explicitly labeled as estimated)
 
 Personal context (to prioritize collection):
-- Anthropic console spend is **higher than ~$500** (Dec 2024 → Mar 2025), mostly via Cline; we should export Anthropic Usage/Cost logs for that window and reconcile to invoices.
+- Anthropic console spend is **higher than ~$500**, but the previously stated date window was misremembered. Current raw exports in this repo cover **2024-11, 2024-12, and 2025-02 through 2025-08** (missing 2025-01). We should export additional Anthropic Usage/Cost reports (or invoices) to reconcile the true spend window.
 
 ### 5) Subscriptions (“all you can eat” / quota-like)
 
