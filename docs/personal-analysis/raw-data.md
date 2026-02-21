@@ -40,8 +40,8 @@ Goal: cost exports that can be joined to model meters.
 Goal: a credit ledger with timestamps + model/tier + credits used + $ charged (if any).
 
 - Windsurf / Codeium (prompt credits + multipliers)
-  - Warp (credits per turn; export mechanism unclear)
-  - Verdent (credits + “detailed token consumption across sessions” claims in docs)
+- Warp (credits per turn; export mechanism unclear)
+- Verdent (credits + “detailed token consumption across sessions” claims in docs)
 - Qoder (full usage/ledger beyond the small samples we have)
 - Lovable (usage-based credits; top-ups + expiry)
 - Bolt.new (token quotas; need usage export to compute burn-rate)
@@ -49,22 +49,25 @@ Goal: a credit ledger with timestamps + model/tier + credits used + $ charged (i
 Personal context (to prioritize collection):
 - Windsurf: Jason used Teams plan in Feb 2026 ($30 plan + $40 + $40 top-ups) totaling 2,500 credits and “50 code reviews” shown in-plan; we still need a usage ledger export.
 
-### 5) “Credit pool” programs (usage is cost-only unless logs exist)
+### 4) “Credit pool” programs (usage is cost-only unless logs exist)
 
 If we used cloud credits (e.g., AWS credits) without detailed request logging enabled, we need:
 - billing exports (CUR / cost exports) to ground cost
 - current on-demand token rates for the meters we used to estimate effective tokens (explicitly labeled as estimated)
 
 Personal context (to prioritize collection):
-- Anthropic console spend ~ $500 (Dec 2024 → Mar 2025), mostly via Cline; we should export Anthropic Usage/Cost logs for that window.
+- Anthropic console spend is **higher than ~$500** (Dec 2024 → Mar 2025), mostly via Cline; we should export Anthropic Usage/Cost logs for that window and reconcile to invoices.
 
-### 4) Subscriptions (“all you can eat” / quota-like)
+### 5) Subscriptions (“all you can eat” / quota-like)
 
 Goal: invoice/receipt + plan tier + region/currency + any published quota indicators.
 
 - ChatGPT subscriptions (Plus/Pro/etc.)
 - Claude subscriptions (Pro/Max/etc.)
 - Kimi memberships (Andante/Moderato/Allegretto) + Kimi Code quota indicators
+
+Personal context:
+- Kimi Allegretto: Jason paid for **one month (~$40)** and used it lightly (mostly UI-based agent credits rather than coding). We need whatever quota/usage history Moonshot exposes for the membership surface to make this comparable.
 
 ## Minimum fields we want per “usage event”
 

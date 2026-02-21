@@ -53,15 +53,21 @@ This file is a quick index of the **official sources** used in the sweep and whe
 - Cursor pricing docs: `https://cursor.com/docs/account/pricing`
 - Cursor model pricing (per-token rate table + Auto/Max Mode): `https://cursor.com/docs/models#model-pricing`
 - Cursor marketing pricing page: `https://cursor.com/pricing`
+- Cursor Analytics API (enterprise teams; usage export surface): `https://cursor.com/docs/account/teams/analytics-api`
+- Cursor Admin API (enterprise teams; admin surface): `https://cursor.com/docs/account/teams/admin-api`
 - Windsurf pricing: `https://windsurf.com/pricing`
 - Windsurf credit usage docs: `https://docs.windsurf.com/windsurf/accounts/usage`
 - Windsurf PR Reviews: `https://docs.windsurf.com/windsurf-reviews/windsurf-reviews`
+- Windsurf PR Reviews (Chinese locale; contains explicit monthly review cap): `https://docs.windsurf.com/zh/windsurf-reviews/windsurf-reviews`
 - Codeium pricing (corroborates Windsurf tiers): `https://codeium.com/pricing`
 - Warp pricing: `https://www.warp.dev/pricing`
 - Warp add-on credits: `https://docs.warp.dev/support-and-community/plans-and-billing/add-on-credits`
+- Warp credits (how credits are consumed): `https://docs.warp.dev/support-and-community/plans-and-billing/credits`
 - OpenRouter FAQ (fees): `https://openrouter.ai/docs/faq`
 - Captured in: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-tools.md`
   - PR Reviews addendum: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-windsurf-pr-reviews.md`
+  - Cursor analytics addendum: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-cursor-analytics-export.2026-02-21.md`
+  - Warp credits addendum: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-warp-credits.2026-02-21.md`
 
 ## OpenCode (Zen gateway)
 
@@ -97,6 +103,14 @@ This file is a quick index of the **official sources** used in the sweep and whe
 - Gemini Apps Help: limits & upgrades (quantified tables): `https://support.google.com/gemini/answer/16275805?hl=en`
 - Purchase/management entrypoint (requires login): `https://one.google.com/ai`
 - Captured in: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-google-one-ai.md`
+  - Developer tooling entitlements addendum: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-google-devtool-entitlements.2026-02-21.md`
+
+Additional official developer-tooling sources used in the entitlements addendum:
+- Gemini Code Assist (individuals; locations + plan availability): `https://developers.google.com/gemini-code-assist/resources/available-locations`
+- Jules (landing): `https://jules.google/`
+- Jules announcement: `https://blog.google/innovation-and-ai/models-and-research/google-labs/jules/`
+- Gemini Code Assist for GitHub: `https://developers.google.com/gemini-code-assist/docs/github`
+- Gemini Code Assist code reviews: `https://developers.google.com/gemini-code-assist/docs/code-review`
 
 ## Kimi Code
 

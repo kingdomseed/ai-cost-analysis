@@ -28,3 +28,6 @@ New additions captured after the initial sweep (still dated 2026-02-21):
 - Lovable (credits + top-ups): `agent-lovable.md`
 - Tabnine (seat subscription + BYOK/handling fee notes): `agent-tabnine.md`
 - Sourcegraph (Cody plan availability + Enterprise Search pricing signal): `agent-sourcegraph.md`
+- Google developer-tooling entitlements (Jules + Gemini CLI/Code Assist + Antigravity): `agent-google-devtool-entitlements.2026-02-21.md`
+- Cursor enterprise analytics export surface (Admin/Analytics APIs): `agent-cursor-analytics-export.2026-02-21.md`
+- Warp credits metering note (opaque credits; export TBD): `agent-warp-credits.2026-02-21.md`

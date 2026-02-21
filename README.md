@@ -52,6 +52,7 @@ Quick reference (selected developer tools; USD, retrieved 2026-02-21):
 | Cursor | Individual | $60/mo | USD pool | Includes ~$70 API pool |
 | Cursor | Ultra | $200/mo | USD pool | Includes ~$400 API pool |
 | Windsurf | Pro | $15/mo | Credits | Credit multipliers vary by model |
+| Windsurf | Teams | $30/seat-mo | Credits | Includes 500 credits/seat-mo; add-on top-ups $40/1000 pooled credits; PR Reviews doc notes a 500 reviews/mo org cap |
 | Warp | Build | $18/mo | Credits | Opaque credits; supports some BYOK paths |
 | Verdent | Starter / Pro / Max | $19 / $59 / $179 | Credits | Opaque credits; top-ups supported |
 | Qoder | Pro / Pro+ / Ultra | $10 / $30 / $100 | Credits | Credits have tier multipliers; packs imply $/credit but not token conversion |
@@ -63,3 +64,6 @@ Quick reference (selected developer tools; USD, retrieved 2026-02-21):
 | Bolt.new | Pro | $25/mo | Token quota | Starts at 10M tokens/month; rollover; no explicit $/token overage published |
 | Lovable | Pro (100 credits) | $25/mo | Credits | Usage-based credits; top-ups $15 per 50 credits (Pro); no token conversion |
 | Tabnine | Code Assistant | $39/user-month | Seat + BYOK | Annual subscription; Tabnine-provided LLM access is provider prices + 5% handling fee |
+| OpenCode | Zen (Pay-as-you-go) | $0/mo | Prepaid USD | Pay-per-token rates deducted from a USD balance; auto-reload supported |
+| Devin | Core | $20+ | ACUs | Metered in ACUs (not tokens); pay-as-you-go pricing published |
+| Google One | Google AI Pro / Ultra | $19.99 / $249.99 | Opaque quotas | Includes higher limits for Gemini app and dev tools (Gemini CLI, Code Assist, Jules, etc.) |

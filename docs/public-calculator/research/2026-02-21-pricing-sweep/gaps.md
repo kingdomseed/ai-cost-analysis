@@ -44,8 +44,8 @@ This sweep intentionally prefers official sources and labels anything uncertain.
    - Next: if we want to model Cody Enterprise, capture an official price sheet (if public) or encode as `custom` with explicit “contact sales” notes.
 
 10) **Windsurf: “code reviews” quota discrepancy**
-   - Jason’s Teams plan UI shows “50 code reviews” included (Feb 2026), but the public docs for PR Reviews do not clearly publish that number in the overview page.
-   - Next: capture an official Windsurf page that enumerates PR Review quotas by plan (or a billing/FAQ page). Until then, treat “50 code reviews” as user-observed and not an official plan guarantee.
+   - The PR Reviews docs include an explicit cap (**500 PR reviews/month org-wide**) in the Chinese locale page, but Jason’s Teams billing UI shows “50 code reviews” included (Feb 2026).
+   - Next: determine whether “50 code reviews” is a separate plan entitlement bucket, a UI label for something other than PR Reviews, or a region/legacy plan artifact. Prefer an official Windsurf pricing/FAQ page that enumerates PR Review quotas by plan.
 
 ## Dataset TODOs
 
@@ -53,6 +53,7 @@ This sweep intentionally prefers official sources and labels anything uncertain.
 - Add Anthropic 1-hour cache write rates (officially documented) as explicit fields if we model caching beyond 5 minutes.
 - Decide whether to include “throughput tiers” (AWS Bedrock Priority/Flex; Vertex Priority) as separate pricing tiers in the dataset.
 - Confirm whether the “Replit Hacker” plan still exists publicly, or if it is only a legacy plan artifact in embedded pricing data.
+- For Google AI plans, capture an official statement that maps **Gemini Code Assist for GitHub** to consumer plan tiers (if applicable), or treat GitHub as an “available surface” without tier mapping.
 
 ## Recently resolved (this sweep)
 

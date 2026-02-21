@@ -16,3 +16,8 @@
 - Captured Moonshot `kimi-k2.5` API token rates (including cache hit/miss) from official pricing docs and updated Kimi membership plan pricing (SSR membership landing page) + Kimi Code quota mechanics docs.
 - Captured OpenAI Codex credit/limit tables from the official developers page and added them to the dataset; stored user-provided ChatGPT pricing capture due to Cloudflare blocks.
 - Captured Bolt.new, Lovable, Tabnine, and Sourcegraph plan/pricing notes and integrated their primitives into the dataset snapshot.
+- Added entitlements-focused addenda to reduce ambiguity about “what you get, where you get it”:
+  - Google developer tooling (Gemini Code Assist/CLI/Antigravity + Jules): `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-google-devtool-entitlements.2026-02-21.md`
+  - Cursor enterprise analytics export surface: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-cursor-analytics-export.2026-02-21.md`
+  - Warp credits metering note: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-warp-credits.2026-02-21.md`
+- Re-checked Windsurf PR Reviews docs and captured an explicit PR review cap (org-wide monthly cap published in the Chinese locale page); updated `gaps.md` to track the remaining UI-vs-doc mismatch.
