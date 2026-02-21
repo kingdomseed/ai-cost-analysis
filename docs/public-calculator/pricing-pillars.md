@@ -59,3 +59,11 @@ Pricing changes frequently; we treat “up to date” as a hard requirement:
 - UI should visibly label entries that are **unverified** or **stale**
 - we avoid relying on LLM-generated pricing tables without direct sources
 
+## 5) Region targeting (US-first, note deltas)
+
+This repo’s public calculator targets **US/global self-serve plans** first.
+
+Rules:
+- Prefer the **user’s plan surface** (authenticated dashboard/billing portal) for region-specific limits when public docs conflict.
+- When we discover regional differences (e.g., CN vs oversea pricing/quotas), record them explicitly as **region variants** rather than averaging or “choosing a side.”
+- Only treat CN-only pricing/quotas as primary if we explicitly decide to target CN as a first-class region.

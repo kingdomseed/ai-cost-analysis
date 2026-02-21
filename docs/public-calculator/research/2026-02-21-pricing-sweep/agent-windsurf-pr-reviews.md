@@ -6,10 +6,9 @@
 ## Official sources
 
 - PR Reviews overview: `https://docs.windsurf.com/windsurf-reviews/windsurf-reviews`
-- PR Reviews overview (Chinese locale; contains explicit limit note): `https://docs.windsurf.com/zh/windsurf-reviews/windsurf-reviews`
 - Plan pricing (Teams/Pro): `https://windsurf.com/pricing`
 - Plans and credit usage (includes Teams add-on pricing + invoice download note): `https://docs.windsurf.com/windsurf/accounts/usage`
- - User-provided limits capture (unverified): `docs/public-calculator/research/2026-02-21-pricing-sweep/user-windsurf-prreviews-limits-capture.2026-02-21.md`
+- Dashboard limits capture (authenticated UI; treated as authoritative for target region): `docs/public-calculator/research/2026-02-21-pricing-sweep/user-windsurf-prreviews-limits-capture.2026-02-21.md`
 
 ## What PR Reviews are
 
@@ -17,12 +16,21 @@ Windsurf PR Reviews is a GitHub PR integration that posts review comments on pul
 
 ## Limits / constraints (official)
 
-The PR Reviews docs include operational constraints:
+### Published docs (public)
+
+The public PR Reviews doc includes operational constraints such as:
 
 - **Max files per PR:** 50 files
-- **Org-wide cap:** 500 PR reviews per month (org-wide)
+- **Org-wide cap:** states **500 reviews/month**
 
-Note: A separate limit statement was provided by the repo owner (“min(50 reviews per member, 1000 total) rolling 30 days”), but we have not yet found an official Windsurf URL that publishes it. Treat it as **unverified** until corroborated; see the user capture file above.
+### Authenticated dashboard (target region)
+
+The repo owner captured a word-for-word statement from the authenticated Windsurf dashboard:
+
+- Team rate limit = `min(50 reviews per team member, 1000 reviews total)`
+- Applies to a rolling 30-day window (resets gradually)
+
+For this repo’s target (US/global consumer tooling comparisons), we treat the authenticated dashboard statement as authoritative, and we treat the public docs’ “500 reviews/month” as potentially stale or region-specific until Windsurf clarifies.
 
 ## Billing mechanics (what we can verify from official docs)
 
