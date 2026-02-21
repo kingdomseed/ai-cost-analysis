@@ -43,15 +43,16 @@
   - `docs/public-calculator/README.md` (created)
 
 ### Phase 5: Verification & Cleanup
-- **Status:** in_progress
+- **Status:** complete
 - Actions taken:
   - Verified `git status` only shows non-private, structural files at the repo root.
   - Confirmed the repo root is now clean (only `README.md` and `.gitignore`).
+  - Confirmed pricing sweep artifacts live under `apps/public-calculator/data/` and `docs/public-calculator/research/`, while private exports remain under gitignored paths.
 
 ## Test Results
 | Test | Input | Expected | Actual | Status |
 |------|-------|----------|--------|--------|
-| Repo status | `git status --porcelain=v1` | See files are untracked | Files are untracked | ✓ |
+| Repo status | `git status --porcelain=v1` | No unexpected changes | Clean working tree | ✓ |
 
 ## Error Log
 | Timestamp | Error | Attempt | Resolution |

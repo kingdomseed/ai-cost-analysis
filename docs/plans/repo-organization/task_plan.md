@@ -35,7 +35,7 @@ Phase 5
 ### Phase 5: Verification & Cleanup
 - [x] Ensure no private data is accidentally tracked
 - [x] Ensure repo is easy to navigate (tree + naming)
-- **Status:** in_progress
+- **Status:** complete
 
 ## Key Questions
 1. Should all current usage exports/invoices be treated as private by default (gitignored)? (Proposed: yes.)
