@@ -1,0 +1,203 @@
+{
+  "meta": {
+    "version_date": "2026-02-21",
+    "target_region": "us",
+    "notes": "Entitlements snapshot (what you get, where you get it). Prefer public URLs; allow authenticated UI captures when public docs conflict or are blocked."
+  },
+  "sources": [
+    {
+      "id": "windsurf_pr_reviews_public",
+      "url": "https://docs.windsurf.com/windsurf-reviews/windsurf-reviews",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "windsurf_pr_reviews_dashboard_capture",
+      "url": "docs/public-calculator/research/2026-02-21-pricing-sweep/user-windsurf-prreviews-limits-capture.2026-02-21.md",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "claude_projects_intro",
+      "url": "https://support.claude.com/en/articles/9945648-intro-to-projects",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "claude_feature_availability_example",
+      "url": "https://support.claude.com/en/articles/9999062-claude-for-product-management",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "github_copilot_code_review",
+      "url": "https://docs.github.com/en/copilot/concepts/agents/code-review",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "google_ai_plans_marketing",
+      "url": "https://one.google.com/about/google-ai-plans/",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "google_code_assist_locations",
+      "url": "https://developers.google.com/gemini-code-assist/resources/available-locations",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "cursor_bugbot",
+      "url": "https://cursor.com/docs/bugbot",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "windsurf_deepwiki",
+      "url": "https://docs.windsurf.com/windsurf/deepwiki",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    }
+  ],
+  "entitlements": [
+    {
+      "provider_id": "windsurf",
+      "product": "Windsurf",
+      "plan_id": "windsurf-teams",
+      "region": "us",
+      "feature_id": "pr_reviews",
+      "surface_id": "github_integration",
+      "included": true,
+      "limits": "Rolling 30-day rate limit: min(50 reviews per team member, 1000 reviews total).",
+      "evidence": {
+        "type": "authenticated_ui_capture",
+        "source_ids": [
+          "windsurf_pr_reviews_dashboard_capture"
+        ]
+      },
+      "notes": "Treat as authoritative for US/global target when public docs conflict."
+    },
+    {
+      "provider_id": "windsurf",
+      "product": "Windsurf",
+      "plan_id": "windsurf-teams",
+      "region": "global",
+      "feature_id": "pr_reviews",
+      "surface_id": "github_integration",
+      "included": true,
+      "limits": "Public doc states: max 50 files per PR; organization-wide limit of 500 reviews/month.",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "windsurf_pr_reviews_public"
+        ]
+      },
+      "notes": "Potentially stale or region-specific; keep as a separate variant."
+    },
+    {
+      "provider_id": "windsurf",
+      "product": "Windsurf",
+      "plan_id": "windsurf-teams",
+      "region": "global",
+      "feature_id": "deepwiki",
+      "surface_id": "ide_extension",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "windsurf_deepwiki"
+        ]
+      },
+      "notes": "DeepWiki is an editor feature (hover symbols for explanations)."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-pro",
+      "region": "global",
+      "feature_id": "projects",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_projects_intro"
+        ]
+      },
+      "notes": "Projects are available on Claude Pro and Claude for Work (Team & Enterprise)."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-free",
+      "region": "global",
+      "feature_id": "artifacts",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_feature_availability_example"
+        ]
+      },
+      "notes": "Help Center states Artifacts are available on all Claude.ai plans."
+    },
+    {
+      "provider_id": "github",
+      "product": "GitHub Copilot",
+      "plan_id": "copilot-pro",
+      "region": "global",
+      "feature_id": "code_review",
+      "surface_id": "github_integration",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "github_copilot_code_review"
+        ]
+      },
+      "notes": "Copilot code review availability is plan-gated; see doc for full list."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-pro",
+      "region": "us",
+      "feature_id": "gemini_cli",
+      "surface_id": "cli",
+      "included": true,
+      "limits": "Marketing page states higher limits; numeric quotas may be published elsewhere.",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_ai_plans_marketing",
+          "google_code_assist_locations"
+        ]
+      },
+      "notes": "We track existence + surface; quota sizing is separate."
+    },
+    {
+      "provider_id": "cursor",
+      "product": "Cursor",
+      "plan_id": "cursor-individual",
+      "region": "global",
+      "feature_id": "bugbot",
+      "surface_id": "github_integration",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "cursor_bugbot"
+        ]
+      },
+      "notes": "Bugbot posts PR review comments on GitHub."
+    }
+  ]
+}
+

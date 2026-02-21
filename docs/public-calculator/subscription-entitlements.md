@@ -40,3 +40,12 @@ For each entitlement item we capture:
 
 Add a dated capture per provider inside `docs/public-calculator/research/YYYY-MM-DD-pricing-sweep/` before encoding entitlements into `apps/public-calculator/data/*.json`.
 
+## Where entitlements live (public dataset)
+
+We maintain entitlements as a separate, versioned dataset:
+
+- `apps/public-calculator/data/entitlements.YYYY-MM-DD.json`
+
+This allows the calculator engine to answer:
+- “What does plan X include?” (surfaces/features)
+- independently of: “What does plan X cost?” (pricing primitives)

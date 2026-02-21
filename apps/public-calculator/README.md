@@ -24,6 +24,10 @@ They are not treated as source-of-truth and may contain outdated/inaccurate pric
 
 See `docs/public-calculator/README.md`.
 
+## Next.js site
+
+UI lives in `apps/public-calculator/site/`.
+
 ## Pricing Coverage (Important)
 
 This tool is intended to compare costs across:
@@ -31,4 +35,3 @@ This tool is intended to compare costs across:
 - Token-priced APIs (input/output)
 - Cursor-style “API pool” subscriptions (plan price vs included compute pool)
 - Credit-based plans (Windsurf, Warp, Verdent, Qoder, etc.) using explicit conversion assumptions when needed
-

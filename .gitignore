@@ -9,7 +9,12 @@ archive/private/
 node_modules/
 dist/
 build/
+.next/
+.next-docs/
+.vercel/
+out/
+.turbo/
 .venv/
 venv/
 __pycache__/
-
+*.tsbuildinfo
