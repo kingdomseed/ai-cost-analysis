@@ -9,4 +9,4 @@ Key rules:
 
 Current file:
 - `apps/public-calculator/data/pricing.sample.json` — a starter dataset (intentionally incomplete + unverified).
-
+- `apps/public-calculator/data/pricing.2026-02-21.json` — Feb 2026 pricing snapshot built from official sources (still incomplete; see notes + `verified` flags).

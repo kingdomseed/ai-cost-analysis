@@ -1,0 +1,15 @@
+# Findings (Pricing sweep — 2026-02-21)
+
+- OpenAI API pricing is available in a machine-readable table on `developers.openai.com` (includes cached input rates). ChatGPT subscription “usage limits” are harder to capture due to Help Center access restrictions in this environment.
+- Azure OpenAI pricing page renders `$-` placeholders, but the **Azure Retail Prices API** provides numeric meters that match the usage export meter names in this repo.
+- Anthropic provides detailed token pricing, prompt caching read/write pricing, and long-context premiums on its official pricing page; consumer “Max” plans describe usage in relative terms rather than fixed token quotas.
+- Windsurf uses **prompt credits per message** with per-model multipliers; Cursor uses **API-priced token metering** inside a USD compute pool; Warp uses a non-deterministic credit unit and supports BYOK to bypass credits for some model calls.
+- AWS Bedrock’s public marketing page can be partially client-rendered, but the **AWS Price List API** provides authoritative numeric meters for Bedrock foundation model pricing (including Claude 4.6 global/long-context/cache/batch SKUs).
+- Devin uses an internal **ACU** unit (compute-based) rather than tokens; this should be modeled as an opaque unit in the public calculator unless a stable mapping is published.
+- Google’s consumer AI subscriptions (Google AI Plus/Pro/Ultra) publish monthly prices and some quota-style features (e.g., “daily AI credits” for specific experiences) rather than token-meter pricing.
+- Cline supports both BYOK (provider token billing) and a Cline-managed credit provider; the credit system is published conceptually but lacks a public token↔credit conversion in this sweep.
+- Kimi Code is marketed as a distinct developer product and should not be conflated with Moonshot Open Platform API token pricing without an official mapping.
+- Amazon Q Developer pricing is officially documented as **two tiers** (Free and Pro). Pro is a **$19/user-month** subscription with activation-based billing start, and Java transformation includes a pooled **LOC allowance** with **$0.003/LOC** overage; Pro quotas are published in AWS docs as “inference calls” and per-surface limits (IDE/CLI, console, CodeCatalyst).
+- GitHub Copilot is not token-metered; it is a subscription with monthly allowances of **premium requests** plus a published **model multiplier** table and overage pricing ($0.04 per additional premium request on paid plans).
+- Replit combines subscriptions with **USD-denominated credits** plus multiple **usage-based meters** (Agent checkpoints, deployments, DBs). Replit also announced a plan change effective **2026-02-24**, so “active” plan availability needs a re-sweep after that date.
+- JetBrains AI is priced as per-seat subscriptions (AI Pro/Ultimate, personal and commercial). It uses an AI quota/credits model, but the exact quota table was not captured as machine-readable content in this sweep; treat it as an **opaque quota** until verified.

@@ -14,6 +14,23 @@ If the tool is opaque (credits don’t map cleanly to tokens), we still support 
 - showing plan price + included credits + top-up price, and
 - letting the user enter an “effective $/credit” assumption (or a “tokens per credit” assumption), which is clearly labeled as **user-provided**.
 
+### “Effective tokens” (allowed)
+
+For credit/compute-unit tools (Verdent, Qoder, Devin, etc.) the calculator may allow an **effective tokens** view:
+
+- The user provides (or the tool publishes) an **effective $/credit** (or $/ACU).
+- The user also provides a working **input:output split** (default can be 3:1 for agentic programming work).
+- We compute the equivalent token spend as if it were billed at a chosen API meter.
+
+This is explicitly an **assumption-driven conversion** unless the vendor publishes an official mapping.
+
+### Promotions and temporary prices
+
+When a tool publishes time-bounded promos (e.g., “$0 through Q1 2026 then $20/user”), represent them as a **promo block**:
+- promo price, duration/period, and the regular price
+- keep the promo end date explicit when it can be derived (e.g., Q1 2026 ends 2026-03-31)
+- never assume the promo renews
+
 ## How we’ll represent pricing (data model)
 
 Every plan/model/provider entry should include:
@@ -46,4 +63,3 @@ These vary, but we’ll support a consistent display:
 - No subjective language (“best”, “worst”, “you should…”).
 - No pretending opaque credit systems are precise token pricing.
 - No mixing “actual billed” with “estimated API-equivalent” without explicit labeling.
-
