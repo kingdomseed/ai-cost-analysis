@@ -22,3 +22,7 @@ This prevents pricing tables from becoming overloaded with feature availability 
 
 Some providers have Cloudflare blocks in this environment (notably OpenAI marketing/pricing). Our model must accept evidence types beyond “public URL” while still preferring public official sources.
 
+## Dependency hygiene (public calculator site)
+
+- Next.js is already on latest stable v16 (`next@16.1.6`, `eslint-config-next@16.1.6`).
+- `npm audit` high findings were caused by a `minimatch <10.2.1` advisory in lint toolchains. We kept `eslint@9.x` (compatible with Next’s lint stack) and enforced `minimatch@10.2.1` via npm `overrides` to clear audit while keeping `npm run lint` working.

@@ -5,6 +5,22 @@ import path from "node:path";
 
 type SnapshotKind = "pricing" | "entitlements";
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function assertSnapshotEnvelope(kind: SnapshotKind, value: unknown): asserts value is { meta: unknown; sources: unknown[] } {
+  if (!isRecord(value)) {
+    throw new Error(`${kind} snapshot is not an object`);
+  }
+  if (!("meta" in value)) {
+    throw new Error(`${kind} snapshot is missing top-level meta`);
+  }
+  if (!Array.isArray((value as { sources?: unknown }).sources)) {
+    throw new Error(`${kind} snapshot is missing top-level sources[]`);
+  }
+}
+
 function datasetDirAbsolute(): string {
   // Repo layout:
   //   apps/public-calculator/site (this Next.js app)
@@ -45,6 +61,7 @@ export async function loadLatestSnapshot<T>(kind: SnapshotKind): Promise<{ date:
   const { date, file } = await resolveLatestSnapshotFile(kind);
   const absolutePath = path.join(datasetDirAbsolute(), file);
   const data = await readJsonFile<T>(absolutePath);
+  assertSnapshotEnvelope(kind, data);
   return { date, data };
 }
 
@@ -55,4 +72,3 @@ export async function loadLatestPricingSnapshot(): Promise<{ date: string; data:
 export async function loadLatestEntitlementsSnapshot(): Promise<{ date: string; data: unknown }> {
   return loadLatestSnapshot("entitlements");
 }
-

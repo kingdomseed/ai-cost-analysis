@@ -4,11 +4,11 @@ This repo supports two deliverables: **(1) private personal usage/spend analysis
 
 ## Project Structure & Module Organization
 
-- `apps/personal-analysis/` — future scripts/apps for your private rollups (yearly/monthly totals, by model/provider).
-- `apps/public-calculator/` — future public calculator app (UI + pricing dataset).
-- `apps/public-calculator/data/` — public, versioned pricing metadata (must be sourced + dated).
+- `apps/public-calculator/site/` — Next.js 16 app (App Router) for the public calculator.
+- `apps/public-calculator/data/` — public, versioned datasets (`pricing.*.json`, `entitlements.*.json`).
+- `apps/personal-analysis/` — future scripts for private rollups (yearly/monthly totals, by model/provider).
+- `docs/public-calculator/` — specs, decision rules, and research workflow.
 - `docs/public-calculator/research/YYYY-MM-DD-pricing-sweep/` — dated sweep notes + source ledger + gaps.
-- `docs/` — specs and decision rules (`docs/personal-analysis/`, `docs/public-calculator/`).
 - `data/private/` — raw exports/invoices + derived outputs (**gitignored**).
 - `archive/private/` — drafts/unverified notes (**gitignored**).
 
@@ -18,35 +18,41 @@ Naming patterns:
 
 ## Build, Test, and Development Commands
 
-No standard build/test harness is established yet. When adding one, document it in `README.md`.
+Public calculator (Next.js):
+- `cd apps/public-calculator/site && npm install` — install dependencies.
+- `npm run dev` — run locally.
+- `npm run lint` — ESLint checks.
+- `npm run build` — production build (use as smoke test).
 
 Useful basics:
-- `git status` — verify only public files are staged/tracked.
 - `git check-ignore -v <path>` — confirm private data stays ignored.
 - `jq -e . apps/public-calculator/data/pricing.2026-02-21.json` — quick JSON integrity check.
 
 ## Coding Style & Naming Conventions
 
-- Markdown: short paragraphs, clear headings, avoid subjective language in “calculator” docs.
-- JSON: 2-space indentation; include `source`, `retrieved_at`, and `last_verified_at` for pricing entries.
-- Dates: use ISO (`YYYY-MM-DD`) in filenames and metadata.
+- Markdown: short paragraphs, clear headings, avoid subjective language in public-facing docs/UI.
+- JSON: 2-space indentation; include `source`, `retrieved_at`, and `last_verified_at` where applicable.
+- Dates: use ISO (`YYYY-MM-DD`) in filenames and metadata (e.g., `pricing.2026-02-21.json`).
 
 ## Testing Guidelines
 
-No tests yet. If you introduce code (Node/Python/etc.), add:
-- a single, documented test command (e.g., `npm test`), and
-- a minimal smoke test for the pricing dataset (schema + required fields).
+No test framework yet. Until one is added, treat `npm run build` as the minimum smoke check for the Next.js app.
 
 ## Commit & Pull Request Guidelines
 
-Git history currently contains only an “Initial commit”, so conventions are not established.
-Recommended going forward:
-- Use Conventional Commits (e.g., `docs:`, `feat:`, `chore:`).
-- PRs must include: what changed, why, and—if pricing changed—links to sources + the dates you verified them.
+Commits in this repo use Conventional Commit-style prefixes (e.g., `docs:`, `chore:`). Keep commits scoped and avoid mixing public + private changes.
+
+PRs should include:
+- What changed + why.
+- If datasets changed: the source(s) and verification date(s), plus any region caveats.
 
 ## Security & Data Handling
 
 Do **not** commit invoices, raw usage exports, or any personal identifiers. Keep them under `data/private/` or `archive/private/`. If you need shareable examples, add redacted samples under `data/sample/`.
+
+## Agent-Specific Notes
+
+- Refresh Next.js docs index (from `apps/public-calculator/site/`): `npx @next/codemod@canary agents-md --output AGENTS.md`.
 
 ## Pricing Research Rules
 
