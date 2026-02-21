@@ -55,11 +55,13 @@ This file is a quick index of the **official sources** used in the sweep and whe
 - Cursor marketing pricing page: `https://cursor.com/pricing`
 - Windsurf pricing: `https://windsurf.com/pricing`
 - Windsurf credit usage docs: `https://docs.windsurf.com/windsurf/accounts/usage`
+- Windsurf PR Reviews: `https://docs.windsurf.com/windsurf-reviews/windsurf-reviews`
 - Codeium pricing (corroborates Windsurf tiers): `https://codeium.com/pricing`
 - Warp pricing: `https://www.warp.dev/pricing`
 - Warp add-on credits: `https://docs.warp.dev/support-and-community/plans-and-billing/add-on-credits`
 - OpenRouter FAQ (fees): `https://openrouter.ai/docs/faq`
 - Captured in: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-tools.md`
+  - PR Reviews addendum: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-windsurf-pr-reviews.md`
 
 ## OpenCode (Zen gateway)
 

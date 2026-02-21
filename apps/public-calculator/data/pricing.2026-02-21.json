@@ -981,6 +981,24 @@
       "verified": true
     },
     {
+      "tool": "Windsurf",
+      "plan_id": "windsurf-teams",
+      "pricing_type": "seat_subscription_with_credits",
+      "subscription_price_usd_per_seat": 30,
+      "included_credits_per_month_per_seat": 500,
+      "topups_pricing": { "price_usd": 40, "credits": 1000, "pooled": true },
+      "add_ons": [
+        {
+          "name": "access_control_features",
+          "price_usd_per_seat_per_month": 10,
+          "notes": "Pricing page mentions access control features as an add-on under team management."
+        }
+      ],
+      "metering": "Prompt credits are consumed per message to Cascade with premium models; per-model credit multipliers apply. Seat credits are per-seat (not pooled); purchased add-on credits are pooled across the team.",
+      "source_ids": ["windsurf_pricing", "windsurf_usage_docs", "codeium_pricing"],
+      "verified": true
+    },
+    {
       "tool": "Warp",
       "plan_id": "warp-build",
       "pricing_type": "credits",

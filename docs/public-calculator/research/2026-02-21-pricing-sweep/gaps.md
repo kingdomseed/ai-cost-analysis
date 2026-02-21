@@ -43,6 +43,10 @@ This sweep intentionally prefers official sources and labels anything uncertain.
    - Sourcegraph documents Cody Free/Pro deprecation and shows Enterprise Search pricing, but does not publish self-serve numeric pricing for Cody Enterprise.
    - Next: if we want to model Cody Enterprise, capture an official price sheet (if public) or encode as `custom` with explicit “contact sales” notes.
 
+10) **Windsurf: “code reviews” quota discrepancy**
+   - Jason’s Teams plan UI shows “50 code reviews” included (Feb 2026), but the public docs for PR Reviews do not clearly publish that number in the overview page.
+   - Next: capture an official Windsurf page that enumerates PR Review quotas by plan (or a billing/FAQ page). Until then, treat “50 code reviews” as user-observed and not an official plan guarantee.
+
 ## Dataset TODOs
 
 - Add Gemini Batch prices (ai.google.dev lists them) if the calculator will support “batch mode” as a first-class option.
