@@ -10,6 +10,7 @@ Raw / ledger-like exports already present under `data/private/`:
 - Devin: usage/session JSON exports in `data/private/raw/devin/`
 - Azure (Foundry/OpenAI spend): CSV in `data/private/raw/azure/azure-foundry-gpt-spend-ai-model-spend.csv`
 - Qoder: small real-world credit charge samples in `data/private/observations/qoder-credit-samples.2026-02-21.md`
+- Personal working snapshot (not a raw export): `data/private/observations/jason-usage-notes.2026-02-21.md`
 
 Derived artifacts (not source-of-truth, but useful):
 - Token burn-rate spreadsheets/charts in `data/private/derived/token-burn-rate/`
@@ -45,6 +46,12 @@ Goal: a credit ledger with timestamps + model/tier + credits used + $ charged (i
 - Lovable (usage-based credits; top-ups + expiry)
 - Bolt.new (token quotas; need usage export to compute burn-rate)
 
+### 5) “Credit pool” programs (usage is cost-only unless logs exist)
+
+If we used cloud credits (e.g., AWS credits) without detailed request logging enabled, we need:
+- billing exports (CUR / cost exports) to ground cost
+- current on-demand token rates for the meters we used to estimate effective tokens (explicitly labeled as estimated)
+
 ### 4) Subscriptions (“all you can eat” / quota-like)
 
 Goal: invoice/receipt + plan tier + region/currency + any published quota indicators.
@@ -68,4 +75,3 @@ If a tool/provider can export per-request/per-message usage, we want:
 - Monthly: invoices/receipts + plan tier metadata (seat count if applicable)
 - Weekly/monthly: usage ledgers (CSV/JSON) for tools that cap history
 - Whenever changing plans: capture a “plan snapshot” (price + included quota + rollover/expiry rules)
-
