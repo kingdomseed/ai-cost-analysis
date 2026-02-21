@@ -122,3 +122,26 @@ export interface EntitlementsSnapshotV01 {
   entitlements: EntitlementV01[];
 }
 
+export interface FxMetaV01 {
+  schema_version: string;
+  retrieved_at: ISODate;
+  last_verified_at: ISODate;
+  base_currency: string;
+  effective_date: ISODate;
+  notes?: string | null;
+  [k: string]: unknown;
+}
+
+/**
+ * FX snapshot used for converting computed USD amounts into a user-selected currency.
+ *
+ * Convention:
+ * - `meta.base_currency` is the currency the rates are quoted from (typically "USD").
+ * - `rates[XYZ]` is the amount of XYZ per 1 unit of base currency.
+ *   Example: base=USD, rates.EUR=0.85 means 1 USD = 0.85 EUR.
+ */
+export interface FxSnapshotV01 {
+  meta: FxMetaV01;
+  sources: SourceRef[];
+  rates: Record<string, number>;
+}

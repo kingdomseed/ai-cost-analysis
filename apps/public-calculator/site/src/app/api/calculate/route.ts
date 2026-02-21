@@ -1,5 +1,6 @@
 import type {
   EntitlementsSnapshotV01,
+  FxSnapshotV01,
   PricingSnapshotV01,
   ScenarioRequest,
   WorkloadRequest,
@@ -7,7 +8,11 @@ import type {
 import { calculate } from "@ai-cost-analysis/core";
 import { NextResponse } from "next/server";
 
-import { loadLatestEntitlementsSnapshot, loadLatestPricingSnapshot } from "@/lib/public-datasets";
+import {
+  loadLatestEntitlementsSnapshot,
+  loadLatestFxSnapshot,
+  loadLatestPricingSnapshot,
+} from "@/lib/public-datasets";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
@@ -171,21 +176,25 @@ export async function POST(request: Request): Promise<NextResponse> {
     }
     const scenarios = scenariosRaw.map(parseScenario);
 
-    const [{ data: pricing }, { data: entitlements }] = await Promise.all([
+    const [{ data: pricing }, { data: entitlements }, { data: fx }] = await Promise.all([
       loadLatestPricingSnapshot(),
       loadLatestEntitlementsSnapshot(),
+      loadLatestFxSnapshot(),
     ]);
 
     const pricingSnapshot = pricing as PricingSnapshotV01;
     const entitlementsSnapshot = entitlements as EntitlementsSnapshotV01;
+    const fxSnapshot = fx as FxSnapshotV01;
 
     const output = calculate({
       pricing: pricingSnapshot,
       entitlements: entitlementsSnapshot,
+      fx: fxSnapshot,
       workload,
       scenarios,
       target_region: isString(body.target_region) ? body.target_region : undefined,
       evidence_policy: body.evidence_policy === "allow_private" ? "allow_private" : "public_only",
+      output_currency: isString(body.output_currency) ? body.output_currency : undefined,
     });
 
     return NextResponse.json(output);

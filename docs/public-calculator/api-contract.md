@@ -18,6 +18,7 @@ Related:
 Already present:
 - `GET /api/datasets/pricing`
 - `GET /api/datasets/entitlements`
+- `GET /api/datasets/fx`
 
 Response shape:
 - `kind` (`pricing` | `entitlements`)
@@ -30,6 +31,13 @@ Proposed endpoint (not implemented yet):
 - `POST /api/calculate`
 
 Input is a workload + one or more scenarios to evaluate. Output is a list of scenario results.
+
+### 3) Catalog API (input discovery)
+
+Endpoint:
+- `GET /api/catalog`
+
+Returns the current selectable universe for the UI (models/plans/currencies/regions) derived from the latest snapshots.
 
 #### Current implementation (baseline-only)
 
@@ -57,6 +65,7 @@ If we can compute “plan-effective cost” (pool, overage, top-ups, packs), we 
 
 ```json
 {
+  "output_currency": "EUR",
   "workload": { "kind": "tokens_per_month", "input_tokens": 3000000, "output_tokens": 1000000 },
   "scenarios": [{ "kind": "token_meter", "provider": "openai", "channel": "api", "model": "gpt-5.2" }]
 }
@@ -137,12 +146,13 @@ Back-calculation does **not** permit guessing credit→token conversion unless t
 
 Each scenario returns:
 
-- `monthly_cost_estimate_usd` (always present as an estimate)
-  - can be `point` only, or `range` if uncertainty exists
+- `monthly_cost_estimate` (always present as an estimate in the requested output currency)
+  - can be `point` only, or `low/high` range if uncertainty exists
 - `line_items[]` (subscription fee, top-ups, token-meter lines, etc.)
 - `assumptions[]` (input:output ratio, cache hit rate, USD/credit assumption, etc.)
 - `warnings[]` (human-readable flags suitable for UI display)
 - `evidence[]` (source IDs + evidence types)
+- `entitlements[]` (best-effort; filtered by region + `evidence_policy`)
 
 ## Public vs private analysis
 

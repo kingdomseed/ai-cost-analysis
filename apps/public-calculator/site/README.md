@@ -25,6 +25,8 @@ Quick sanity view:
 
 - `GET /api/datasets/pricing` — latest pricing snapshot envelope
 - `GET /api/datasets/entitlements` — latest entitlements snapshot envelope
+- `GET /api/datasets/fx` — latest FX snapshot envelope (base USD; used for currency conversion)
+- `GET /api/catalog` — supported selections derived from snapshots (models/plans/currencies/regions)
 - `POST /api/calculate` — baseline calculator (API-first; see `docs/public-calculator/api-contract.md`)
 
 ## AGENTS.md docs index (required)

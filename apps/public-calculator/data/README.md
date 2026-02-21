@@ -15,6 +15,10 @@ Entitlements (separate axis from cost):
 - `apps/public-calculator/data/entitlements.sample.json` — starter entitlements dataset (intentionally incomplete).
 - `apps/public-calculator/data/entitlements.2026-02-21.json` — Feb 2026 entitlements snapshot (what’s included, where), with region + evidence type.
 
+FX (currency conversion):
+- `apps/public-calculator/data/fx.sample.json` — starter FX dataset (placeholder).
+- `apps/public-calculator/data/fx.2026-02-21.json` — FX snapshot (base USD; rates for common currencies).
+
 ## Schemas + validation
 
 Public datasets are validated against JSON Schemas in:

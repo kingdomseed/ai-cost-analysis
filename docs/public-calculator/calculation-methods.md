@@ -180,7 +180,7 @@ See “Credit packs” section. This is a safe, sourced derivation.
 ### C) Derived ranges (when uncertainty is structural)
 
 When a tool’s credit burn varies by model/mode, represent uncertainty as a **range**:
-- `low_usd`, `high_usd` on `MoneyEstimate`
+- `low` / `high` on `MoneyEstimate`
 - confidence: `low`
 - reasons must include what drives the range (e.g., “model multiplier unknown; using min/max observed”)
 
@@ -209,3 +209,9 @@ Then layer in:
 
 This is codified in `docs/public-calculator/api-contract.md`.
 
+## Currency conversion (user-selected)
+
+By default, snapshots are normalized to USD. If the user selects a non-USD output currency:
+- conversion uses the latest `fx.YYYY-MM-DD.json` snapshot (official source preferred)
+- method becomes `derived` and confidence is downgraded unless native non-USD pricing is present
+- if an FX rate is missing, the API must return amounts in USD with a warning (still computable)

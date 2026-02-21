@@ -3,7 +3,7 @@ import "server-only";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
-type SnapshotKind = "pricing" | "entitlements";
+type SnapshotKind = "pricing" | "entitlements" | "fx";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
@@ -78,4 +78,8 @@ export async function loadLatestPricingSnapshot(): Promise<{ date: string; data:
 
 export async function loadLatestEntitlementsSnapshot(): Promise<{ date: string; data: unknown }> {
   return loadLatestSnapshot("entitlements");
+}
+
+export async function loadLatestFxSnapshot(): Promise<{ date: string; data: unknown }> {
+  return loadLatestSnapshot("fx");
 }

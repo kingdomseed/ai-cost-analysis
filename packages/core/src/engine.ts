@@ -1,4 +1,4 @@
-import type { EntitlementsSnapshotV01, PricingSnapshotV01 } from "./types";
+import type { EntitlementV01, EntitlementsSnapshotV01, FxSnapshotV01, PricingSnapshotV01 } from "./types";
 import type { WorkloadRequest } from "./workload";
 
 /**
@@ -26,9 +26,9 @@ export interface EvidenceRef {
 
 export interface MoneyEstimate {
   currency: string;
-  point_usd: number;
-  low_usd?: number;
-  high_usd?: number;
+  point: number;
+  low?: number;
+  high?: number;
 }
 
 export interface EvidencedMoneyEstimate extends MoneyEstimate {
@@ -114,15 +114,18 @@ export interface ScenarioResult {
   assumptions: CalculationAssumption[];
   evidence: EvidenceRef[];
   warnings: string[];
+  entitlements?: EntitlementV01[];
 }
 
 export interface EngineInput {
   pricing: PricingSnapshotV01;
   entitlements: EntitlementsSnapshotV01;
+  fx?: FxSnapshotV01;
   workload: WorkloadRequest;
   scenarios: ScenarioRequest[];
   target_region?: string;
   evidence_policy?: "public_only" | "allow_private";
+  output_currency?: string;
 }
 
 export interface EngineOutput {
@@ -143,7 +146,7 @@ function moneyZero(
 ): EvidencedMoneyEstimate {
   return {
     currency,
-    point_usd: 0,
+    point: 0,
     method,
     confidence,
     confidence_reasons,
@@ -161,7 +164,7 @@ function sumMoney(
 ): EvidencedMoneyEstimate {
   return {
     currency,
-    point_usd: parts.reduce((acc, p) => acc + p.point_usd, 0),
+    point: parts.reduce((acc, p) => acc + p.point, 0),
     method,
     confidence,
     confidence_reasons,
@@ -258,7 +261,7 @@ function tokenMeterCostFromRates(
   const inputCost = (inputTokens / 1_000_000) * inputRate;
   parts.push({
     currency,
-    point_usd: inputCost,
+    point: inputCost,
     method: "direct",
     confidence,
     confidence_reasons,
@@ -276,7 +279,7 @@ function tokenMeterCostFromRates(
       const cachedAsInputCost = (cachedInputTokens / 1_000_000) * inputRate;
       parts.push({
         currency,
-        point_usd: cachedAsInputCost,
+        point: cachedAsInputCost,
         method: "heuristic",
         confidence: "low",
         confidence_reasons: [...confidence_reasons, "No cached-input rate available"],
@@ -291,7 +294,7 @@ function tokenMeterCostFromRates(
       const cachedCost = (cachedInputTokens / 1_000_000) * cachedInputRate;
       parts.push({
         currency,
-        point_usd: cachedCost,
+        point: cachedCost,
         method: "direct",
         confidence,
         confidence_reasons,
@@ -308,7 +311,7 @@ function tokenMeterCostFromRates(
   const outputCost = (outputTokens / 1_000_000) * outputRate;
   parts.push({
     currency,
-    point_usd: outputCost,
+    point: outputCost,
     method: "direct",
     confidence,
     confidence_reasons,
@@ -331,9 +334,36 @@ function tokenMeterCostFromRates(
 }
 
 export function calculate(input: EngineInput): EngineOutput {
-  const currency = input.pricing.meta.default_currency ?? "USD";
+  const baseCurrency = input.pricing.meta.default_currency ?? "USD";
+  const requestedCurrency = input.output_currency ?? baseCurrency;
 
   const results: ScenarioResult[] = [];
+
+  function slugifyProviderId(label: string): string {
+    return label
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+
+  function selectEntitlements(providerId: string, planId: string, region: string, warnings: string[]): EntitlementV01[] {
+    const all = input.entitlements.entitlements.filter(
+      (e) => e.provider_id === providerId && e.plan_id === planId && (e.region === region || e.region === "global"),
+    );
+
+    if (input.evidence_policy === "public_only") {
+      const filtered = all.filter((e) => e.evidence?.type === "public_url");
+      if (filtered.length !== all.length && all.length > 0) {
+        warnings.push("Some entitlements were omitted due to evidence_policy=public_only.");
+      }
+      return filtered;
+    }
+
+    return all;
+  }
+
+  const targetRegion = input.target_region ?? "us";
 
   for (const scenario of input.scenarios) {
     if (scenario.kind === "subscription_floor") {
@@ -343,10 +373,12 @@ export function calculate(input: EngineInput): EngineOutput {
       const evidence = (sub?.source_ids ?? []).map((id) => ({ source_id: id }));
 
       if (!sub || sub.price_usd_per_month == null) {
+        const warnings: string[] = ["Subscription price missing; cannot compute plan price floor."];
+        const entitlements = selectEntitlements(scenario.provider, scenario.plan_id, targetRegion, warnings);
         results.push({
           scenario_id: scenario.scenario_id ?? `${scenario.provider}:${scenario.plan_id}:subscription_floor`,
           monthly_cost_estimate: moneyZero(
-            currency,
+            baseCurrency,
             "direct",
             "low",
             ["No subscription price found in pricing snapshot."],
@@ -355,19 +387,23 @@ export function calculate(input: EngineInput): EngineOutput {
           line_items: [],
           assumptions: [],
           evidence,
-          warnings: ["Subscription price missing; cannot compute plan price floor."],
+          warnings,
+          entitlements,
         });
         continue;
       }
 
       const amount: EvidencedMoneyEstimate = {
-        currency,
-        point_usd: sub.price_usd_per_month,
+        currency: baseCurrency,
+        point: sub.price_usd_per_month,
         method: "direct",
         confidence: sub.verified ? "high" : "medium",
         confidence_reasons: sub.verified ? [] : ["Subscription price is not verified."],
         evidence,
       };
+
+      const warnings: string[] = sub.usage_limits ? [`Usage limits: ${sub.usage_limits}`] : [];
+      const entitlements = selectEntitlements(scenario.provider, scenario.plan_id, targetRegion, warnings);
 
       results.push({
         scenario_id: scenario.scenario_id ?? `${scenario.provider}:${scenario.plan_id}:subscription_floor`,
@@ -375,7 +411,8 @@ export function calculate(input: EngineInput): EngineOutput {
         line_items: [{ kind: "subscription_fee", label: "Subscription fee", amount }],
         assumptions: [],
         evidence,
-        warnings: sub.usage_limits ? [`Usage limits: ${sub.usage_limits}`] : [],
+        warnings,
+        entitlements,
       });
       continue;
     }
@@ -391,10 +428,12 @@ export function calculate(input: EngineInput): EngineOutput {
         null;
 
       if (!plan || monthly == null) {
+        const warnings: string[] = ["Tool plan price missing; cannot compute plan price floor."];
+        const entitlements = selectEntitlements(slugifyProviderId(scenario.tool), scenario.plan_id, targetRegion, warnings);
         results.push({
           scenario_id: scenario.scenario_id ?? `${scenario.tool}:${scenario.plan_id}:tool_plan_floor`,
           monthly_cost_estimate: moneyZero(
-            currency,
+            baseCurrency,
             "direct",
             "low",
             ["No tool plan subscription price found in pricing snapshot."],
@@ -403,19 +442,23 @@ export function calculate(input: EngineInput): EngineOutput {
           line_items: [],
           assumptions: [],
           evidence,
-          warnings: ["Tool plan price missing; cannot compute plan price floor."],
+          warnings,
+          entitlements,
         });
         continue;
       }
 
       const amount: EvidencedMoneyEstimate = {
-        currency,
-        point_usd: monthly,
+        currency: baseCurrency,
+        point: monthly,
         method: "direct",
         confidence: plan.verified ? "high" : "medium",
         confidence_reasons: plan.verified ? [] : ["Tool plan price is not verified."],
         evidence,
       };
+
+      const warnings: string[] = plan.metering ? [`Metering: ${plan.metering}`] : [];
+      const entitlements = selectEntitlements(slugifyProviderId(scenario.tool), scenario.plan_id, targetRegion, warnings);
 
       results.push({
         scenario_id: scenario.scenario_id ?? `${scenario.tool}:${scenario.plan_id}:tool_plan_floor`,
@@ -423,7 +466,8 @@ export function calculate(input: EngineInput): EngineOutput {
         line_items: [{ kind: "subscription_fee", label: "Subscription fee", amount }],
         assumptions: [],
         evidence,
-        warnings: plan.metering ? [`Metering: ${plan.metering}`] : [],
+        warnings,
+        entitlements,
       });
       continue;
     }
@@ -432,10 +476,11 @@ export function calculate(input: EngineInput): EngineOutput {
       const apiRate = findApiRate(input.pricing, scenario.provider, scenario.channel, scenario.model);
 
       if (!apiRate) {
+        const warnings: string[] = ["Token-meter entry missing; cannot compute baseline API-equivalent cost."];
         results.push({
           scenario_id: scenario.scenario_id ?? `${scenario.provider}:${scenario.model}:token_meter`,
           monthly_cost_estimate: moneyZero(
-            currency,
+            baseCurrency,
             "direct",
             "low",
             ["No matching token-meter entry found in pricing snapshot."],
@@ -444,7 +489,7 @@ export function calculate(input: EngineInput): EngineOutput {
           line_items: [],
           assumptions: [],
           evidence: [],
-          warnings: ["Token-meter entry missing; cannot compute baseline API-equivalent cost."],
+          warnings,
         });
         continue;
       }
@@ -466,19 +511,20 @@ export function calculate(input: EngineInput): EngineOutput {
         if (typeof picked.input === "number") rates.input = picked.input;
         if (typeof picked.output === "number") rates.output = picked.output;
 
-        const result = tokenMeterCostFromRates(
-          currency,
-          apiRate.unit,
-          rates,
-          input.workload,
-          apiRate.source_ids,
-          confidence,
-          [...confidenceReasons, "Regional pricing selected from a table."],
-          warnings,
-        );
+      const result = tokenMeterCostFromRates(
+        baseCurrency,
+        apiRate.unit,
+        rates,
+        input.workload,
+        apiRate.source_ids,
+        confidence,
+        [...confidenceReasons, "Regional pricing selected from a table."],
+        warnings,
+      );
         results.push({
           ...result,
           scenario_id: scenario.scenario_id ?? `${scenario.provider}:${scenario.model}:token_meter`,
+          entitlements: [],
         });
         continue;
       }
@@ -488,7 +534,7 @@ export function calculate(input: EngineInput): EngineOutput {
           results.push({
             scenario_id: scenario.scenario_id ?? `${scenario.provider}:${scenario.model}:token_meter`,
             monthly_cost_estimate: moneyZero(
-              currency,
+              baseCurrency,
               "direct",
               "low",
               ["Tiered token-meter selection requires tokens_per_month workload."],
@@ -514,7 +560,7 @@ export function calculate(input: EngineInput): EngineOutput {
         if (picked === longContext) warnings.push(`Selected long-context tier because input_tokens > ${threshold}.`);
 
         const result = tokenMeterCostFromRates(
-          currency,
+          baseCurrency,
           apiRate.unit,
           picked.rates,
           input.workload,
@@ -526,6 +572,7 @@ export function calculate(input: EngineInput): EngineOutput {
         results.push({
           ...result,
           scenario_id: scenario.scenario_id ?? `${scenario.provider}:${scenario.model}:token_meter`,
+          entitlements: [],
         });
         continue;
       }
@@ -534,7 +581,7 @@ export function calculate(input: EngineInput): EngineOutput {
         results.push({
           scenario_id: scenario.scenario_id ?? `${scenario.provider}:${scenario.model}:token_meter`,
           monthly_cost_estimate: moneyZero(
-            currency,
+            baseCurrency,
             "direct",
             "low",
             ["Token-meter entry missing rates/tiers/regional_rates."],
@@ -549,7 +596,7 @@ export function calculate(input: EngineInput): EngineOutput {
       }
 
       const result = tokenMeterCostFromRates(
-        currency,
+        baseCurrency,
         apiRate.unit,
         apiRate.rates,
         input.workload,
@@ -561,6 +608,7 @@ export function calculate(input: EngineInput): EngineOutput {
       results.push({
         ...result,
         scenario_id: scenario.scenario_id ?? `${scenario.provider}:${scenario.model}:token_meter`,
+        entitlements: [],
       });
       continue;
     }
@@ -621,7 +669,7 @@ export function calculate(input: EngineInput): EngineOutput {
         evidence_policy: input.evidence_policy,
       }).scenarios[0]!;
 
-      const metered = baseline.monthly_cost_estimate.point_usd * (1 + markup);
+      const metered = baseline.monthly_cost_estimate.point * (1 + markup);
       const overage = Math.max(0, metered - poolUsd);
       const total = subscriptionFee + overage;
 
@@ -645,8 +693,8 @@ export function calculate(input: EngineInput): EngineOutput {
       }
 
       const subscriptionAmount: EvidencedMoneyEstimate = {
-        currency,
-        point_usd: subscriptionFee,
+        currency: baseCurrency,
+        point: subscriptionFee,
         method: plan?.subscription_price_usd != null || plan?.subscription_price_usd_per_seat != null ? "direct" : "heuristic",
         confidence: plan?.verified ? "high" : "medium",
         confidence_reasons: plan?.verified ? [] : ["Subscription price is not verified."],
@@ -654,8 +702,8 @@ export function calculate(input: EngineInput): EngineOutput {
       };
 
       const overageAmount: EvidencedMoneyEstimate = {
-        currency,
-        point_usd: overage,
+        currency: baseCurrency,
+        point: overage,
         method,
         confidence,
         confidence_reasons: confidenceReasons,
@@ -663,13 +711,21 @@ export function calculate(input: EngineInput): EngineOutput {
       };
 
       const totalAmount: EvidencedMoneyEstimate = {
-        currency,
-        point_usd: total,
+        currency: baseCurrency,
+        point: total,
         method,
         confidence,
         confidence_reasons: confidenceReasons,
         evidence,
       };
+
+      const allWarnings = [...warnings, ...baseline.warnings];
+      const entitlements = selectEntitlements(
+        slugifyProviderId(scenario.tool),
+        scenario.plan_id,
+        targetRegion,
+        allWarnings,
+      );
 
       results.push({
         scenario_id: scenario.scenario_id ?? `${scenario.tool}:${scenario.plan_id}:api_pool_effective`,
@@ -680,7 +736,8 @@ export function calculate(input: EngineInput): EngineOutput {
         ],
         assumptions,
         evidence,
-        warnings: [...warnings, ...baseline.warnings],
+        warnings: allWarnings,
+        entitlements,
       });
       continue;
     }
@@ -771,8 +828,8 @@ export function calculate(input: EngineInput): EngineOutput {
       }
 
       const subscriptionAmount: EvidencedMoneyEstimate = {
-        currency,
-        point_usd: subscriptionFee,
+        currency: baseCurrency,
+        point: subscriptionFee,
         method: plan?.subscription_price_usd != null || plan?.subscription_price_usd_per_seat != null ? "direct" : "heuristic",
         confidence: plan?.verified ? "high" : "medium",
         confidence_reasons: plan?.verified ? [] : ["Subscription price is not verified."],
@@ -780,8 +837,8 @@ export function calculate(input: EngineInput): EngineOutput {
       };
 
       const creditsAmount: EvidencedMoneyEstimate = {
-        currency,
-        point_usd: creditSpendUsd,
+        currency: baseCurrency,
+        point: creditSpendUsd,
         method: usdPerCreditMethod,
         confidence: usdPerCreditConfidence,
         confidence_reasons: usdPerCreditReasons,
@@ -789,13 +846,20 @@ export function calculate(input: EngineInput): EngineOutput {
       };
 
       const totalAmount: EvidencedMoneyEstimate = {
-        currency,
-        point_usd: subscriptionFee + creditSpendUsd,
+        currency: baseCurrency,
+        point: subscriptionFee + creditSpendUsd,
         method,
         confidence,
         confidence_reasons: confidenceReasons,
         evidence: planEvidence,
       };
+
+      const entitlements = selectEntitlements(
+        slugifyProviderId(scenario.tool),
+        scenario.plan_id,
+        targetRegion,
+        warnings,
+      );
 
       results.push({
         scenario_id: scenario.scenario_id ?? `${scenario.tool}:${scenario.plan_id}:credits_effective`,
@@ -807,10 +871,64 @@ export function calculate(input: EngineInput): EngineOutput {
         assumptions,
         evidence: planEvidence,
         warnings,
+        entitlements,
       });
       continue;
     }
   }
 
-  return { generated_at: nowIsoTimestamp(), scenarios: results };
+  function convertEstimate(
+    estimate: EvidencedMoneyEstimate,
+    scenarioWarnings: string[],
+    scenarioAssumptions: CalculationAssumption[],
+  ): EvidencedMoneyEstimate {
+    if (requestedCurrency === baseCurrency) return estimate;
+    const fx = input.fx;
+    if (!fx) {
+      scenarioWarnings.push(`No FX snapshot available; returning amounts in ${baseCurrency}.`);
+      return estimate;
+    }
+    if (fx.meta.base_currency !== baseCurrency) {
+      scenarioWarnings.push(`FX base currency is ${fx.meta.base_currency}; expected ${baseCurrency}. Returning ${baseCurrency}.`);
+      return estimate;
+    }
+    const rate = fx.rates[requestedCurrency];
+    if (typeof rate !== "number" || !Number.isFinite(rate) || rate <= 0) {
+      scenarioWarnings.push(`No FX rate for ${requestedCurrency}; returning ${baseCurrency}.`);
+      return estimate;
+    }
+
+    scenarioAssumptions.push({
+      id: "fx_rate",
+      value: rate,
+      notes: `Converted from ${baseCurrency} to ${requestedCurrency} using FX effective_date=${fx.meta.effective_date}.`,
+    });
+
+    return {
+      ...estimate,
+      currency: requestedCurrency,
+      point: estimate.point * rate,
+      low: estimate.low != null ? estimate.low * rate : undefined,
+      high: estimate.high != null ? estimate.high * rate : undefined,
+      method: "derived",
+      confidence: estimate.confidence === "high" ? "medium" : "low",
+      confidence_reasons: [
+        ...estimate.confidence_reasons,
+        `Converted from ${baseCurrency} using FX effective_date=${fx.meta.effective_date}.`,
+      ],
+    };
+  }
+
+  const converted = results.map((r) => {
+    const warnings = [...r.warnings];
+    const assumptions = [...r.assumptions];
+    const monthly = convertEstimate(r.monthly_cost_estimate, warnings, assumptions);
+    const lineItems = r.line_items.map((li) => ({
+      ...li,
+      amount: convertEstimate(li.amount, warnings, assumptions),
+    }));
+    return { ...r, monthly_cost_estimate: monthly, line_items: lineItems, warnings, assumptions };
+  });
+
+  return { generated_at: nowIsoTimestamp(), scenarios: converted };
 }

@@ -26,6 +26,8 @@ Before treating a snapshot as “ready for API,” validate it against the repo 
 - Schemas: `apps/public-calculator/schemas/`
 - Command: `cd apps/public-calculator/site && npm run validate:datasets`
 
+FX snapshots are also validated (`apps/public-calculator/data/fx.YYYY-MM-DD.json`) and should be refreshed on a regular cadence (daily or weekly) since currency conversion is time-sensitive.
+
 ## 3) Normalization approach
 
 We normalize into:

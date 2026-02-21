@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "schema_version": "0.1",
+    "retrieved_at": "2026-02-21",
+    "last_verified_at": "2026-02-21",
+    "base_currency": "USD",
+    "effective_date": "2026-02-21",
+    "notes": "Sample FX snapshot. Replace with real rates from an official source."
+  },
+  "sources": [
+    {
+      "id": "example_fx_source",
+      "url": "https://example.com",
+      "retrieved_at": "2026-02-21",
+      "verified": false
+    }
+  ],
+  "rates": {
+    "USD": 1.0,
+    "EUR": 0.85
+  }
+}
+

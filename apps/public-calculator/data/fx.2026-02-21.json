@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "schema_version": "0.1",
+    "retrieved_at": "2026-02-21",
+    "last_verified_at": "2026-02-21",
+    "base_currency": "USD",
+    "effective_date": "2026-02-20",
+    "notes": "FX snapshot for currency conversion. Base is USD. Rates derived from ECB EUR reference rates by converting EUR-based quotes to USD base (see sources)."
+  },
+  "sources": [
+    {
+      "id": "ecb_eurofxref_hist_90d",
+      "url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml",
+      "retrieved_at": "2026-02-21",
+      "verified": true,
+      "notes": "Uses the 2026-02-20 ECB reference rate set (latest business day before 2026-02-21)."
+    }
+  ],
+  "rates": {
+    "USD": 1.0,
+    "EUR": 0.8498342823149485,
+    "GBP": 0.741735361604487,
+    "JPY": 155.20523497917904,
+    "CHF": 0.7760686666100111,
+    "CAD": 1.369252995665845,
+    "AUD": 1.4189683011812695,
+    "SEK": 9.071556046570919,
+    "NOK": 9.56403501317243,
+    "CNY": 6.9086428146511425
+  }
+}
+
