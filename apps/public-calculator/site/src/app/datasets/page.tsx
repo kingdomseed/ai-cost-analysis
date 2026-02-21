@@ -1,5 +1,5 @@
-import { loadLatestEntitlementsSnapshot, loadLatestPricingSnapshot } from "@/lib/public-datasets";
 import Link from "next/link";
+import { loadLatestEntitlementsSnapshot, loadLatestPricingSnapshot } from "@/lib/public-datasets";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
@@ -19,7 +19,9 @@ export default async function DatasetsPage() {
       <section style={{ marginBottom: 16 }}>
         <h2 style={{ fontSize: 16, fontWeight: 600 }}>Latest pricing</h2>
         <div>snapshot: {pricingDate}</div>
-        {pricingMeta ? <pre style={{ whiteSpace: "pre-wrap" }}>{JSON.stringify(pricingMeta, null, 2)}</pre> : null}
+        {pricingMeta ? (
+          <pre style={{ whiteSpace: "pre-wrap" }}>{JSON.stringify(pricingMeta, null, 2)}</pre>
+        ) : null}
         <div>
           <Link href="/api/datasets/pricing">Download JSON</Link>
         </div>

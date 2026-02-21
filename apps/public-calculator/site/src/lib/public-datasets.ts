@@ -1,6 +1,6 @@
 import "server-only";
 
-import { readFile, readdir } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
 type SnapshotKind = "pricing" | "entitlements";
@@ -9,7 +9,10 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
-function assertSnapshotEnvelope(kind: SnapshotKind, value: unknown): asserts value is { meta: unknown; sources: unknown[] } {
+function assertSnapshotEnvelope(
+  kind: SnapshotKind,
+  value: unknown,
+): asserts value is { meta: unknown; sources: unknown[] } {
   if (!isRecord(value)) {
     throw new Error(`${kind} snapshot is not an object`);
   }
@@ -34,7 +37,9 @@ function parseDatedFilename(filename: string, prefix: string): string | null {
   return match?.[1] ?? null;
 }
 
-async function resolveLatestSnapshotFile(kind: SnapshotKind): Promise<{ date: string; file: string }> {
+async function resolveLatestSnapshotFile(
+  kind: SnapshotKind,
+): Promise<{ date: string; file: string }> {
   const dir = datasetDirAbsolute();
   const entries = await readdir(dir);
 
@@ -49,7 +54,7 @@ async function resolveLatestSnapshotFile(kind: SnapshotKind): Promise<{ date: st
   }
 
   candidates.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
-  return candidates[0]!;
+  return candidates[0];
 }
 
 async function readJsonFile<T>(absolutePath: string): Promise<T> {
@@ -57,7 +62,9 @@ async function readJsonFile<T>(absolutePath: string): Promise<T> {
   return JSON.parse(raw) as T;
 }
 
-export async function loadLatestSnapshot<T>(kind: SnapshotKind): Promise<{ date: string; data: T }> {
+export async function loadLatestSnapshot<T>(
+  kind: SnapshotKind,
+): Promise<{ date: string; data: T }> {
   const { date, file } = await resolveLatestSnapshotFile(kind);
   const absolutePath = path.join(datasetDirAbsolute(), file);
   const data = await readJsonFile<T>(absolutePath);

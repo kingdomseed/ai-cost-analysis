@@ -21,7 +21,7 @@ Naming patterns:
 Public calculator (Next.js):
 - `cd apps/public-calculator/site && npm install` — install dependencies.
 - `npm run dev` — run locally.
-- `npm run lint` — ESLint checks.
+- `npm run lint` — Biome checks (formatter + linter).
 - `npm run build` — production build (use as smoke test).
 
 Useful basics:

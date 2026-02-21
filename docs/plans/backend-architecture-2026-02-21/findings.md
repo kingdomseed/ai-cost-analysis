@@ -24,5 +24,6 @@ Some providers have Cloudflare blocks in this environment (notably OpenAI market
 
 ## Dependency hygiene (public calculator site)
 
-- Next.js is already on latest stable v16 (`next@16.1.6`, `eslint-config-next@16.1.6`).
-- `npm audit` high findings were caused by a `minimatch <10.2.1` advisory in lint toolchains. We kept `eslint@9.x` (compatible with Next’s lint stack) and enforced `minimatch@10.2.1` via npm `overrides` to clear audit while keeping `npm run lint` working.
+- Next.js is already on latest stable v16 (`next@16.1.6`).
+- ESLint v10 adoption is currently blocked upstream (Next + React-related plugins). See: `docs/public-calculator/research/2026-02-21-deps-linting/findings.md`.
+- To keep `npm audit` clean **without** npm `overrides`, the site’s `npm run lint` currently uses Biome instead of ESLint.

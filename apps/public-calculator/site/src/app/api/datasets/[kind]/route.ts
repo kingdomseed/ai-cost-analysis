@@ -1,5 +1,5 @@
-import { loadLatestEntitlementsSnapshot, loadLatestPricingSnapshot } from "@/lib/public-datasets";
 import { NextResponse } from "next/server";
+import { loadLatestEntitlementsSnapshot, loadLatestPricingSnapshot } from "@/lib/public-datasets";
 
 export async function GET(
   _request: Request,
@@ -11,7 +11,8 @@ export async function GET(
     return NextResponse.json({ error: "Unknown dataset kind" }, { status: 404 });
   }
 
-  const snapshot = kind === "pricing" ? await loadLatestPricingSnapshot() : await loadLatestEntitlementsSnapshot();
+  const snapshot =
+    kind === "pricing" ? await loadLatestPricingSnapshot() : await loadLatestEntitlementsSnapshot();
 
   return NextResponse.json({
     kind,
@@ -19,4 +20,3 @@ export async function GET(
     data: snapshot.data,
   });
 }
-
