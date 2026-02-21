@@ -14,3 +14,5 @@
 - Integrated Copilot, Amazon Q, Replit, and JetBrains pricing primitives into `apps/public-calculator/data/pricing.2026-02-21.json` (with `verified` flags and explicit source IDs).
 - JetBrains AI updated from “opaque quota” → explicit credit tiers (quota tables + $/credit + top-up expiry) using official JetBrains docs.
 - Captured Moonshot `kimi-k2.5` API token rates (including cache hit/miss) from official pricing docs and updated Kimi membership plan pricing (SSR membership landing page) + Kimi Code quota mechanics docs.
+- Captured OpenAI Codex credit/limit tables from the official developers page and added them to the dataset; stored user-provided ChatGPT pricing capture due to Cloudflare blocks.
+- Captured Bolt.new, Lovable, Tabnine, and Sourcegraph plan/pricing notes and integrated their primitives into the dataset snapshot.

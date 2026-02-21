@@ -21,3 +21,10 @@ New additions captured after the initial sweep (still dated 2026-02-21):
 - Amazon Q Developer (free/pro tiers + quotas): `agent-amazon-q.md`
 - Replit (Starter/Core/Teams + usage-based billing + announced plan changes): `agent-replit.md`
 - JetBrains AI (AI in IDEs + Junie; quota model): `agent-jetbrains.md`
+- OpenAI Codex (ChatGPT plan limits + credits): `agent-openai-codex.md`
+- Cursor pricing capture (user-provided): `user-cursor-pricing-capture.2026-02-21.md`
+- ChatGPT Pro pricing capture (user-provided): `user-chatgpt-pricing-capture.2026-02-21.md`
+- Bolt.new (token quotas): `agent-bolt.md`
+- Lovable (credits + top-ups): `agent-lovable.md`
+- Tabnine (seat subscription + BYOK/handling fee notes): `agent-tabnine.md`
+- Sourcegraph (Cody plan availability + Enterprise Search pricing signal): `agent-sourcegraph.md`

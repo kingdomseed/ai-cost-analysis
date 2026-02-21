@@ -14,7 +14,8 @@ This sweep intentionally prefers official sources and labels anything uncertain.
 
 3) **ChatGPT plan limits**
    - `help.openai.com` was blocked from direct fetch in this environment during the sweep.
-   - Next: re-capture Help Center content directly (or via an allowed official export) and mark subscription entries `verified: true`.
+   - A user-provided capture of `chatgpt.com/pricing` is stored in `docs/public-calculator/research/2026-02-21-pricing-sweep/user-chatgpt-pricing-capture.2026-02-21.md`, but remains `verified: false`.
+   - Next: re-capture Help Center and pricing content directly (or via an allowed official export) and mark subscription entries `verified: true`.
 
 ## Medium-priority gaps (tool ecosystem breadth)
 
@@ -25,6 +26,22 @@ This sweep intentionally prefers official sources and labels anything uncertain.
 5) **Kimi Code: quota sizing (numeric)**
    - Official docs confirm Kimi Code is a **membership benefit** with a **7-day rolling quota refresh**, but do not publish a stable token↔quota mapping (and the UI describes both a 7-day quota cycle and a “5-hour token quota” concept without fully defining the relationship).
    - Next: capture an official quota table by membership tier (if published) and clarify how the 5-hour token quota relates to the 7-day cycle.
+
+6) **Bolt.new: overage pricing**
+   - Bolt publishes token quotas and rollover behavior, but does not publish an explicit per-token overage price on the pricing page.
+   - Next: find an official page describing what happens after token quotas are exceeded (hard stop vs pay-as-you-go) and any $/token rate if applicable.
+
+7) **Lovable: credit unit conversion**
+   - Lovable publishes credit tiers and top-up pricing but not a stable credits↔tokens conversion.
+   - Next: treat credits as opaque, but consider adding user-overridable assumptions (e.g., average credits per message) for empirical comparisons.
+
+8) **Tabnine: “reserved token consumption quota” mechanics**
+   - Tabnine pricing describes BYOK unlimited vs Tabnine-provided LLM access (provider prices + 5% handling fee), but quota sizing mechanics are not fully enumerated on the pricing page.
+   - Next: locate official docs that define how reserved token quota is purchased/allocated and whether it maps to a known provider token meter.
+
+9) **Sourcegraph: Cody Enterprise pricing**
+   - Sourcegraph documents Cody Free/Pro deprecation and shows Enterprise Search pricing, but does not publish self-serve numeric pricing for Cody Enterprise.
+   - Next: if we want to model Cody Enterprise, capture an official price sheet (if public) or encode as `custom` with explicit “contact sales” notes.
 
 ## Dataset TODOs
 

@@ -7,7 +7,11 @@ This file is a quick index of the **official sources** used in the sweep and whe
 - API pricing: `https://developers.openai.com/api/docs/pricing`
 - Prompt caching: `https://developers.openai.com/api/docs/guides/prompt-caching/`
 - Batch API: `https://developers.openai.com/api/docs/guides/batch`
+- Codex pricing (ChatGPT plans + credits): `https://developers.openai.com/codex/pricing/`
+- ChatGPT pricing (Cloudflare-blocked in this environment): `https://chatgpt.com/pricing`
 - Captured in: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-openai.md`
+  - Codex addendum: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-openai-codex.md`
+  - ChatGPT pricing (user-provided): `docs/public-calculator/research/2026-02-21-pricing-sweep/user-chatgpt-pricing-capture.2026-02-21.md`
 
 ## Anthropic
 
@@ -47,9 +51,11 @@ This file is a quick index of the **official sources** used in the sweep and whe
 ## Dev tools / wrappers
 
 - Cursor pricing docs: `https://cursor.com/docs/account/pricing`
+- Cursor model pricing (per-token rate table + Auto/Max Mode): `https://cursor.com/docs/models#model-pricing`
 - Cursor marketing pricing page: `https://cursor.com/pricing`
 - Windsurf pricing: `https://windsurf.com/pricing`
 - Windsurf credit usage docs: `https://docs.windsurf.com/windsurf/accounts/usage`
+- Codeium pricing (corroborates Windsurf tiers): `https://codeium.com/pricing`
 - Warp pricing: `https://www.warp.dev/pricing`
 - Warp add-on credits: `https://docs.warp.dev/support-and-community/plans-and-billing/add-on-credits`
 - OpenRouter FAQ (fees): `https://openrouter.ai/docs/faq`
@@ -144,3 +150,22 @@ This file is a quick index of the **official sources** used in the sweep and whe
 ## Known discrepancies / follow-ups
 
 - Cursor tier availability mismatch (docs list `Pro` $20; pricing page shows `Individual` $60): `docs/public-calculator/research/2026-02-21-pricing-sweep/main-cursor-plan-discrepancy.md`
+
+## App builders (separate category)
+
+- Bolt.new pricing (token quotas): `https://bolt.new/pricing`
+- Lovable pricing (credits): `https://lovable.dev/pricing`
+- Lovable docs (plans and credits): `https://docs.lovable.dev/introduction/plans-and-credits`
+- Captured in:
+  - `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-bolt.md`
+  - `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-lovable.md`
+
+## Other developer tools
+
+- Tabnine pricing: `https://www.tabnine.com/pricing/`
+- Sourcegraph pricing: `https://sourcegraph.com/pricing`
+- Sourcegraph Cody plan changes (blog): `https://sourcegraph.com/blog/changes-to-cody-free-pro-and-enterprise-starter-plans`
+- Sourcegraph Cody plan changes (changelog): `https://sourcegraph.com/changelog/cody-plan-changes`
+- Captured in:
+  - `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-tabnine.md`
+  - `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-sourcegraph.md`

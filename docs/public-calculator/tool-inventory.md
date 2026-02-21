@@ -8,6 +8,8 @@ This file is the **checklist** for which tools/plans we want to model in the pub
 - Wrappers / gateways: OpenRouter, OpenCode Zen
 - IDE/tools: Cursor, Windsurf, Warp, Verdent, Qoder, Cline, Devin, GitHub Copilot, Amazon Q Developer, Replit, JetBrains AI
 - Consumer subscriptions (non-token quotas): Anthropic Claude plans, Google AI Plus/Pro/Ultra, Kimi memberships, ChatGPT Pro *(unverified in this environment)*
+- App builders (separate category): Bolt.new, Lovable
+- Other developer tools (partial): Tabnine, Sourcegraph (Enterprise Search pricing signal; Cody Free/Pro discontinued)
 
 ## Tracked but incomplete (needs more official details)
 
@@ -17,11 +19,7 @@ This file is the **checklist** for which tools/plans we want to model in the pub
 ## Not yet researched (add here as you decide scope)
 
 Add additional tools you care about here (examples):
-- Sourcegraph Cody
-- Codeium
-- Tabnine
-- Bolt
-- Lovable
+- Codeium (separate from Windsurf branding, if needed)
 
 When adding an item, include:
 - Official pricing URL(s)

@@ -14,3 +14,7 @@
 - GitHub Copilot is not token-metered; it is a subscription with monthly allowances of **premium requests** plus a published **model multiplier** table and overage pricing ($0.04 per additional premium request on paid plans).
 - Replit combines subscriptions with **USD-denominated credits** plus multiple **usage-based meters** (Agent checkpoints, deployments, DBs). Replit also announced a plan change effective **2026-02-24**, so “active” plan availability needs a re-sweep after that date.
 - JetBrains AI publishes explicit quota tables: AI Free (3 AI Credits/30 days), AI Pro (10), AI Ultimate (35); commercial AI Pro (20/seat/30 days) and AI Ultimate (70/seat/30 days). JetBrains also states **each AI Credit equals $1 USD** and Top-up AI Credits are valid **12 months**. These plans are now modeled as **credits** (not opaque quota) in the dataset.
+- Bolt.new publishes token-based quotas (Free: 300K/day + 1M/month; Pro: “start at 10M/month” with rollover; Teams is per-seat).
+- Lovable publishes detailed credit tier tables (Pro + Business) and top-up pricing ($15 per 50 credits on Pro; $30 per 50 on Business) plus 12-month top-up expiry.
+- Tabnine publishes seat pricing (annual) and describes optional Tabnine-provided LLM access priced as provider prices + a 5% handling fee (quota mechanics not fully specified on the pricing page).
+- Sourcegraph discontinued Cody Free/Pro (effective 2025-07-23); Enterprise Search is publicly priced at $49/user-month; Cody Enterprise remains available but not publicly priced as a self-serve plan.

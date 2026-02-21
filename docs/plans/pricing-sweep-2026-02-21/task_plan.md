@@ -35,7 +35,9 @@ Phase 3 (extension + dataset integration) — in progress
 - [x] JetBrains AI (AI in IDEs + Junie; quota model)
 - [x] Amazon Q Developer
 - [x] Replit (AI/Agent plans + usage-based billing)
-- [ ] Bolt / Lovable (separate category: app builders)
+- [x] Bolt / Lovable (separate category: app builders)
+- [x] Tabnine (seat subscription + optional provider passthrough)
+- [x] Sourcegraph (Enterprise Search pricing signal; Cody Free/Pro discontinued)
 
 ## Deliverables
 - Research notes: `docs/public-calculator/research/2026-02-21-pricing-sweep/README.md`

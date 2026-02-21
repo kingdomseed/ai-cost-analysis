@@ -77,3 +77,8 @@ The Model Tier Selector defines approximate multipliers:
 - Basic model daily limit is referenced but not numerically specified here.
 - Team shared add-on credit pricing is not stated in the team shared add-on credits doc (mechanics are described).
 
+## User-observed examples (unverified; Feb 2026)
+
+These examples were captured by the repo owner from Qoder usage history and are included to sanity-check the implied $/credit from Qoder’s official credit pack pricing (not as an official guarantee).
+
+- Example entries include charges like `4.91 credits → $0.04`, `27.46 credits → $0.27`, `61.94 credits → $0.61`, consistent with roughly **$0.01/credit** under the documented discount pricing.

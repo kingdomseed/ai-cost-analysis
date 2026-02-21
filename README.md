@@ -60,3 +60,6 @@ Quick reference (selected developer tools; USD, retrieved 2026-02-21):
 | Replit | Core | $25/mo | USD credits | Credits apply to usage-based billing (Agent checkpoints, deployments, etc.) |
 | Replit | Teams | $40/user-month | Seat + credits | **Announced change:** Teams sunset → Pro effective 2026-02-24 |
 | JetBrains AI | Pro / Ultimate | $10 / $30 | Credits | AI Credits quota: 10 / 35 per 30 days; 1 AI Credit = $1 USD; top-ups expire after 12 months |
+| Bolt.new | Pro | $25/mo | Token quota | Starts at 10M tokens/month; rollover; no explicit $/token overage published |
+| Lovable | Pro (100 credits) | $25/mo | Credits | Usage-based credits; top-ups $15 per 50 credits (Pro); no token conversion |
+| Tabnine | Code Assistant | $39/user-month | Seat + BYOK | Annual subscription; Tabnine-provided LLM access is provider prices + 5% handling fee |
