@@ -330,6 +330,12 @@
       "url": "https://blog.jetbrains.com/ai/2025/09/faq-new-ai-quota/",
       "retrieved_at": "2026-02-21",
       "verified": true
+    },
+    {
+      "id": "jetbrains_ai_credits_terms",
+      "url": "https://jetbrains.com/legal/docs/terms/jetbrains-ai-credits",
+      "retrieved_at": "2026-02-21",
+      "verified": true
     }
   ],
   "api_rates": [
@@ -1147,51 +1153,117 @@
     },
     {
       "tool": "JetBrains AI",
+      "plan_id": "jetbrains-ai-free",
+      "pricing_type": "credits",
+      "subscription_price_usd": 0,
+      "included_credits_per_30_days": 3,
+      "quota_reset": "P30D_from_first_use",
+      "metering": "AI Free includes a small monthly cloud credit quota (AI Credits) for JetBrains AI. Local models and some built-in completion features may not consume quota; see JetBrains docs.",
+      "source_ids": ["jetbrains_ai_buy", "jetbrains_ai_assistant_licensing"],
+      "verified": true
+    },
+    {
+      "tool": "JetBrains AI",
       "plan_id": "jetbrains-ai-pro-personal",
-      "pricing_type": "opaque_quota",
+      "pricing_type": "credits",
       "subscription_price_usd": 10,
       "subscription_price_usd_per_year": 100,
-      "quota_unit": "AI Credits (monthly quota)",
-      "metering": "Seat subscription (individual) includes a monthly AI quota; Top-up AI Credits exist. Quota values and $/credit mapping were not extracted from a non-JS source in this sweep.",
-      "source_ids": ["jetbrains_ai_buy", "jetbrains_ai_assistant_licensing", "jetbrains_ai_faq"],
-      "verified": true,
-      "availability_note": "JetBrains prices vary by country/currency; this entry uses the commonly published USD list price. Validate at checkout for region-specific pricing."
+      "included_credits_per_30_days": 10,
+      "quota_reset": "P30D_from_first_use",
+      "topups_pricing": {
+        "kind": "ai_credits",
+        "usd_per_credit": 1.0,
+        "expires_after": "P1Y",
+        "notes": "Top-up AI Credits can be purchased to continue using cloud-based AI features after the included quota is exhausted. JetBrains states 1 AI Credit equals USD 1.00 (charged in local currency)."
+      },
+      "credit_conversion": {
+        "kind": "usd_per_credit",
+        "usd_per_credit": 1.0,
+        "notes": "Explicitly stated by JetBrains for AI Credits."
+      },
+      "metering": "AI Pro includes a monthly quota of AI Credits used for cloud-based features. When included quota is exhausted, the product can switch to Top-up AI Credits if available.",
+      "source_ids": ["jetbrains_ai_buy", "jetbrains_ai_assistant_licensing", "jetbrains_ai_faq", "jetbrains_ai_credits_terms"],
+      "verified": true
     },
     {
       "tool": "JetBrains AI",
       "plan_id": "jetbrains-ai-ultimate-personal",
-      "pricing_type": "opaque_quota",
+      "pricing_type": "credits",
       "subscription_price_usd": 30,
       "subscription_price_usd_per_year": 300,
-      "quota_unit": "AI Credits (monthly quota)",
-      "metering": "Seat subscription (individual) includes a monthly AI quota; Top-up AI Credits exist. JetBrains blog provides an annual-plan credit example, but plan quota values were not captured as a machine-readable table in this sweep.",
-      "source_ids": ["jetbrains_ai_buy", "jetbrains_ai_quota_blog", "jetbrains_ai_assistant_licensing", "jetbrains_ai_faq"],
-      "verified": true,
-      "availability_note": "JetBrains prices vary by country/currency; validate at checkout for region-specific pricing."
+      "included_credits_per_30_days": 35,
+      "quota_reset": "P30D_from_first_use",
+      "topups_pricing": {
+        "kind": "ai_credits",
+        "usd_per_credit": 1.0,
+        "expires_after": "P1Y",
+        "notes": "Top-up AI Credits can be purchased to continue using cloud-based AI features after the included quota is exhausted. JetBrains states 1 AI Credit equals USD 1.00 (charged in local currency)."
+      },
+      "credit_conversion": {
+        "kind": "usd_per_credit",
+        "usd_per_credit": 1.0,
+        "notes": "Explicitly stated by JetBrains for AI Credits."
+      },
+      "metering": "AI Ultimate includes a larger monthly quota of AI Credits intended for more frequent use of coding agents.",
+      "source_ids": ["jetbrains_ai_buy", "jetbrains_ai_assistant_licensing", "jetbrains_ai_faq", "jetbrains_ai_quota_blog", "jetbrains_ai_credits_terms"],
+      "verified": true
     },
     {
       "tool": "JetBrains AI",
       "plan_id": "jetbrains-ai-pro-commercial",
-      "pricing_type": "opaque_quota",
+      "pricing_type": "seat_subscription_with_credits",
       "subscription_price_usd_per_seat": 20,
       "subscription_price_usd_per_seat_per_year": 200,
-      "quota_unit": "AI Credits (monthly quota)",
-      "metering": "Seat subscription (org) includes a monthly AI quota; org admins can manage AI settings and Top-up AI Credits in JetBrains Console.",
-      "source_ids": ["jetbrains_ai_buy", "jetbrains_console_ai_management", "jetbrains_ai_assistant_licensing", "jetbrains_ai_faq"],
-      "verified": true,
-      "availability_note": "JetBrains prices vary by country/currency; validate at checkout for region-specific pricing."
+      "included_credits_per_30_days_per_seat": 20,
+      "quota_reset": "P30D_from_first_use",
+      "topups_pricing": {
+        "kind": "ai_credits",
+        "usd_per_credit": 1.0,
+        "expires_after": "P1Y",
+        "notes": "Organizations can purchase and allocate Top-up AI Credits; admins can set limits and manage usage in JetBrains Console."
+      },
+      "credit_conversion": {
+        "kind": "usd_per_credit",
+        "usd_per_credit": 1.0,
+        "notes": "Explicitly stated by JetBrains for AI Credits."
+      },
+      "metering": "Commercial AI Pro is per seat and includes a larger dedicated quota of AI Credits than personal AI Pro.",
+      "source_ids": ["jetbrains_ai_buy", "jetbrains_ai_assistant_licensing", "jetbrains_ai_faq", "jetbrains_console_ai_management", "jetbrains_ai_credits_terms"],
+      "verified": true
     },
     {
       "tool": "JetBrains AI",
       "plan_id": "jetbrains-ai-ultimate-commercial",
-      "pricing_type": "opaque_quota",
+      "pricing_type": "seat_subscription_with_credits",
       "subscription_price_usd_per_seat": 60,
       "subscription_price_usd_per_seat_per_year": 600,
-      "quota_unit": "AI Credits (monthly quota)",
-      "metering": "Seat subscription (org) includes a monthly AI quota; org admins can manage AI settings and Top-up AI Credits in JetBrains Console.",
-      "source_ids": ["jetbrains_ai_buy", "jetbrains_console_ai_management", "jetbrains_ai_assistant_licensing", "jetbrains_ai_faq"],
-      "verified": true,
-      "availability_note": "JetBrains prices vary by country/currency; validate at checkout for region-specific pricing."
+      "included_credits_per_30_days_per_seat": 70,
+      "quota_reset": "P30D_from_first_use",
+      "topups_pricing": {
+        "kind": "ai_credits",
+        "usd_per_credit": 1.0,
+        "expires_after": "P1Y",
+        "notes": "Organizations can purchase and allocate Top-up AI Credits; admins can set limits and manage usage in JetBrains Console."
+      },
+      "credit_conversion": {
+        "kind": "usd_per_credit",
+        "usd_per_credit": 1.0,
+        "notes": "Explicitly stated by JetBrains for AI Credits."
+      },
+      "metering": "Commercial AI Ultimate is per seat and includes a larger dedicated quota of AI Credits intended for more frequent agent usage.",
+      "source_ids": ["jetbrains_ai_buy", "jetbrains_ai_assistant_licensing", "jetbrains_ai_faq", "jetbrains_console_ai_management", "jetbrains_ai_credits_terms"],
+      "verified": true
+    },
+    {
+      "tool": "JetBrains AI",
+      "plan_id": "jetbrains-ai-enterprise",
+      "pricing_type": "seat_subscription",
+      "subscription_price_usd_per_seat": 60,
+      "subscription_price_usd_per_seat_per_year": 720,
+      "included_credits_per_30_days_per_seat": null,
+      "metering": "AI Enterprise is part of JetBrains IDE Services. JetBrains states the AI Enterprise quota is on par with AI Ultimate or higher, but does not disclose an exact number. Top-up credits are not yet available for this tier.",
+      "source_ids": ["jetbrains_ai_buy", "jetbrains_ai_assistant_licensing", "jetbrains_ai_faq"],
+      "verified": true
     }
   ],
   "subscriptions": [

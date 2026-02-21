@@ -59,4 +59,4 @@ Quick reference (selected developer tools; USD, retrieved 2026-02-21):
 | Amazon Q Developer | Pro | $19/user-month | Seat + overage | Java transform pooled LOC + $0.003/LOC overage; quotas published |
 | Replit | Core | $25/mo | USD credits | Credits apply to usage-based billing (Agent checkpoints, deployments, etc.) |
 | Replit | Teams | $40/user-month | Seat + credits | **Announced change:** Teams sunset → Pro effective 2026-02-24 |
-| JetBrains AI | Pro / Ultimate | $10 / $30 | Opaque quota | Uses AI quota/credits; quota table not captured in non-JS form yet |
+| JetBrains AI | Pro / Ultimate | $10 / $30 | Credits | AI Credits quota: 10 / 35 per 30 days; 1 AI Credit = $1 USD; top-ups expire after 12 months |

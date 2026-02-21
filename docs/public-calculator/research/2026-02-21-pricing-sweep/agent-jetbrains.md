@@ -45,11 +45,14 @@ Important notes:
 
 From the pricing page:
 
+- **AI Free**
+  - Price: **$0**
+  - Dedicated quota: **3 AI Credits per 30 days**
 - **AI Pro**
   - Price: **$10/month** or **$100/year**
 - **AI Ultimate**
   - Price: **$30/month** or **$300/year**
-  - Notes: JetBrains blog gives an annual-plan example: **AI Ultimate (annual) gives 420 AI Credits for $300** (implies 35/month, but treat as informational until the quota table is captured).
+  - Notes: JetBrains blog gives an annual-plan example: **AI Ultimate (annual) gives 420 AI Credits for $300** (consistent with 35 credits per 30 days).
 
 ### Organizations (commercial)
 
@@ -62,8 +65,27 @@ From the pricing page:
 
 ## Quota / credit values (status)
 
-- JetBrains confirms a **quota / AI Credits** model, but the exact quota-by-tier table was **not extracted as plain HTML** in this sweep (the FAQ page is JS-rendered and the licensing doc did not contain an explicit per-tier quota table in the fetched HTML).
-- Next verification target: find a stable, official page or export that lists quota sizes for each tier (and any explicit $/credit mapping for top-ups).
+Quota sizes and top-up rules are published in official JetBrains sources:
+
+### Individual use (AI Credits per 30 days)
+
+From the AI pricing page + AI Assistant licensing docs:
+- AI Free: **3 AI Credits per 30 days**
+- AI Pro: **10 AI Credits per 30 days**
+- AI Ultimate: **35 AI Credits per 30 days**
+
+### Organizations (AI Credits per 30 days)
+
+From AI Assistant licensing docs:
+- AI Pro: **20 AI Credits per 30 days**
+- AI Ultimate: **70 AI Credits per 30 days**
+- AI Enterprise: quota is “**on par with AI Ultimate quota, or higher**”, but JetBrains notes they **cannot disclose the exact number** (as of Feb 2026).
+
+### AI Credits pricing + expiry
+
+From the pricing page and licensing docs:
+- **1 AI Credit is worth USD 1.00** (charged in local currency)
+- **Top-up AI Credits** are valid for **12 months** from purchase date
 
 ## Trial + free access notes
 
@@ -86,7 +108,7 @@ FAQ: monthly quota credits are consumed by **external cloud model** usage (examp
 
 Across the pricing page, AI Assistant licensing docs, and JetBrains Console docs:
 
-- Top-ups can be purchased **in any amount**.
+- Top-ups can be purchased after the included quota is exhausted (availability depends on tier).
 - They are used **only after** the included monthly quota is exhausted.
 - They are valid for **12 months** from purchase.
 - Org admins can set **monthly top-up limits per user** in JetBrains Console; top-ups can be managed/reallocated across users (FAQ + Console docs).

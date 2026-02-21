@@ -129,6 +129,7 @@ This file is a quick index of the **official sources** used in the sweep and whe
 
 - Pricing (AI in IDEs): `https://www.jetbrains.com/ai-ides/buy/`
 - AI Assistant licensing overview: `https://www.jetbrains.com/help/ai-assistant/licensing-and-subscriptions.html`
+- AI Credits terms (expiry + usage): `https://www.jetbrains.com/legal/docs/terms/jetbrains-ai-credits`
 - JetBrains AI FAQ: `https://lp.jetbrains.com/ai-ides-faq/`
 - JetBrains Console AI management: `https://www.jetbrains.com/help/jetbrains-console/ai-management.html`
 - Junie docs: IDE plugin: `https://junie.jetbrains.com/docs/junie-ide-plugin.html`

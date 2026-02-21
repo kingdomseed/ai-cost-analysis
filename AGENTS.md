@@ -1,12 +1,13 @@
 # Repository Guidelines
 
-This repo supports two related deliverables: **(1) private personal usage/spend analysis** and **(2) a public cost calculator**. Keep boundaries between “public” and “private” data clear.
+This repo supports two deliverables: **(1) private personal usage/spend analysis** and **(2) a public cost calculator**. Keep boundaries between “public” and “private” data clear, and treat pricing as **time-sensitive (Feb 2026+)**.
 
 ## Project Structure & Module Organization
 
 - `apps/personal-analysis/` — future scripts/apps for your private rollups (yearly/monthly totals, by model/provider).
 - `apps/public-calculator/` — future public calculator app (UI + pricing dataset).
 - `apps/public-calculator/data/` — public, versioned pricing metadata (must be sourced + dated).
+- `docs/public-calculator/research/YYYY-MM-DD-pricing-sweep/` — dated sweep notes + source ledger + gaps.
 - `docs/` — specs and decision rules (`docs/personal-analysis/`, `docs/public-calculator/`).
 - `data/private/` — raw exports/invoices + derived outputs (**gitignored**).
 - `archive/private/` — drafts/unverified notes (**gitignored**).
@@ -22,6 +23,7 @@ No standard build/test harness is established yet. When adding one, document it 
 Useful basics:
 - `git status` — verify only public files are staged/tracked.
 - `git check-ignore -v <path>` — confirm private data stays ignored.
+- `jq -e . apps/public-calculator/data/pricing.2026-02-21.json` — quick JSON integrity check.
 
 ## Coding Style & Naming Conventions
 
@@ -46,3 +48,8 @@ Recommended going forward:
 
 Do **not** commit invoices, raw usage exports, or any personal identifiers. Keep them under `data/private/` or `archive/private/`. If you need shareable examples, add redacted samples under `data/sample/`.
 
+## Pricing Research Rules
+
+- Prefer **official provider/tool pages**; add 1+ corroborating sources only if they’re reputable.
+- Encode uncertainty explicitly: set `verified: false` and add an `availability_note` / `notes` field rather than guessing.
+- Separate primitives: **API token meters** vs **credits/pools** vs **subscriptions/quotas** (do not conflate them).
