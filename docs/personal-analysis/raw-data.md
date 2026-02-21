@@ -9,6 +9,7 @@ Raw / ledger-like exports already present under `data/private/`:
 - Cursor: monthly usage CSVs in `data/private/raw/cursor/` (2025-07 → 2026-02)
 - Devin: usage/session JSON exports in `data/private/raw/devin/`
 - Azure (Foundry/OpenAI spend): CSV in `data/private/raw/azure/azure-foundry-gpt-spend-ai-model-spend.csv`
+- Anthropic (direct API usage tokens; monthly CSV exports): `data/private/raw/anthropic/` (currently 2024-11, 2024-12, 2025-02 → 2025-08; missing 2025-01)
 - Qoder: small real-world credit charge samples in `data/private/observations/qoder-credit-samples.2026-02-21.md`
 - Personal working snapshot (not a raw export): `data/private/observations/jason-usage-notes.2026-02-21.md`
 
