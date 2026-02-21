@@ -40,7 +40,9 @@ This file is a quick index of the **official sources** used in the sweep and whe
 
 - Moonshot API pricing: `https://platform.moonshot.ai/docs/pricing/chat` (and CN mirror `https://platform.moonshot.cn/docs/pricing/chat`)
 - Kimi membership benefits: `https://www.kimi.com/user/agreement/zh/membershipBenefits`
+- Kimi membership pricing landing (SSR): `https://www.kimi.com/membership/landing`
 - Captured in: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-moonshot.md`
+  - Update note: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-moonshot-open-platform-kimi-k2.5.2026-02-21.md`
 
 ## Dev tools / wrappers
 
@@ -91,8 +93,10 @@ This file is a quick index of the **official sources** used in the sweep and whe
 ## Kimi Code
 
 - Kimi Code: `https://www.kimi.com/code`
-- Kimi Code docs (example): `https://www.kimi.com/code/docs/en/kimi-cli/guides/getting-started.html`
+- Kimi Code docs (overview): `https://www.kimi.com/coding/docs/en/`
+- Kimi Code docs (benefits + quota refresh): `https://www.kimi.com/coding/docs/en/benefits.html`
 - Captured in: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-kimi-code.md`
+  - Update note: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-kimi-code-update.2026-02-21.md`
 
 ## Cline
 

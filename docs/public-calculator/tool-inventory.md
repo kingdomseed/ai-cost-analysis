@@ -11,7 +11,7 @@ This file is the **checklist** for which tools/plans we want to model in the pub
 
 ## Tracked but incomplete (needs more official details)
 
-- Kimi Code: marketed as a separate developer product; pricing/model identity not yet verified in an accessible official source
+- Kimi Code: official docs confirm it’s a **membership perk** with a **7-day rolling quota refresh** and a `kimi-for-coding (powered by kimi-k2.5)` model label, but no public per-tier numeric quota table or token↔quota conversion
 - Cline Provider: credits exist, but credit-pack pricing / conversion rules not captured publicly
 
 ## Not yet researched (add here as you decide scope)

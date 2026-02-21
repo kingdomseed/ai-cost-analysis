@@ -33,27 +33,29 @@ Units: price per **1M tokens**.
 
 | Model | Context | Input (cache hit) / 1M | Input (cache miss) / 1M | Output / 1M |
 |---|---:|---:|---:|---:|
-| `kimi-k2.5` | 256k | $0.10 | $0.57 | $3.00 |
+| `kimi-k2.5` | 256k | $0.10 | $0.60 | $3.00 |
 
 Notes:
 - The platform describes some file extraction/storage features as temporarily free (implementation detail; do not assume permanent).
 - The cache hit/miss distinction is part of Moonshot’s automatic context caching billing.
+- Pricing docs state prices are per **1M tokens** and **inclusive of tax**.
 
-## Kimi app subscription plans — Adagio / Allegretto / Allegro
+## Kimi membership pricing (consumer subscription surface)
 
-The membership page describes plans with **monthly reset usage** (even for annual subscriptions).
-It also explicitly states membership **does not include Open Platform API token fees**.
+Kimi membership pricing is rendered on an official SSR page and should be treated as the source of truth for plan names/prices in this sweep.
 
-### Plan summary (CNY)
+### Plan summary (CNY, annual)
 
-| Plan | Price | Included “high-speed” usage | Concurrent tasks |
-|---|---:|---|---:|
-| Adagio (Free) | ¥0 | High-speed model 10 total; deep research 1 total; PPT assistant 1 total | 1 |
-| Allegretto | ¥39/mo or ¥399/yr | High-speed model (Agent) 300/month; deep research 20/month; PPT assistant 30/month | 2 |
-| Allegro | ¥89/mo or ¥899/yr | High-speed model (Agent) 2000/month; deep research 300/month; PPT assistant 200/month | 5 |
+| Plan | Price |
+|---|---:|
+| Andante | ¥468 / year |
+| Moderato | ¥948 / year |
+| Allegretto | ¥1,908 / year |
+
+Notes:
+- This page includes plan feature lists referencing Kimi Code, but does not provide a token↔quota conversion. For Kimi Code quota mechanics, see `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-kimi-code-update.2026-02-21.md`.
 
 ## Calculator implications
 
 - Moonshot/Kimi has a clearer “included usage” concept via **counts/month** (not tokens) for the consumer app subscriptions, and a separate token-meter for the API.
 - AWS Bedrock pricing for Kimi can differ materially from Moonshot’s direct API pricing; in the calculator, these should be separate providers with separate sources.
-

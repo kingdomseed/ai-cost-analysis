@@ -22,9 +22,9 @@ This sweep intentionally prefers official sources and labels anything uncertain.
    - Official pricing/docs were captured, but neither tool publishes a stable credits→tokens conversion table.
    - Next: represent credits as opaque in the dataset and (optionally) add user-overridable assumptions (effective $/credit, or credits-per-request) in the calculator UX.
 
-5) **Kimi Code pricing + model identity**
-   - Kimi Code is clearly marketed as a distinct developer product, but token-meter pricing and/or an official mapping to Open Platform API model IDs was not verified in this sweep.
-   - Next: find an official statement covering (a) which Kimi Code plans include it, and (b) whether it uses a dedicated “Kimi Code” model with distinct pricing.
+5) **Kimi Code: quota sizing (numeric)**
+   - Official docs confirm Kimi Code is a **membership benefit** with a **7-day rolling quota refresh**, but do not publish a stable token↔quota mapping (and the UI describes both a 7-day quota cycle and a “5-hour token quota” concept without fully defining the relationship).
+   - Next: capture an official quota table by membership tier (if published) and clarify how the 5-hour token quota relates to the 7-day cycle.
 
 ## Dataset TODOs
 

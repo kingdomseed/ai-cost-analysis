@@ -62,6 +62,30 @@
       "verified": true
     },
     {
+      "id": "kimi_membership_landing",
+      "url": "https://www.kimi.com/membership/landing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "kimi_code_docs_overview",
+      "url": "https://www.kimi.com/coding/docs/en/",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "kimi_code_docs_benefits",
+      "url": "https://www.kimi.com/coding/docs/en/benefits.html",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "kimi_code_landing",
+      "url": "https://www.kimi.com/code",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
       "id": "cursor_account_pricing_docs",
       "url": "https://cursor.com/docs/account/pricing",
       "retrieved_at": "2026-02-21",
@@ -621,10 +645,10 @@
       "unit": "usd_per_1m_tokens",
       "rates": {
         "input_cache_hit": 0.1,
-        "input_cache_miss": 0.57,
+        "input_cache_miss": 0.6,
         "output": 3.0
       },
-      "notes": "Moonshot bills input tokens at different rates depending on cache hit vs cache miss.",
+      "notes": "Moonshot bills input tokens at different rates depending on cache hit vs cache miss. The pricing doc states values are per 1M tokens and inclusive of tax.",
       "source_ids": ["moonshot_pricing_en"],
       "verified": true
     },
@@ -1298,11 +1322,28 @@
     {
       "provider": "moonshot",
       "product": "Kimi",
+      "plan_id": "kimi-andante",
+      "price_cny_per_year": 468,
+      "usage_limits": "Membership subscription with feature quotas (not token-metered). Includes Kimi Code as a membership perk with a 7-day rolling quota refresh (see Kimi Code docs).",
+      "source_ids": ["kimi_membership_landing", "kimi_code_docs_overview", "kimi_code_docs_benefits"],
+      "verified": true
+    },
+    {
+      "provider": "moonshot",
+      "product": "Kimi",
+      "plan_id": "kimi-moderato",
+      "price_cny_per_year": 948,
+      "usage_limits": "Membership subscription with feature quotas (not token-metered). Includes Kimi Code as a membership perk with a 7-day rolling quota refresh (see Kimi Code docs).",
+      "source_ids": ["kimi_membership_landing", "kimi_code_docs_overview", "kimi_code_docs_benefits"],
+      "verified": true
+    },
+    {
+      "provider": "moonshot",
+      "product": "Kimi",
       "plan_id": "kimi-allegretto",
-      "price_cny_per_month": 39,
-      "included_usage": "High-speed model (Agent): 300 uses/month; deep research: 20 uses/month; PPT assistant: 30 uses/month; monthly reset even for annual plans.",
-      "notes": "Membership benefits explicitly do not include Open Platform API token fees.",
-      "source_ids": ["kimi_membership_benefits"],
+      "price_cny_per_year": 1908,
+      "usage_limits": "Membership subscription with feature quotas (not token-metered). Includes Kimi Code as a membership perk with a 7-day rolling quota refresh (see Kimi Code docs).",
+      "source_ids": ["kimi_membership_landing", "kimi_code_docs_overview", "kimi_code_docs_benefits"],
       "verified": true
     },
     {
