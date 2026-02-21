@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "dataset": "pricing.sample",
+    "schema_version": "0.1",
+    "notes": "Starter dataset for schema + UI wiring. Values may be unverified. Do not treat as source-of-truth without checking sources.",
+    "created_at": "2026-02-21",
+    "default_currency": "USD"
+  },
+  "models": [],
+  "plans": [
+    {
+      "id": "cursor-pro",
+      "tool": "Cursor",
+      "plan_name": "Pro",
+      "pricing_type": "api_pool_usd",
+      "subscription_price_usd": 20,
+      "included_pool_usd": 20,
+      "overage_policy": "payg_after_pool",
+      "source": {
+        "type": "user_note",
+        "ref": "repo notes / prior drafts",
+        "retrieved_at": null,
+        "last_verified_at": null,
+        "verified": false
+      }
+    },
+    {
+      "id": "cursor-pro-plus",
+      "tool": "Cursor",
+      "plan_name": "Pro+",
+      "pricing_type": "api_pool_usd",
+      "subscription_price_usd": 60,
+      "included_pool_usd": 70,
+      "overage_policy": "payg_after_pool",
+      "source": {
+        "type": "user_note",
+        "ref": "repo notes / prior drafts",
+        "retrieved_at": null,
+        "last_verified_at": null,
+        "verified": false
+      }
+    },
+    {
+      "id": "cursor-ultra",
+      "tool": "Cursor",
+      "plan_name": "Ultra",
+      "pricing_type": "api_pool_usd",
+      "subscription_price_usd": 200,
+      "included_pool_usd": 400,
+      "overage_policy": "payg_after_pool",
+      "source": {
+        "type": "user_note",
+        "ref": "repo notes / prior drafts",
+        "retrieved_at": null,
+        "last_verified_at": null,
+        "verified": false
+      }
+    },
+    {
+      "id": "windsurf-pro",
+      "tool": "Windsurf",
+      "plan_name": "Pro",
+      "pricing_type": "credits",
+      "subscription_price_usd": null,
+      "included_credits": null,
+      "topups": [],
+      "credit_conversion": {
+        "kind": "unknown",
+        "notes": "Needs a sourced mapping (credits→USD or credits→tokens) and charging rule (per turn vs per tool call vs multipliers). Until then, UI should request a user assumption for $/credit or tokens/credit."
+      },
+      "source": {
+        "type": "tbd",
+        "ref": null,
+        "retrieved_at": null,
+        "last_verified_at": null,
+        "verified": false
+      }
+    },
+    {
+      "id": "warp-build",
+      "tool": "Warp",
+      "plan_name": "Build",
+      "pricing_type": "credits",
+      "subscription_price_usd": null,
+      "included_credits": null,
+      "topups": [],
+      "credit_conversion": {
+        "kind": "unknown",
+        "notes": "If Warp sells reload packs, we can compute implied $/credit from (pack_price/credits). Needs verification."
+      },
+      "source": {
+        "type": "tbd",
+        "ref": null,
+        "retrieved_at": null,
+        "last_verified_at": null,
+        "verified": false
+      }
+    },
+    {
+      "id": "verdent-pro",
+      "tool": "Verdent",
+      "plan_name": "Pro",
+      "pricing_type": "credits",
+      "subscription_price_usd": null,
+      "included_credits": null,
+      "topups": [],
+      "credit_conversion": {
+        "kind": "unknown",
+        "notes": "Needs a sourced mapping and/or model routing rules. Until then, treat as opaque credits."
+      },
+      "source": {
+        "type": "tbd",
+        "ref": null,
+        "retrieved_at": null,
+        "last_verified_at": null,
+        "verified": false
+      }
+    },
+    {
+      "id": "qoder-pro",
+      "tool": "Qoder",
+      "plan_name": "Pro",
+      "pricing_type": "credits",
+      "subscription_price_usd": null,
+      "included_credits": null,
+      "topups": [],
+      "credit_conversion": {
+        "kind": "unknown",
+        "notes": "If Qoder uses multipliers per model, represent that as a factor on credits-per-request. Needs verification."
+      },
+      "source": {
+        "type": "tbd",
+        "ref": null,
+        "retrieved_at": null,
+        "last_verified_at": null,
+        "verified": false
+      }
+    }
+  ]
+}

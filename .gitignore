@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Private (personal) data and drafts
+data/private/
+archive/private/
+
+# Common build artifacts (in case we add tooling later)
+node_modules/
+dist/
+build/
+.venv/
+venv/
+__pycache__/
+
