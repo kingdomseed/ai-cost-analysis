@@ -8,6 +8,9 @@ This repo is **API-first**: the calculator engine must always return **something
 
 The UI should be a thin renderer of this contract (no hidden math).
 
+Related:
+- `docs/public-calculator/calculation-methods.md`
+
 ## API surfaces
 
 ### 1) Dataset read API (snapshot retrieval)
