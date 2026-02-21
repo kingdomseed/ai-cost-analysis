@@ -5,6 +5,16 @@ This repo is organized around **two related but separate goals**:
 1) **Personal analysis (private):** understand *your* token usage + spend (yearly + monthly, by model and provider, and overall totals).
 2) **Public cost calculator:** an objective tool to compare token costs across models/providers and compare against flat-rate plans (e.g. “$200/month”) using structured math (no subjective recommendations).
 
+## Core Principles (Calculator)
+
+- **API-first**: define data contracts + validation gates before UI work.
+- **Always return something computable**: at minimum, return a **token-meter baseline** (API-equivalent) and any **known plan price floor**.
+- **Honesty over false precision**: every computed number must carry `method` (`direct|derived|assumed|heuristic`), `confidence` (`high|medium|low`), and short `confidence_reasons[]`.
+- **Evidence-bound outputs**: calculations reference snapshot `source_ids` so results can be traced back to official pages or documented captures.
+- **No guessing unit conversions**: credit/quota systems stay opaque unless we can derive from sourced pack prices or the user supplies assumptions.
+- **Region is first-class**: store and compare region variants side-by-side; never silently average CN vs US/global.
+- **Freshness matters**: pricing is time-variant; snapshots are dated and validated before use (`cd apps/public-calculator/site && npm run validate:datasets`).
+
 ## Repo Map
 
 - `apps/personal-analysis/` — the (future) private analysis app/scripts (design + entrypoints live here)

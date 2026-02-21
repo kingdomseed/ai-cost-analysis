@@ -1,6 +1,15 @@
 import type { EntitlementsSnapshotV01, PricingSnapshotV01 } from "./types";
 import type { WorkloadRequest } from "./workload";
 
+/**
+ * Calculator engine contract (API-first).
+ *
+ * Core principles:
+ * - Always return something computable (baseline token-meter API-equivalent + known plan price floor).
+ * - Never guess unit conversions (credits/quotas stay opaque unless sourced or user-assumed).
+ * - Every numeric output carries method + confidence + evidence references, so the UI is a renderer
+ *   of truth rather than a place where math is hidden.
+ */
 export type ConfidenceLevel = "high" | "medium" | "low";
 export type EstimateMethod = "direct" | "derived" | "assumed" | "heuristic";
 

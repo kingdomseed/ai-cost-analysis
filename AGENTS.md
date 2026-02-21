@@ -2,6 +2,14 @@
 
 This repo supports two deliverables: **(1) private personal usage/spend analysis** and **(2) a public cost calculator**. Keep boundaries between “public” and “private” data clear, and treat pricing as **time-sensitive (Feb 2026+)**.
 
+## Core Principles (Calculator)
+
+- **Always return something computable** (baseline API-equivalent + plan price floor) while clearly labeling uncertainty.
+- **Every number has provenance**: attach `source_id` evidence and record `retrieved_at` / `last_verified_at`.
+- **No silent guessing**: do not invent credit↔token conversions; allow explicit user assumptions or sourced derivations.
+- **Region-aware**: store region variants side-by-side; never collapse CN and US/global.
+- **API-first**: keep the math in pure functions/types (`packages/core/`) and treat the UI as a renderer.
+
 ## Project Structure & Module Organization
 
 - `apps/public-calculator/site/` — Next.js 16 app (App Router) for the public calculator.

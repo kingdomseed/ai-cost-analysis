@@ -3,6 +3,12 @@ export type WorkloadKind =
   | "credits_per_month"
   | "budget_per_month";
 
+/**
+ * Workload inputs are intentionally minimal and unit-safe.
+ *
+ * If a user provides only "total tokens", we can model it as input/output with a declared ratio
+ * (method: heuristic) but we should never silently assume conversions for credits/quota systems.
+ */
 export interface TokenWorkload {
   kind: "tokens_per_month";
   input_tokens: number;
@@ -29,4 +35,3 @@ export interface BudgetWorkload {
 }
 
 export type WorkloadRequest = TokenWorkload | CreditWorkload | BudgetWorkload;
-
