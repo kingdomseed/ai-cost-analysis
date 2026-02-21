@@ -1,6 +1,9 @@
 import type { EntitlementsSnapshotV01, PricingSnapshotV01 } from "./types";
 import type { WorkloadRequest } from "./workload";
 
+export type ConfidenceLevel = "high" | "medium" | "low";
+export type EstimateMethod = "direct" | "derived" | "assumed" | "heuristic";
+
 export interface CalculationAssumption {
   id: string;
   value: string | number | boolean | null;
@@ -12,17 +15,30 @@ export interface EvidenceRef {
   evidence_type?: string;
 }
 
+export interface MoneyEstimate {
+  currency: string;
+  point_usd: number;
+  low_usd?: number;
+  high_usd?: number;
+}
+
+export interface EvidencedMoneyEstimate extends MoneyEstimate {
+  method: EstimateMethod;
+  confidence: ConfidenceLevel;
+  confidence_reasons: string[];
+  evidence: EvidenceRef[];
+}
+
 export interface CostLineItem {
   kind: string;
   label: string;
-  amount_usd: number;
+  amount: EvidencedMoneyEstimate;
   notes?: string;
 }
 
 export interface ScenarioResult {
   scenario_id: string;
-  monthly_cost_estimate_usd: number | null;
-  currency: string;
+  monthly_cost_estimate: EvidencedMoneyEstimate;
   line_items: CostLineItem[];
   assumptions: CalculationAssumption[];
   evidence: EvidenceRef[];
@@ -34,6 +50,7 @@ export interface EngineInput {
   entitlements: EntitlementsSnapshotV01;
   workload: WorkloadRequest;
   target_region?: string;
+  evidence_policy?: "public_only" | "allow_private";
 }
 
 export interface EngineOutput {
@@ -49,4 +66,3 @@ export function calculate(_input: EngineInput): EngineOutput {
   // - subscriptions: opaque quotas (cost-only comparisons + entitlement surfacing)
   throw new Error("Not implemented: calculator engine");
 }
-

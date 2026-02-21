@@ -54,11 +54,13 @@ Given a subscription price and an API-equivalent token-meter cost for the same w
 ## Outputs (engine result)
 
 For each scenario, return:
-- `monthly_cost_estimate` (numeric if computable)
+- `monthly_cost_estimate` (always present as an estimate + confidence metadata)
 - `line_items[]` (subscription fee, overage, top-ups, token meter lines)
 - `assumptions[]` (ratio, cache hit rate, $/credit assumptions)
 - `evidence[]` (source IDs and evidence types)
 - `entitlements[]` (surfaces/features included for that plan + region)
+
+See also: `docs/public-calculator/api-contract.md` (required “unknown/opaque” rules).
 
 ## Evidence + region rules
 
