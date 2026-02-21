@@ -10,6 +10,7 @@
     "validate:datasets": "node scripts/validate-datasets.mjs"
   },
   "dependencies": {
+    "@ai-cost-analysis/core": "file:../../../packages/core",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"

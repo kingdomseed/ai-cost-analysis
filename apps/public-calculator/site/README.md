@@ -9,6 +9,7 @@ From `apps/public-calculator/site`:
 - Install: `npm install`
 - Run dev: `npm run dev`
 - Lint: `npm run lint`
+- Validate datasets: `npm run validate:datasets`
 
 ## Data inputs (versioned JSON)
 
@@ -19,6 +20,12 @@ This app reads public datasets from the sibling folder:
 
 Quick sanity view:
 - `http://localhost:3000/datasets`
+
+## API endpoints (current)
+
+- `GET /api/datasets/pricing` — latest pricing snapshot envelope
+- `GET /api/datasets/entitlements` — latest entitlements snapshot envelope
+- `POST /api/calculate` — baseline calculator (API-first; see `docs/public-calculator/api-contract.md`)
 
 ## AGENTS.md docs index (required)
 
@@ -33,4 +40,3 @@ npx @next/codemod@canary agents-md --output AGENTS.md
 Notes:
 - `.next-docs/` is generated.
 - The codemod injects a compressed docs index into this folder’s `AGENTS.md` (not the repo root).
-

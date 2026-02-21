@@ -28,6 +28,13 @@ Proposed endpoint (not implemented yet):
 
 Input is a workload + one or more scenarios to evaluate. Output is a list of scenario results.
 
+#### Current implementation (baseline-only)
+
+The first implementation supports three scenario kinds:
+- `token_meter` (API-equivalent baseline for a specific provider/channel/model)
+- `tool_plan_floor` (subscription fee floor for a tool plan, if a monthly price exists)
+- `subscription_floor` (subscription fee floor for a provider plan, if a monthly price exists)
+
 ## Core design rule: always return a computable baseline
 
 Even when a tool/plan is “opaque” (no published token quota) or “unknown” (no credit↔token mapping), the engine still returns:
@@ -102,4 +109,3 @@ The public calculator should default to **public evidence only**. Private analys
 - user-exported logs
 
 If/when we support that, it must be an explicit input flag (e.g., `evidence_policy: public_only | allow_private`), and the output must label when private evidence contributed to a number.
-
