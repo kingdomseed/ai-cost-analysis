@@ -38,10 +38,31 @@ export interface EvidencedMoneyEstimate extends MoneyEstimate {
   evidence: EvidenceRef[];
 }
 
+export interface NumberEstimate {
+  unit: string;
+  point: number;
+  low?: number;
+  high?: number;
+}
+
+export interface EvidencedNumberEstimate extends NumberEstimate {
+  method: EstimateMethod;
+  confidence: ConfidenceLevel;
+  confidence_reasons: string[];
+  evidence: EvidenceRef[];
+}
+
 export interface CostLineItem {
   kind: string;
   label: string;
   amount: EvidencedMoneyEstimate;
+  notes?: string;
+}
+
+export interface MetricLineItem {
+  kind: string;
+  label: string;
+  metric: EvidencedNumberEstimate;
   notes?: string;
 }
 
@@ -58,12 +79,34 @@ export type ScenarioRequest =
       kind: "tool_plan_floor";
       tool: string;
       plan_id: string;
+      /**
+       * Optional seat count for per-seat plans. If omitted and a plan is per-seat,
+       * the engine will assume 1 seat (method: heuristic).
+       */
+      seat_count?: number;
       scenario_id?: string;
     }
   | {
       kind: "subscription_floor";
       provider: string;
       plan_id: string;
+      scenario_id?: string;
+    }
+  | {
+      /**
+       * Given a budget workload, compute how many tokens could be purchased
+       * for a specific provider/channel/model at token-meter rates.
+       */
+      kind: "token_meter_budget_capacity";
+      provider: string;
+      channel: string;
+      model: string;
+      region?: string;
+      /**
+       * Ratio used when converting a "total tokens" capacity into input/output tokens.
+       * Default: "3:1" (heuristic) unless provided.
+       */
+      input_to_output_ratio?: string;
       scenario_id?: string;
     }
   | {
@@ -75,6 +118,7 @@ export type ScenarioRequest =
       kind: "tool_plan_api_pool_effective";
       tool: string;
       plan_id: string;
+      seat_count?: number;
       token_meter: {
         provider: string;
         channel: string;
@@ -105,12 +149,54 @@ export type ScenarioRequest =
       /** Optional override; if omitted, attempt to derive from official top-up pack pricing. */
       usd_per_credit?: number;
       scenario_id?: string;
+    }
+  | {
+      kind: "tool_plan_token_quota_effective";
+      tool: string;
+      plan_id: string;
+      seat_count?: number;
+      scenario_id?: string;
+    }
+  | {
+      kind: "tool_plan_compute_units_effective";
+      tool: string;
+      plan_id: string;
+      seat_count?: number;
+      scenario_id?: string;
+    }
+  | {
+      kind: "tool_plan_premium_requests_effective";
+      tool: string;
+      plan_id: string;
+      seat_count?: number;
+      scenario_id?: string;
+    }
+  | {
+      /**
+       * Break-even math for a subscription/tool plan versus a token-meter baseline.
+       * Always returns a computable USD break-even and (if token rates exist) a token estimate.
+       */
+      kind: "break_even_vs_token_meter";
+      subject:
+        | { kind: "subscription"; provider: string; plan_id: string }
+        | { kind: "tool_plan"; tool: string; plan_id: string; seat_count?: number };
+      token_meter: {
+        provider: string;
+        channel: string;
+        model: string;
+        region?: string;
+      };
+      input_to_output_ratio?: string;
+      /** Optional markup (e.g., Cursor Max mode). If omitted, defaults to 0 (heuristic). */
+      markup_multiplier?: number;
+      scenario_id?: string;
     };
 
 export interface ScenarioResult {
   scenario_id: string;
   monthly_cost_estimate: EvidencedMoneyEstimate;
   line_items: CostLineItem[];
+  metrics?: MetricLineItem[];
   assumptions: CalculationAssumption[];
   evidence: EvidenceRef[];
   warnings: string[];
@@ -188,6 +274,105 @@ function ensureFiniteNonNegative(n: number, label: string): number {
   return n;
 }
 
+function parseRatio(ratio: string): { input: number; output: number } | null {
+  const trimmed = ratio.trim();
+  const match = /^(\d+(?:\.\d+)?)\s*:\s*(\d+(?:\.\d+)?)$/.exec(trimmed);
+  if (!match) return null;
+  const input = Number(match[1]);
+  const output = Number(match[2]);
+  if (!Number.isFinite(input) || !Number.isFinite(output) || input <= 0 || output <= 0) return null;
+  return { input, output };
+}
+
+function normalizeTokenWorkload(
+  workload: WorkloadRequest,
+): { normalized: { input_tokens: number; output_tokens: number; cached_input_tokens: number }; assumptions: CalculationAssumption[]; warnings: string[] } | null {
+  if (workload.kind === "tokens_per_month") {
+    return {
+      normalized: {
+        input_tokens: ensureFiniteNonNegative(workload.input_tokens, "input_tokens"),
+        output_tokens: ensureFiniteNonNegative(workload.output_tokens, "output_tokens"),
+        cached_input_tokens: ensureFiniteNonNegative(workload.cached_input_tokens ?? 0, "cached_input_tokens"),
+      },
+      assumptions: [],
+      warnings: [],
+    };
+  }
+
+  if (workload.kind === "total_tokens_per_month") {
+    const totalTokens = ensureFiniteNonNegative(workload.total_tokens, "total_tokens");
+    const cached = ensureFiniteNonNegative(workload.cached_input_tokens ?? 0, "cached_input_tokens");
+
+    const ratioRaw = workload.assumptions?.input_to_output_ratio ?? "3:1";
+    const parsed = parseRatio(ratioRaw);
+    const ratio = parsed ?? { input: 3, output: 1 };
+    const ratioLabel = parsed ? ratioRaw : "3:1";
+    if (!parsed && ratioRaw !== "3:1") {
+      return {
+        normalized: {
+          input_tokens: (totalTokens * ratio.input) / (ratio.input + ratio.output),
+          output_tokens: (totalTokens * ratio.output) / (ratio.input + ratio.output),
+          cached_input_tokens: cached,
+        },
+        assumptions: [
+          {
+            id: "input_to_output_ratio",
+            value: ratioLabel,
+            notes: "Provided ratio was invalid; defaulted to 3:1 (heuristic).",
+          },
+        ],
+        warnings: ["Invalid input_to_output_ratio; defaulted to 3:1."],
+      };
+    }
+
+    return {
+      normalized: {
+        input_tokens: (totalTokens * ratio.input) / (ratio.input + ratio.output),
+        output_tokens: (totalTokens * ratio.output) / (ratio.input + ratio.output),
+        cached_input_tokens: cached,
+      },
+      assumptions: [
+        { id: "input_to_output_ratio", value: ratioLabel, notes: "Used to split total_tokens into input/output (heuristic unless user-specified)." },
+      ],
+      warnings: workload.assumptions?.input_to_output_ratio ? [] : ["No input_to_output_ratio provided; defaulted to 3:1 (heuristic)."],
+    };
+  }
+
+  return null;
+}
+
+function totalTokensFromWorkload(workload: WorkloadRequest): { total_tokens: number; warnings: string[]; assumptions: CalculationAssumption[] } | null {
+  const normalized = normalizeTokenWorkload(workload);
+  if (!normalized) return null;
+  return {
+    total_tokens: normalized.normalized.input_tokens + normalized.normalized.output_tokens + normalized.normalized.cached_input_tokens,
+    warnings: normalized.warnings,
+    assumptions: normalized.assumptions,
+  };
+}
+
+function deriveUsdPerCreditFromTopups(topup: unknown): { usd_per_credit: number; method: EstimateMethod; confidence: ConfidenceLevel; reasons: string[] } | null {
+  if (typeof topup !== "object" || topup === null) return null;
+  const t = topup as Record<string, unknown>;
+
+  if (typeof t.usd_per_credit === "number" && Number.isFinite(t.usd_per_credit) && t.usd_per_credit > 0) {
+    return { usd_per_credit: t.usd_per_credit, method: "direct", confidence: "medium", reasons: ["USD/credit provided directly in dataset."] };
+  }
+
+  const priceUsd = typeof t.price_usd === "number" ? t.price_usd : null;
+  const credits = typeof t.credits === "number" ? t.credits : null;
+  if (priceUsd != null && credits != null && Number.isFinite(priceUsd) && Number.isFinite(credits) && priceUsd > 0 && credits > 0) {
+    return { usd_per_credit: priceUsd / credits, method: "derived", confidence: "medium", reasons: ["Derived from pack price_usd and credits."] };
+  }
+
+  const pricePer50 = typeof t.price_usd_per_50_credits === "number" ? t.price_usd_per_50_credits : null;
+  if (pricePer50 != null && Number.isFinite(pricePer50) && pricePer50 > 0) {
+    return { usd_per_credit: pricePer50 / 50, method: "derived", confidence: "medium", reasons: ["Derived from price_usd_per_50_credits."] };
+  }
+
+  return null;
+}
+
 function tokenMeterCostFromRates(
   currency: string,
   unit: string,
@@ -198,20 +383,21 @@ function tokenMeterCostFromRates(
   confidence_reasons: string[],
   warnings: string[],
 ): ScenarioResult {
-  if (workload.kind !== "tokens_per_month") {
+  const normalized = normalizeTokenWorkload(workload);
+  if (!normalized) {
     return {
       scenario_id: "token_meter",
       monthly_cost_estimate: moneyZero(
         currency,
         "direct",
         "low",
-        ["Token-meter scenario requires tokens_per_month workload."],
+        ["Token-meter scenario requires a token workload (tokens_per_month or total_tokens_per_month)."],
         sourceIds.map((id) => ({ source_id: id })),
       ),
       line_items: [],
       assumptions: [],
       evidence: sourceIds.map((id) => ({ source_id: id })),
-      warnings: ["Token-meter scenario skipped: workload is not tokens_per_month."],
+      warnings: ["Token-meter scenario skipped: workload is not a token workload."],
     };
   }
 
@@ -221,9 +407,9 @@ function tokenMeterCostFromRates(
     confidence_reasons = [...confidence_reasons, `Unsupported unit '${unit}'`];
   }
 
-  const inputTokens = ensureFiniteNonNegative(workload.input_tokens, "input_tokens");
-  const outputTokens = ensureFiniteNonNegative(workload.output_tokens, "output_tokens");
-  const cachedInputTokens = ensureFiniteNonNegative(workload.cached_input_tokens ?? 0, "cached_input_tokens");
+  const inputTokens = ensureFiniteNonNegative(normalized.normalized.input_tokens, "input_tokens");
+  const outputTokens = ensureFiniteNonNegative(normalized.normalized.output_tokens, "output_tokens");
+  const cachedInputTokens = ensureFiniteNonNegative(normalized.normalized.cached_input_tokens, "cached_input_tokens");
 
   const inputRate =
     rates.input ??
@@ -240,6 +426,8 @@ function tokenMeterCostFromRates(
 
   const lineItems: CostLineItem[] = [];
   const parts: EvidencedMoneyEstimate[] = [];
+  const assumptions: CalculationAssumption[] = [...normalized.assumptions];
+  warnings.push(...normalized.warnings);
 
   if (inputRate == null || outputRate == null) {
     return {
@@ -252,7 +440,7 @@ function tokenMeterCostFromRates(
         evidence,
       ),
       line_items: [],
-      assumptions: [],
+      assumptions,
       evidence,
       warnings: [...warnings, "Cannot compute token-meter cost: missing input/output rates."],
     };
@@ -323,11 +511,42 @@ function tokenMeterCostFromRates(
     amount: parts[parts.length - 1]!,
   });
 
+  const totalTokens = inputTokens + outputTokens + cachedInputTokens;
+  const totalCost = parts.reduce((acc, p) => acc + p.point, 0);
+  const metrics: MetricLineItem[] = [];
+  metrics.push({
+    kind: "workload_total_tokens",
+    label: "Workload total tokens",
+    metric: {
+      unit: "tokens",
+      point: totalTokens,
+      method: "derived",
+      confidence: "high",
+      confidence_reasons: [],
+      evidence,
+    },
+  });
+  if (totalTokens > 0) {
+    metrics.push({
+      kind: "effective_usd_per_1m_tokens",
+      label: `Effective ${currency} per 1M tokens`,
+      metric: {
+        unit: `${currency}_per_1m_tokens`,
+        point: (totalCost / totalTokens) * 1_000_000,
+        method: "derived",
+        confidence,
+        confidence_reasons,
+        evidence,
+      },
+    });
+  }
+
   return {
     scenario_id: "token_meter",
     monthly_cost_estimate: sumMoney(currency, parts, "direct", confidence, confidence_reasons, evidence),
     line_items: lineItems,
-    assumptions: [],
+    metrics,
+    assumptions,
     evidence,
     warnings,
   };
@@ -423,12 +642,29 @@ export function calculate(input: EngineInput): EngineOutput {
       );
       const evidence = (plan?.source_ids ?? []).map((id) => ({ source_id: id }));
 
+      const warnings: string[] = [];
+      const assumptions: CalculationAssumption[] = [];
+
+      const seatCount =
+        scenario.seat_count ??
+        (plan?.subscription_price_usd_per_seat != null ? 1 : undefined);
+      if (plan?.subscription_price_usd_per_seat != null) {
+        if (scenario.seat_count == null) {
+          warnings.push("Per-seat pricing detected; assuming seat_count=1.");
+          assumptions.push({ id: "seat_count", value: 1, notes: "Assumed default for per-seat pricing." });
+        } else {
+          assumptions.push({ id: "seat_count", value: seatCount ?? 1, notes: "Provided by request." });
+        }
+      }
+
       const monthly =
         plan?.subscription_price_usd ??
-        null;
+        (plan?.subscription_price_usd_per_seat != null && seatCount != null
+          ? plan.subscription_price_usd_per_seat * seatCount
+          : null);
 
       if (!plan || monthly == null) {
-        const warnings: string[] = ["Tool plan price missing; cannot compute plan price floor."];
+        warnings.push("Tool plan price missing; cannot compute plan price floor.");
         const entitlements = selectEntitlements(slugifyProviderId(scenario.tool), scenario.plan_id, targetRegion, warnings);
         results.push({
           scenario_id: scenario.scenario_id ?? `${scenario.tool}:${scenario.plan_id}:tool_plan_floor`,
@@ -440,7 +676,7 @@ export function calculate(input: EngineInput): EngineOutput {
             evidence,
           ),
           line_items: [],
-          assumptions: [],
+          assumptions,
           evidence,
           warnings,
           entitlements,
@@ -457,17 +693,225 @@ export function calculate(input: EngineInput): EngineOutput {
         evidence,
       };
 
-      const warnings: string[] = plan.metering ? [`Metering: ${plan.metering}`] : [];
+      if (plan.metering) warnings.push(`Metering: ${plan.metering}`);
       const entitlements = selectEntitlements(slugifyProviderId(scenario.tool), scenario.plan_id, targetRegion, warnings);
 
       results.push({
         scenario_id: scenario.scenario_id ?? `${scenario.tool}:${scenario.plan_id}:tool_plan_floor`,
         monthly_cost_estimate: amount,
         line_items: [{ kind: "subscription_fee", label: "Subscription fee", amount }],
-        assumptions: [],
+        assumptions,
         evidence,
         warnings,
         entitlements,
+      });
+      continue;
+    }
+
+    if (scenario.kind === "token_meter_budget_capacity") {
+      const apiRate = findApiRate(input.pricing, scenario.provider, scenario.channel, scenario.model);
+      const evidence = (apiRate?.source_ids ?? []).map((id) => ({ source_id: id }));
+      const warnings: string[] = [];
+      const assumptions: CalculationAssumption[] = [];
+
+      if (!apiRate) {
+        warnings.push("Token-meter entry missing; cannot compute budget capacity.");
+        results.push({
+          scenario_id: scenario.scenario_id ?? `${scenario.provider}:${scenario.model}:budget_capacity`,
+          monthly_cost_estimate: moneyZero(
+            baseCurrency,
+            "direct",
+            "low",
+            ["No matching token-meter entry found in pricing snapshot."],
+            evidence,
+          ),
+          line_items: [],
+          metrics: [],
+          assumptions,
+          evidence,
+          warnings,
+          entitlements: [],
+        });
+        continue;
+      }
+
+      if (input.workload.kind !== "budget_per_month") {
+        warnings.push("token_meter_budget_capacity requires budget_per_month workload.");
+        results.push({
+          scenario_id: scenario.scenario_id ?? `${scenario.provider}:${scenario.model}:budget_capacity`,
+          monthly_cost_estimate: moneyZero(
+            baseCurrency,
+            "direct",
+            "low",
+            ["Budget capacity scenario requires budget_per_month workload."],
+            evidence,
+          ),
+          line_items: [],
+          metrics: [],
+          assumptions,
+          evidence,
+          warnings,
+          entitlements: [],
+        });
+        continue;
+      }
+
+      const budgetCurrency = input.workload.currency;
+      const budgetAmount = ensureFiniteNonNegative(input.workload.budget, "budget");
+
+      let budgetBase = budgetAmount;
+      if (budgetCurrency !== baseCurrency) {
+        const fx = input.fx;
+        const fxRate = fx?.meta?.base_currency === baseCurrency ? fx?.rates?.[budgetCurrency] : undefined;
+        if (typeof fxRate === "number" && Number.isFinite(fxRate) && fxRate > 0) {
+          // fxRate is base->currency, so currency->base is divide.
+          budgetBase = budgetAmount / fxRate;
+          assumptions.push({
+            id: "budget_fx_rate",
+            value: fxRate,
+            notes: `Converted budget from ${budgetCurrency} to ${baseCurrency} using FX effective_date=${fx?.meta?.effective_date}.`,
+          });
+        } else {
+          warnings.push(`No FX rate for budget currency ${budgetCurrency}; treating budget as ${baseCurrency} (heuristic).`);
+          assumptions.push({
+            id: "budget_currency_assumed",
+            value: baseCurrency,
+            notes: `Budget currency ${budgetCurrency} could not be converted; treated as ${baseCurrency}.`,
+          });
+        }
+      }
+
+      // Select a usable (input/output) rate set.
+      const pickedRates: Record<string, number> = {};
+      if (apiRate.regional_rates && apiRate.regional_rates.length > 0) {
+        const region = scenario.region ?? input.target_region;
+        const match = region
+          ? apiRate.regional_rates.find((rr) => rr.regions.includes(region))
+          : null;
+        const picked = match ?? apiRate.regional_rates[0];
+        if (!match) warnings.push("Regional token pricing exists but no matching region provided; using first regional rate set.");
+        if (typeof picked.input === "number") pickedRates.input = picked.input;
+        if (typeof picked.output === "number") pickedRates.output = picked.output;
+      } else if (apiRate.tiers && apiRate.tiers.length > 0) {
+        const standard = apiRate.tiers.find((t) => t.name === "standard") ?? apiRate.tiers[0]!;
+        warnings.push("Tiered token pricing exists; using 'standard' tier for budget capacity.");
+        Object.assign(pickedRates, standard.rates);
+      } else if (apiRate.rates) {
+        Object.assign(pickedRates, apiRate.rates);
+      }
+
+      const inputRate = pickedRates.input ?? pickedRates.input_cache_miss ?? pickedRates.input_uncached ?? null;
+      const outputRate = pickedRates.output ?? null;
+      if (inputRate == null || outputRate == null) {
+        warnings.push("Cannot compute budget capacity: missing input/output token rates.");
+        results.push({
+          scenario_id: scenario.scenario_id ?? `${scenario.provider}:${scenario.model}:budget_capacity`,
+          monthly_cost_estimate: {
+            currency: baseCurrency,
+            point: budgetBase,
+            method: "assumed",
+            confidence: "low",
+            confidence_reasons: ["Budget provided but token rates are incomplete."],
+            evidence,
+          },
+          line_items: [
+            {
+              kind: "budget_spend",
+              label: "Budget spend",
+              amount: {
+                currency: baseCurrency,
+                point: budgetBase,
+                method: budgetCurrency === baseCurrency ? "direct" : "derived",
+                confidence: budgetCurrency === baseCurrency ? "high" : "medium",
+                confidence_reasons: budgetCurrency === baseCurrency ? [] : ["Budget converted using FX when available."],
+                evidence,
+              },
+            },
+          ],
+          metrics: [],
+          assumptions,
+          evidence,
+          warnings,
+          entitlements: [],
+        });
+        continue;
+      }
+
+      const ratioRaw = scenario.input_to_output_ratio ?? "3:1";
+      const parsedRatio = parseRatio(ratioRaw);
+      const ratio = parsedRatio ?? { input: 3, output: 1 };
+      const ratioLabel = parsedRatio ? ratioRaw : "3:1";
+      if (!parsedRatio && ratioRaw !== "3:1") warnings.push("Invalid input_to_output_ratio; defaulted to 3:1.");
+      assumptions.push({
+        id: "input_to_output_ratio",
+        value: ratioLabel,
+        notes: "Used to compute budget-based token capacity.",
+      });
+
+      const weightInput = ratio.input / (ratio.input + ratio.output);
+      const weightOutput = ratio.output / (ratio.input + ratio.output);
+      const blendedUsdPer1M = inputRate * weightInput + outputRate * weightOutput;
+      const totalTokens = blendedUsdPer1M > 0 ? (budgetBase / blendedUsdPer1M) * 1_000_000 : 0;
+      const inputTokens = totalTokens * weightInput;
+      const outputTokens = totalTokens * weightOutput;
+
+      const budgetAmountEstimate: EvidencedMoneyEstimate = {
+        currency: baseCurrency,
+        point: budgetBase,
+        method: budgetCurrency === baseCurrency ? "direct" : "derived",
+        confidence: budgetCurrency === baseCurrency ? "high" : "medium",
+        confidence_reasons: budgetCurrency === baseCurrency ? [] : ["Budget converted using FX when available."],
+        evidence,
+      };
+
+      const metrics: MetricLineItem[] = [
+        {
+          kind: "capacity_total_tokens",
+          label: "Token capacity (total tokens)",
+          metric: {
+            unit: "tokens",
+            point: totalTokens,
+            method: "derived",
+            confidence: apiRate.verified ? "high" : "medium",
+            confidence_reasons: apiRate.verified ? [] : ["Token rates are not verified."],
+            evidence,
+          },
+        },
+        {
+          kind: "capacity_input_tokens",
+          label: "Token capacity (input tokens)",
+          metric: {
+            unit: "tokens",
+            point: inputTokens,
+            method: "derived",
+            confidence: apiRate.verified ? "high" : "medium",
+            confidence_reasons: apiRate.verified ? [] : ["Token rates are not verified."],
+            evidence,
+          },
+        },
+        {
+          kind: "capacity_output_tokens",
+          label: "Token capacity (output tokens)",
+          metric: {
+            unit: "tokens",
+            point: outputTokens,
+            method: "derived",
+            confidence: apiRate.verified ? "high" : "medium",
+            confidence_reasons: apiRate.verified ? [] : ["Token rates are not verified."],
+            evidence,
+          },
+        },
+      ];
+
+      results.push({
+        scenario_id: scenario.scenario_id ?? `${scenario.provider}:${scenario.model}:budget_capacity`,
+        monthly_cost_estimate: budgetAmountEstimate,
+        line_items: [{ kind: "budget_spend", label: "Budget spend", amount: budgetAmountEstimate }],
+        metrics,
+        assumptions,
+        evidence,
+        warnings,
+        entitlements: [],
       });
       continue;
     }
@@ -511,16 +955,16 @@ export function calculate(input: EngineInput): EngineOutput {
         if (typeof picked.input === "number") rates.input = picked.input;
         if (typeof picked.output === "number") rates.output = picked.output;
 
-      const result = tokenMeterCostFromRates(
-        baseCurrency,
-        apiRate.unit,
-        rates,
-        input.workload,
-        apiRate.source_ids,
-        confidence,
-        [...confidenceReasons, "Regional pricing selected from a table."],
-        warnings,
-      );
+        const result = tokenMeterCostFromRates(
+          baseCurrency,
+          apiRate.unit,
+          rates,
+          input.workload,
+          apiRate.source_ids,
+          confidence,
+          [...confidenceReasons, "Regional pricing selected from a table."],
+          warnings,
+        );
         results.push({
           ...result,
           scenario_id: scenario.scenario_id ?? `${scenario.provider}:${scenario.model}:token_meter`,
@@ -530,25 +974,9 @@ export function calculate(input: EngineInput): EngineOutput {
       }
 
       if (apiRate.tiers && apiRate.tiers.length > 0) {
-        if (input.workload.kind !== "tokens_per_month") {
-          results.push({
-            scenario_id: scenario.scenario_id ?? `${scenario.provider}:${scenario.model}:token_meter`,
-            monthly_cost_estimate: moneyZero(
-              baseCurrency,
-              "direct",
-              "low",
-              ["Tiered token-meter selection requires tokens_per_month workload."],
-              apiRate.source_ids.map((id) => ({ source_id: id })),
-            ),
-            line_items: [],
-            assumptions: [],
-            evidence: apiRate.source_ids.map((id) => ({ source_id: id })),
-            warnings: ["Cannot select tier: workload is not tokens_per_month."],
-          });
-          continue;
-        }
-
-        const inputTokens = input.workload.input_tokens;
+        const normalized = normalizeTokenWorkload(input.workload);
+        const inputTokens = normalized?.normalized.input_tokens ?? 0;
+        if (!normalized) warnings.push("Tiered token pricing exists but workload is not token-based; using default tier.");
         const standard = apiRate.tiers.find((t) => t.name === "standard");
         const longContext = apiRate.tiers.find((t) => t.name === "long_context");
         const threshold = 200_000;
@@ -619,12 +1047,6 @@ export function calculate(input: EngineInput): EngineOutput {
       );
       const planEvidence = (plan?.source_ids ?? []).map((id) => ({ source_id: id }));
 
-      const subscriptionFee =
-        plan?.subscription_price_usd ??
-        (plan?.subscription_price_usd_per_seat != null
-          ? plan.subscription_price_usd_per_seat
-          : 0);
-
       const warnings: string[] = [];
       const assumptions: CalculationAssumption[] = [];
 
@@ -632,10 +1054,23 @@ export function calculate(input: EngineInput): EngineOutput {
         warnings.push("Tool plan not found; returning baseline token-meter only.");
       }
 
-      if (plan?.subscription_price_usd == null && plan?.subscription_price_usd_per_seat != null) {
-        warnings.push("Per-seat subscription price found; assuming seat_count=1.");
-        assumptions.push({ id: "seat_count", value: 1, notes: "Assumed because no seat_count provided." });
+      const seatCount =
+        scenario.seat_count ??
+        (plan?.subscription_price_usd_per_seat != null ? 1 : undefined);
+      if (plan?.subscription_price_usd_per_seat != null) {
+        if (scenario.seat_count == null) {
+          warnings.push("Per-seat subscription price found; assuming seat_count=1.");
+          assumptions.push({ id: "seat_count", value: 1, notes: "Assumed default for per-seat pricing." });
+        } else {
+          assumptions.push({ id: "seat_count", value: seatCount ?? 1, notes: "Provided by request." });
+        }
       }
+
+      const subscriptionFee =
+        plan?.subscription_price_usd ??
+        (plan?.subscription_price_usd_per_seat != null && seatCount != null
+          ? plan.subscription_price_usd_per_seat * seatCount
+          : 0);
 
       const poolUsd = plan?.included_pool_usd ?? 0;
       if (plan?.included_pool_usd == null) {
@@ -795,15 +1230,13 @@ export function calculate(input: EngineInput): EngineOutput {
         usdPerCreditReasons.push("USD/credit provided as an assumption.");
         assumptions.push({ id: "usd_per_credit", value: usdPerCredit, notes: "Provided by request." });
       } else {
-        const topup = plan?.topups_pricing as any;
-        const priceUsd = topup?.price_usd;
-        const packCredits = topup?.credits;
-        if (typeof priceUsd === "number" && typeof packCredits === "number" && packCredits > 0) {
-          usdPerCredit = priceUsd / packCredits;
-          usdPerCreditMethod = "derived";
-          usdPerCreditConfidence = plan?.verified ? "medium" : "low";
-          usdPerCreditReasons.push("Derived from pack price and credit count.");
-          assumptions.push({ id: "usd_per_credit", value: usdPerCredit, notes: "Derived from top-up pack pricing." });
+        const derived = deriveUsdPerCreditFromTopups(plan?.topups_pricing);
+        if (derived) {
+          usdPerCredit = derived.usd_per_credit;
+          usdPerCreditMethod = derived.method;
+          usdPerCreditConfidence = plan?.verified ? derived.confidence : "low";
+          usdPerCreditReasons.push(...derived.reasons);
+          assumptions.push({ id: "usd_per_credit", value: usdPerCredit, notes: "Derived from tool plan top-ups pricing." });
         } else {
           warnings.push("No USD/credit provided and no top-up pack pricing available; cannot price credit usage.");
           usdPerCreditReasons.push("No sourced credit pack price was found.");
@@ -854,6 +1287,38 @@ export function calculate(input: EngineInput): EngineOutput {
         evidence: planEvidence,
       };
 
+      const metrics: MetricLineItem[] = [];
+      const includedCredits = (plan as any)?.included_credits_per_month;
+      if (typeof includedCredits === "number" && Number.isFinite(includedCredits) && includedCredits > 0) {
+        metrics.push({
+          kind: "included_credits_per_month",
+          label: "Included credits per month",
+          metric: {
+            unit: "credits",
+            point: includedCredits,
+            method: "direct",
+            confidence: plan?.verified ? "high" : "medium",
+            confidence_reasons: plan?.verified ? [] : ["Included credits are not verified."],
+            evidence: planEvidence,
+          },
+        });
+        if (usdPerCredit != null) {
+          metrics.push({
+            kind: "included_credits_value_usd",
+            label: "Implied value of included credits (USD)",
+            metric: {
+              unit: "USD",
+              point: includedCredits * usdPerCredit,
+              method: usdPerCreditMethod,
+              confidence: usdPerCreditConfidence,
+              confidence_reasons: usdPerCreditReasons,
+              evidence: planEvidence,
+            },
+            notes: "Not token-equivalent; valued using USD/credit best-effort.",
+          });
+        }
+      }
+
       const entitlements = selectEntitlements(
         slugifyProviderId(scenario.tool),
         scenario.plan_id,
@@ -868,10 +1333,563 @@ export function calculate(input: EngineInput): EngineOutput {
           { kind: "subscription_fee", label: "Subscription fee", amount: subscriptionAmount },
           { kind: "credits_spend", label: "Credits spend (best-effort)", amount: creditsAmount },
         ],
+        metrics: metrics.length > 0 ? metrics : undefined,
         assumptions,
         evidence: planEvidence,
         warnings,
         entitlements,
+      });
+      continue;
+    }
+
+    if (scenario.kind === "tool_plan_token_quota_effective") {
+      const plan = input.pricing.tool_plans.find(
+        (p) => p.tool === scenario.tool && p.plan_id === scenario.plan_id,
+      );
+      const evidence = (plan?.source_ids ?? []).map((id) => ({ source_id: id }));
+      const warnings: string[] = [];
+      const assumptions: CalculationAssumption[] = [];
+
+      const seatCount =
+        scenario.seat_count ??
+        (plan?.subscription_price_usd_per_seat != null ? 1 : undefined);
+      if (plan?.subscription_price_usd_per_seat != null) {
+        if (scenario.seat_count == null) {
+          warnings.push("Per-seat pricing detected; assuming seat_count=1.");
+          assumptions.push({ id: "seat_count", value: 1, notes: "Assumed default for per-seat pricing." });
+        } else {
+          assumptions.push({ id: "seat_count", value: seatCount ?? 1, notes: "Provided by request." });
+        }
+      }
+
+      const subscriptionFee =
+        plan?.subscription_price_usd ??
+        (plan?.subscription_price_usd_per_seat != null && seatCount != null
+          ? plan.subscription_price_usd_per_seat * seatCount
+          : 0);
+
+      if (!plan) warnings.push("Tool plan not found; returning $0 with warnings.");
+
+      if (plan && plan.pricing_type !== "token_quota" && plan.pricing_type !== "seat_subscription_with_token_quota") {
+        warnings.push(`tool_plan_token_quota_effective used with pricing_type=${plan.pricing_type}; treating as best-effort.`);
+      }
+
+      const amount: EvidencedMoneyEstimate = {
+        currency: baseCurrency,
+        point: subscriptionFee,
+        method: plan?.subscription_price_usd != null || plan?.subscription_price_usd_per_seat != null ? "direct" : "heuristic",
+        confidence: plan?.verified ? "high" : "medium",
+        confidence_reasons: plan?.verified ? [] : ["Tool plan price is not verified."],
+        evidence,
+      };
+
+      const metrics: MetricLineItem[] = [];
+      const includedTokens = (plan as any)?.included_tokens_per_month;
+      if (typeof includedTokens === "number" && Number.isFinite(includedTokens) && includedTokens > 0) {
+        metrics.push({
+          kind: "included_tokens_per_month",
+          label: "Included tokens per month",
+          metric: {
+            unit: "tokens",
+            point: includedTokens,
+            method: "direct",
+            confidence: plan?.verified ? "high" : "medium",
+            confidence_reasons: plan?.verified ? [] : ["Included token quota is not verified."],
+            evidence,
+          },
+        });
+      } else {
+        warnings.push("No included_tokens_per_month found; cannot compute quota coverage.");
+      }
+
+      const totals = totalTokensFromWorkload(input.workload);
+      if (totals) {
+        assumptions.push(...totals.assumptions);
+        warnings.push(...totals.warnings);
+        metrics.push({
+          kind: "workload_total_tokens_per_month",
+          label: "Workload total tokens per month",
+          metric: {
+            unit: "tokens",
+            point: totals.total_tokens,
+            method: "derived",
+            confidence: "medium",
+            confidence_reasons: ["Derived from token workload fields."],
+            evidence,
+          },
+        });
+        if (typeof includedTokens === "number" && includedTokens > 0) {
+          const pct = (totals.total_tokens / includedTokens) * 100;
+          metrics.push({
+            kind: "quota_percent_used",
+            label: "Quota used (% of included)",
+            metric: {
+              unit: "percent",
+              point: pct,
+              method: "derived",
+              confidence: "medium",
+              confidence_reasons: [],
+              evidence,
+            },
+          });
+          if (totals.total_tokens > includedTokens) {
+            warnings.push("Workload exceeds the included token quota; overage pricing/policy may apply.");
+          }
+        }
+      } else {
+        warnings.push("Quota coverage requires a token workload (tokens_per_month or total_tokens_per_month).");
+      }
+
+      const entitlements = selectEntitlements(
+        slugifyProviderId(scenario.tool),
+        scenario.plan_id,
+        targetRegion,
+        warnings,
+      );
+
+      results.push({
+        scenario_id: scenario.scenario_id ?? `${scenario.tool}:${scenario.plan_id}:token_quota_effective`,
+        monthly_cost_estimate: amount,
+        line_items: [{ kind: "subscription_fee", label: "Subscription fee", amount }],
+        metrics: metrics.length > 0 ? metrics : undefined,
+        assumptions,
+        evidence,
+        warnings,
+        entitlements,
+      });
+      continue;
+    }
+
+    if (scenario.kind === "tool_plan_compute_units_effective") {
+      const plan = input.pricing.tool_plans.find(
+        (p) => p.tool === scenario.tool && p.plan_id === scenario.plan_id,
+      );
+      const evidence = (plan?.source_ids ?? []).map((id) => ({ source_id: id }));
+      const warnings: string[] = [];
+      const assumptions: CalculationAssumption[] = [];
+
+      const seatCount =
+        scenario.seat_count ??
+        (plan?.subscription_price_usd_per_seat != null ? 1 : undefined);
+      if (plan?.subscription_price_usd_per_seat != null) {
+        if (scenario.seat_count == null) {
+          warnings.push("Per-seat pricing detected; assuming seat_count=1.");
+          assumptions.push({ id: "seat_count", value: 1, notes: "Assumed default for per-seat pricing." });
+        } else {
+          assumptions.push({ id: "seat_count", value: seatCount ?? 1, notes: "Provided by request." });
+        }
+      }
+
+      const subscriptionFee =
+        plan?.subscription_price_usd ??
+        (plan?.subscription_price_usd_per_seat != null && seatCount != null
+          ? plan.subscription_price_usd_per_seat * seatCount
+          : 0);
+
+      const unitName = (plan as any)?.unit_name;
+      const unitPriceUsd = (plan as any)?.unit_price_usd;
+      const includedUnits = (plan as any)?.included_units_per_month;
+
+      const amountFloor: EvidencedMoneyEstimate = {
+        currency: baseCurrency,
+        point: subscriptionFee,
+        method: plan?.subscription_price_usd != null || plan?.subscription_price_usd_per_seat != null ? "direct" : "heuristic",
+        confidence: plan?.verified ? "high" : "medium",
+        confidence_reasons: plan?.verified ? [] : ["Tool plan price is not verified."],
+        evidence,
+      };
+
+      const metrics: MetricLineItem[] = [];
+      if (typeof unitName === "string") assumptions.push({ id: "unit_name", value: unitName, notes: "Plan billing unit name." });
+
+      if (input.workload.kind !== "usage_units_per_month") {
+        warnings.push("tool_plan_compute_units_effective requires usage_units_per_month workload.");
+        const entitlements = selectEntitlements(slugifyProviderId(scenario.tool), scenario.plan_id, targetRegion, warnings);
+        results.push({
+          scenario_id: scenario.scenario_id ?? `${scenario.tool}:${scenario.plan_id}:compute_units_effective`,
+          monthly_cost_estimate: amountFloor,
+          line_items: [{ kind: "subscription_fee", label: "Subscription fee", amount: amountFloor }],
+          metrics: metrics.length > 0 ? metrics : undefined,
+          assumptions,
+          evidence,
+          warnings,
+          entitlements,
+        });
+        continue;
+      }
+
+      const units = ensureFiniteNonNegative(input.workload.units, "units");
+      const workloadUnitName = input.workload.unit_name;
+      if (typeof unitName === "string" && workloadUnitName !== unitName) {
+        warnings.push(`Workload unit_name='${workloadUnitName}' does not match plan unit_name='${unitName}'.`);
+      }
+
+      const included = typeof includedUnits === "number" && Number.isFinite(includedUnits) && includedUnits > 0 ? includedUnits : 0;
+      if (typeof includedUnits === "number") {
+        metrics.push({
+          kind: "included_units_per_month",
+          label: "Included units per month",
+          metric: {
+            unit: unitName ?? "units",
+            point: includedUnits,
+            method: "direct",
+            confidence: plan?.verified ? "high" : "medium",
+            confidence_reasons: plan?.verified ? [] : ["Included units are not verified."],
+            evidence,
+          },
+        });
+      }
+
+      if (typeof unitPriceUsd !== "number" || !Number.isFinite(unitPriceUsd) || unitPriceUsd <= 0) {
+        warnings.push("No unit_price_usd found; returning subscription floor only.");
+        const entitlements = selectEntitlements(slugifyProviderId(scenario.tool), scenario.plan_id, targetRegion, warnings);
+        results.push({
+          scenario_id: scenario.scenario_id ?? `${scenario.tool}:${scenario.plan_id}:compute_units_effective`,
+          monthly_cost_estimate: amountFloor,
+          line_items: [{ kind: "subscription_fee", label: "Subscription fee", amount: amountFloor }],
+          metrics: metrics.length > 0 ? metrics : undefined,
+          assumptions,
+          evidence,
+          warnings,
+          entitlements,
+        });
+        continue;
+      }
+
+      const billableUnits = Math.max(0, units - included);
+      assumptions.push({ id: "billable_units", value: billableUnits, notes: "Computed as max(0, units - included_units_per_month)." });
+
+      const usageCost = billableUnits * unitPriceUsd;
+      const usageAmount: EvidencedMoneyEstimate = {
+        currency: baseCurrency,
+        point: usageCost,
+        method: "derived",
+        confidence: plan?.verified ? "medium" : "low",
+        confidence_reasons: plan?.verified ? [] : ["Unit price is not verified."],
+        evidence,
+      };
+
+      const totalAmount: EvidencedMoneyEstimate = {
+        currency: baseCurrency,
+        point: subscriptionFee + usageCost,
+        method: "derived",
+        confidence: plan?.verified ? "medium" : "low",
+        confidence_reasons: plan?.verified ? [] : ["Includes derived unit usage cost."],
+        evidence,
+      };
+
+      const entitlements = selectEntitlements(slugifyProviderId(scenario.tool), scenario.plan_id, targetRegion, warnings);
+      results.push({
+        scenario_id: scenario.scenario_id ?? `${scenario.tool}:${scenario.plan_id}:compute_units_effective`,
+        monthly_cost_estimate: totalAmount,
+        line_items: [
+          { kind: "subscription_fee", label: "Subscription fee", amount: amountFloor },
+          { kind: "usage_overage", label: `Usage overage (${billableUnits} ${unitName ?? "units"})`, amount: usageAmount },
+        ],
+        metrics: metrics.length > 0 ? metrics : undefined,
+        assumptions,
+        evidence,
+        warnings,
+        entitlements,
+      });
+      continue;
+    }
+
+    if (scenario.kind === "tool_plan_premium_requests_effective") {
+      const plan = input.pricing.tool_plans.find(
+        (p) => p.tool === scenario.tool && p.plan_id === scenario.plan_id,
+      );
+      const evidence = (plan?.source_ids ?? []).map((id) => ({ source_id: id }));
+      const warnings: string[] = [];
+      const assumptions: CalculationAssumption[] = [];
+
+      const seatCount =
+        scenario.seat_count ??
+        (plan?.subscription_price_usd_per_seat != null ? 1 : undefined);
+      if (plan?.subscription_price_usd_per_seat != null) {
+        if (scenario.seat_count == null) {
+          warnings.push("Per-seat pricing detected; assuming seat_count=1.");
+          assumptions.push({ id: "seat_count", value: 1, notes: "Assumed default for per-seat pricing." });
+        } else {
+          assumptions.push({ id: "seat_count", value: seatCount ?? 1, notes: "Provided by request." });
+        }
+      }
+
+      const subscriptionFee =
+        plan?.subscription_price_usd ??
+        (plan?.subscription_price_usd_per_seat != null && seatCount != null
+          ? plan.subscription_price_usd_per_seat * seatCount
+          : 0);
+
+      const floor: EvidencedMoneyEstimate = {
+        currency: baseCurrency,
+        point: subscriptionFee,
+        method: plan?.subscription_price_usd != null || plan?.subscription_price_usd_per_seat != null ? "direct" : "heuristic",
+        confidence: plan?.verified ? "high" : "medium",
+        confidence_reasons: plan?.verified ? [] : ["Tool plan price is not verified."],
+        evidence,
+      };
+
+      if (input.workload.kind !== "premium_requests_per_month") {
+        warnings.push("tool_plan_premium_requests_effective requires premium_requests_per_month workload.");
+        const entitlements = selectEntitlements(slugifyProviderId(scenario.tool), scenario.plan_id, targetRegion, warnings);
+        results.push({
+          scenario_id: scenario.scenario_id ?? `${scenario.tool}:${scenario.plan_id}:premium_requests_effective`,
+          monthly_cost_estimate: floor,
+          line_items: [{ kind: "subscription_fee", label: "Subscription fee", amount: floor }],
+          assumptions,
+          evidence,
+          warnings,
+          entitlements,
+        });
+        continue;
+      }
+
+      const included =
+        (plan as any)?.included_premium_requests_per_month ??
+        (plan as any)?.included_requests_per_month;
+      const unitPriceUsd =
+        (plan as any)?.overage_usd_per_premium_request ??
+        (plan as any)?.unit_price_usd;
+      const requests = ensureFiniteNonNegative(input.workload.requests, "requests");
+
+      if (typeof included !== "number" || !Number.isFinite(included) || included < 0) {
+        warnings.push("No included_premium_requests_per_month found; returning subscription floor only.");
+        const entitlements = selectEntitlements(slugifyProviderId(scenario.tool), scenario.plan_id, targetRegion, warnings);
+        results.push({
+          scenario_id: scenario.scenario_id ?? `${scenario.tool}:${scenario.plan_id}:premium_requests_effective`,
+          monthly_cost_estimate: floor,
+          line_items: [{ kind: "subscription_fee", label: "Subscription fee", amount: floor }],
+          assumptions,
+          evidence,
+          warnings,
+          entitlements,
+        });
+        continue;
+      }
+
+      if (typeof unitPriceUsd !== "number" || !Number.isFinite(unitPriceUsd) || unitPriceUsd <= 0) {
+        warnings.push("No overage_usd_per_premium_request found; returning subscription floor only.");
+        const entitlements = selectEntitlements(slugifyProviderId(scenario.tool), scenario.plan_id, targetRegion, warnings);
+        results.push({
+          scenario_id: scenario.scenario_id ?? `${scenario.tool}:${scenario.plan_id}:premium_requests_effective`,
+          monthly_cost_estimate: floor,
+          line_items: [{ kind: "subscription_fee", label: "Subscription fee", amount: floor }],
+          assumptions,
+          evidence,
+          warnings,
+          entitlements,
+        });
+        continue;
+      }
+
+      const billable = Math.max(0, requests - included);
+      assumptions.push({ id: "billable_requests", value: billable, notes: "Computed as max(0, requests - included_requests_per_month)." });
+
+      const overageCost = billable * unitPriceUsd;
+      const overageAmount: EvidencedMoneyEstimate = {
+        currency: baseCurrency,
+        point: overageCost,
+        method: "derived",
+        confidence: plan?.verified ? "medium" : "low",
+        confidence_reasons: plan?.verified ? [] : ["Request price is not verified."],
+        evidence,
+      };
+
+      const totalAmount: EvidencedMoneyEstimate = {
+        currency: baseCurrency,
+        point: subscriptionFee + overageCost,
+        method: "derived",
+        confidence: plan?.verified ? "medium" : "low",
+        confidence_reasons: plan?.verified ? [] : ["Includes derived premium request overage cost."],
+        evidence,
+      };
+
+      const entitlements = selectEntitlements(slugifyProviderId(scenario.tool), scenario.plan_id, targetRegion, warnings);
+      results.push({
+        scenario_id: scenario.scenario_id ?? `${scenario.tool}:${scenario.plan_id}:premium_requests_effective`,
+        monthly_cost_estimate: totalAmount,
+        line_items: [
+          { kind: "subscription_fee", label: "Subscription fee", amount: floor },
+          { kind: "premium_request_overage", label: `Premium request overage (${billable})`, amount: overageAmount },
+        ],
+        assumptions,
+        evidence,
+        warnings,
+        entitlements,
+      });
+      continue;
+    }
+
+    if (scenario.kind === "break_even_vs_token_meter") {
+      const tokenRate = findApiRate(
+        input.pricing,
+        scenario.token_meter.provider,
+        scenario.token_meter.channel,
+        scenario.token_meter.model,
+      );
+      const tokenEvidence = (tokenRate?.source_ids ?? []).map((id) => ({ source_id: id }));
+      const warnings: string[] = [];
+      const assumptions: CalculationAssumption[] = [];
+
+      // Determine subject fee.
+      let subjectLabel = "";
+      let subjectFee = 0;
+      let subjectVerified = false;
+      let subjectEvidence: EvidenceRef[] = [];
+
+      const subject = scenario.subject;
+      if (subject.kind === "subscription") {
+        subjectLabel = `${subject.provider}:${subject.plan_id}`;
+        const sub = input.pricing.subscriptions.find(
+          (s) => s.provider === subject.provider && s.plan_id === subject.plan_id,
+        );
+        subjectFee = sub?.price_usd_per_month ?? 0;
+        subjectVerified = !!sub?.verified;
+        subjectEvidence = (sub?.source_ids ?? []).map((id) => ({ source_id: id }));
+        if (!sub || sub.price_usd_per_month == null) warnings.push("Subscription price missing; break-even USD is not computable beyond $0.");
+      } else {
+        subjectLabel = `${subject.tool}:${subject.plan_id}`;
+        const plan = input.pricing.tool_plans.find(
+          (p) => p.tool === subject.tool && p.plan_id === subject.plan_id,
+        );
+        const seatCount =
+          subject.seat_count ??
+          (plan?.subscription_price_usd_per_seat != null ? 1 : undefined);
+        if (plan?.subscription_price_usd_per_seat != null && subject.seat_count == null) {
+          warnings.push("Per-seat pricing detected; assuming seat_count=1 for break-even.");
+          assumptions.push({ id: "seat_count", value: 1, notes: "Assumed default for per-seat pricing." });
+        }
+        subjectFee =
+          plan?.subscription_price_usd ??
+          (plan?.subscription_price_usd_per_seat != null && seatCount != null
+            ? plan.subscription_price_usd_per_seat * seatCount
+            : 0);
+        subjectVerified = !!plan?.verified;
+        subjectEvidence = (plan?.source_ids ?? []).map((id) => ({ source_id: id }));
+        if (!plan) warnings.push("Tool plan not found; break-even USD is not computable beyond $0.");
+      }
+
+      const ratioRaw = scenario.input_to_output_ratio ?? "3:1";
+      const parsed = parseRatio(ratioRaw);
+      const ratio = parsed ?? { input: 3, output: 1 };
+      const ratioLabel = parsed ? ratioRaw : "3:1";
+      if (!parsed && ratioRaw !== "3:1") warnings.push("Invalid input_to_output_ratio; defaulted to 3:1.");
+      assumptions.push({ id: "input_to_output_ratio", value: ratioLabel, notes: "Used for break-even token conversion." });
+
+      const markup = scenario.markup_multiplier ?? 0;
+      if (scenario.markup_multiplier == null) {
+        assumptions.push({ id: "markup_multiplier", value: 0, notes: "Assumed default." });
+      } else {
+        assumptions.push({ id: "markup_multiplier", value: markup, notes: "Provided by request." });
+      }
+
+      const evidence = [...subjectEvidence, ...tokenEvidence];
+
+      // Break-even USD per month is just the fee floor.
+      const breakEvenUsd: EvidencedMoneyEstimate = {
+        currency: baseCurrency,
+        point: subjectFee,
+        method: "derived",
+        confidence: subjectVerified ? "high" : "medium",
+        confidence_reasons: subjectVerified ? [] : ["Subject price is not verified."],
+        evidence,
+      };
+
+      const lineItems: CostLineItem[] = [
+        { kind: "plan_fee_floor", label: "Plan fee floor", amount: breakEvenUsd },
+      ];
+
+      const metrics: MetricLineItem[] = [];
+
+      // If token rates exist, convert break-even USD -> tokens using a ratio.
+      const pickedRates: Record<string, number> = {};
+      if (tokenRate?.regional_rates && tokenRate.regional_rates.length > 0) {
+        const region = scenario.token_meter.region ?? input.target_region;
+        const match = region
+          ? tokenRate.regional_rates.find((rr) => rr.regions.includes(region))
+          : null;
+        const picked = match ?? tokenRate.regional_rates[0];
+        if (!match) warnings.push("Regional token pricing exists but no matching region provided; using first regional rate set for break-even.");
+        if (typeof picked.input === "number") pickedRates.input = picked.input;
+        if (typeof picked.output === "number") pickedRates.output = picked.output;
+      } else if (tokenRate?.tiers && tokenRate.tiers.length > 0) {
+        const standard = tokenRate.tiers.find((t) => t.name === "standard") ?? tokenRate.tiers[0]!;
+        warnings.push("Tiered token pricing exists; using 'standard' tier for break-even token conversion.");
+        Object.assign(pickedRates, standard.rates);
+      } else if (tokenRate?.rates) {
+        Object.assign(pickedRates, tokenRate.rates);
+      }
+
+      const inputRate = pickedRates.input ?? pickedRates.input_cache_miss ?? pickedRates.input_uncached ?? null;
+      const outputRate = pickedRates.output ?? null;
+      if (inputRate != null && outputRate != null && subjectFee > 0) {
+        const weightInput = ratio.input / (ratio.input + ratio.output);
+        const weightOutput = ratio.output / (ratio.input + ratio.output);
+        const blendedUsdPer1M = inputRate * weightInput + outputRate * weightOutput;
+        const breakEvenTotalTokens = blendedUsdPer1M > 0 ? (subjectFee / blendedUsdPer1M) * 1_000_000 : 0;
+        metrics.push({
+          kind: "break_even_total_tokens_per_month",
+          label: "Break-even token usage (total tokens/month)",
+          metric: {
+            unit: "tokens",
+            point: breakEvenTotalTokens,
+            method: "derived",
+            confidence: tokenRate?.verified ? "high" : "medium",
+            confidence_reasons: tokenRate?.verified ? [] : ["Token rates are not verified."],
+            evidence,
+          },
+          notes: "Assumes a fixed input:output ratio; ignores caching.",
+        });
+      } else {
+        warnings.push("Cannot compute break-even tokens: missing token rates or subject fee.");
+      }
+
+      // Pool plans + markup: add best-effort notes about where the plan may stop being favorable.
+      if (subject.kind === "tool_plan") {
+        const plan = input.pricing.tool_plans.find(
+          (p) => p.tool === subject.tool && p.plan_id === subject.plan_id,
+        );
+        const poolUsd = plan?.included_pool_usd;
+        if ((plan?.pricing_type === "api_pool_usd" || plan?.pricing_type === "usd_credits_pool") && typeof poolUsd === "number") {
+          if (markup > 0) {
+            if (poolUsd > subjectFee) {
+              const maxApiSpendWhereCheaper = (poolUsd - subjectFee) / markup;
+              lineItems.push({
+                kind: "pool_max_api_spend_where_plan_beats_api",
+                label: "Max API spend where pool plan can still beat API (best-effort)",
+                amount: {
+                  currency: baseCurrency,
+                  point: maxApiSpendWhereCheaper,
+                  method: "derived",
+                  confidence: plan?.verified ? "medium" : "low",
+                  confidence_reasons: ["Pool plans with markup can be worse at very high usage."],
+                  evidence,
+                },
+                notes: "Upper bound on API-equivalent spend where plan may still be cheaper; depends on pool and markup assumptions.",
+              });
+            } else {
+              warnings.push("Pool <= fee and markup > 0: pool plan likely never beats direct API on cost.");
+            }
+          } else {
+            if (poolUsd >= subjectFee) {
+              warnings.push("Pool >= fee and markup=0: pool plan is always <= direct API cost (ignoring other limits).");
+            } else {
+              warnings.push("Pool < fee and markup=0: pool plan is always >= direct API cost (ignoring other limits).");
+            }
+          }
+        }
+      }
+
+      results.push({
+        scenario_id: scenario.scenario_id ?? `break_even:${subjectLabel}:${scenario.token_meter.provider}:${scenario.token_meter.model}`,
+        monthly_cost_estimate: breakEvenUsd,
+        line_items: lineItems,
+        metrics,
+        assumptions,
+        evidence,
+        warnings,
+        entitlements: [],
       });
       continue;
     }

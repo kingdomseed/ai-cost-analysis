@@ -26,7 +26,7 @@ Define a backend-ready **data model + compute engine contract** for the public c
 ### Phase 2 — Engine boundaries
 - [x] Define pure calculation modules (token meter, pool, credits, subscriptions)
 - [x] Define evidence rules (public URL vs authenticated capture vs blocked)
-- [ ] Define “unknown/opaque” handling (never guess; surface user override fields)
+- [x] Define “unknown/opaque” handling (never guess; surface user override fields)
 
 ### Phase 3 — Repo structure for implementation
 - [x] Decide where code will live (packages/core vs apps/public-calculator/)

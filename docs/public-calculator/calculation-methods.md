@@ -28,6 +28,9 @@ This document defines which calculations are allowed, what they require, and how
 
 `tokens_per_month`: `{ input_tokens, output_tokens, cached_input_tokens? }`
 
+If a user only knows “total tokens”, the API also supports:
+- `total_tokens_per_month`: `{ total_tokens, cached_input_tokens?, assumptions?: { input_to_output_ratio?: "3:1" } }`
+
 Optional modeling knobs (API can accept later; engine must echo if used):
 - `input_to_output_ratio` (heuristic, if user provides only “total tokens”)
 - `cache_hit_rate` (heuristic unless tool/provider defines it)
@@ -42,7 +45,7 @@ Optional:
 
 ### C) Budget/month
 
-`budget_per_month`: `{ budget_usd }`
+`budget_per_month`: `{ budget, currency }`
 
 Used mainly for “how much usage do I get for $X?” or comparing within a fixed budget.
 

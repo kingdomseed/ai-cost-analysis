@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "biome check .",
-    "validate:datasets": "node scripts/validate-datasets.mjs"
+    "validate:datasets": "node scripts/validate-datasets.mjs",
+    "test:core": "tsx --test ../../../packages/core/tests/**/*.test.ts"
   },
   "dependencies": {
     "@ai-cost-analysis/core": "file:../../../packages/core",
@@ -23,6 +24,7 @@
     "@types/react-dom": "^19",
     "ajv": "^8.17.1",
     "tailwindcss": "^4",
+    "tsx": "^4.20.0",
     "typescript": "^5"
   }
 }

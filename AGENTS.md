@@ -44,7 +44,8 @@ Useful basics:
 
 ## Testing Guidelines
 
-No test framework yet. Until one is added, treat `npm run build` as the minimum smoke check for the Next.js app.
+- `cd apps/public-calculator/site && npm run test:core` — runs backend engine unit tests (Node test runner via `tsx`).
+- `cd apps/public-calculator/site && npm run build` — still the minimum end-to-end smoke check (typecheck + route compilation).
 
 ## Commit & Pull Request Guidelines
 

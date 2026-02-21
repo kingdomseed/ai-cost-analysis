@@ -27,7 +27,7 @@ Response shape:
 
 ### 2) Calculation API (engine execution)
 
-Proposed endpoint (not implemented yet):
+Implemented endpoint:
 - `POST /api/calculate`
 
 Input is a workload + one or more scenarios to evaluate. Output is a list of scenario results.
@@ -39,14 +39,19 @@ Endpoint:
 
 Returns the current selectable universe for the UI (models/plans/currencies/regions) derived from the latest snapshots.
 
-#### Current implementation (baseline-only)
+#### Current implementation (backend-complete, API-first)
 
 The current implementation supports these scenario kinds:
 - `token_meter` (API-equivalent baseline for a specific provider/channel/model)
+- `token_meter_budget_capacity` (given a budget workload, returns token capacity for a token meter)
 - `tool_plan_floor` (subscription fee floor for a tool plan, if a monthly price exists)
 - `subscription_floor` (subscription fee floor for a provider plan, if a monthly price exists)
 - `tool_plan_api_pool_effective` (plan-effective estimate for USD pool plans; requires a token-meter reference)
 - `tool_plan_credits_effective` (plan-effective estimate for credit plans; derives USD/credit from a sourced pack when possible)
+- `tool_plan_token_quota_effective` (quota coverage for token-allowance plans; best-effort)
+- `tool_plan_compute_units_effective` (compute-unit metering when unit price exists; best-effort)
+- `tool_plan_premium_requests_effective` (per-request metering when included/overage prices exist; best-effort)
+- `break_even_vs_token_meter` (break-even math versus a selected token meter)
 
 ## Core design rule: always return a computable baseline
 
@@ -68,6 +73,17 @@ If we can compute “plan-effective cost” (pool, overage, top-ups, packs), we 
   "output_currency": "EUR",
   "workload": { "kind": "tokens_per_month", "input_tokens": 3000000, "output_tokens": 1000000 },
   "scenarios": [{ "kind": "token_meter", "provider": "openai", "channel": "api", "model": "gpt-5.2" }]
+}
+```
+
+### Budget → token capacity (token-meter)
+
+```json
+{
+  "workload": { "kind": "budget_per_month", "budget": 200, "currency": "EUR" },
+  "scenarios": [
+    { "kind": "token_meter_budget_capacity", "provider": "openai", "channel": "api", "model": "gpt-5.2", "input_to_output_ratio": "3:1" }
+  ]
 }
 ```
 

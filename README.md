@@ -14,6 +14,7 @@ This repo is organized around **two related but separate goals**:
 - **No guessing unit conversions**: credit/quota systems stay opaque unless we can derive from sourced pack prices or the user supplies assumptions.
 - **Region is first-class**: store and compare region variants side-by-side; never silently average CN vs US/global.
 - **Freshness matters**: pricing is time-variant; snapshots are dated and validated before use (`cd apps/public-calculator/site && npm run validate:datasets`).
+- **Backend correctness first**: core engine has unit tests (`cd apps/public-calculator/site && npm run test:core`) and the Next.js build is the end-to-end smoke check (`npm run build`).
 
 ## Repo Map
 

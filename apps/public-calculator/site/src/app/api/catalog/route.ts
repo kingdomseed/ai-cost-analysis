@@ -19,6 +19,28 @@ function uniqSorted(values: string[]): string[] {
   return Array.from(new Set(values)).sort();
 }
 
+function scenarioKindsForToolPlan(pricingType: string): string[] {
+  const base = ["tool_plan_floor"];
+  switch (pricingType) {
+    case "api_pool_usd":
+    case "usd_credits_pool":
+      return [...base, "tool_plan_api_pool_effective", "break_even_vs_token_meter"];
+    case "credits":
+    case "seat_subscription_with_credits":
+    case "team_subscription_with_credits":
+      return [...base, "tool_plan_credits_effective"];
+    case "token_quota":
+    case "seat_subscription_with_token_quota":
+      return [...base, "tool_plan_token_quota_effective"];
+    case "compute_units":
+      return [...base, "tool_plan_compute_units_effective"];
+    case "premium_requests":
+      return [...base, "tool_plan_premium_requests_effective"];
+    default:
+      return base;
+  }
+}
+
 export async function GET(): Promise<NextResponse> {
   const [
     { date: pricingDate, data: pricingRaw },
@@ -69,6 +91,7 @@ export async function GET(): Promise<NextResponse> {
     has_tiers: Array.isArray(r.tiers) && r.tiers.length > 0,
     has_regional_rates: Array.isArray(r.regional_rates) && r.regional_rates.length > 0,
     source_ids: r.source_ids,
+    scenario_kinds: ["token_meter", "token_meter_budget_capacity"],
   }));
 
   const toolPlans = pricing.tool_plans.map((p) => ({
@@ -81,6 +104,7 @@ export async function GET(): Promise<NextResponse> {
     included_pool_usd: p.included_pool_usd ?? null,
     topups_pricing: p.topups_pricing ?? null,
     source_ids: p.source_ids,
+    scenario_kinds: scenarioKindsForToolPlan(p.pricing_type),
   }));
 
   const subscriptions = pricing.subscriptions.map((s) => ({
@@ -90,11 +114,32 @@ export async function GET(): Promise<NextResponse> {
     price_usd_per_month: s.price_usd_per_month ?? null,
     verified: s.verified,
     source_ids: s.source_ids,
+    scenario_kinds: ["subscription_floor", "break_even_vs_token_meter"],
   }));
 
   return NextResponse.json({
     snapshot_dates: { pricing: pricingDate, entitlements: entitlementsDate, fx: fxDate },
     base_currency: baseCurrency,
+    supported_workload_kinds: [
+      "tokens_per_month",
+      "total_tokens_per_month",
+      "credits_per_month",
+      "budget_per_month",
+      "premium_requests_per_month",
+      "usage_units_per_month",
+    ],
+    supported_scenario_kinds: [
+      "token_meter",
+      "token_meter_budget_capacity",
+      "tool_plan_floor",
+      "subscription_floor",
+      "tool_plan_api_pool_effective",
+      "tool_plan_credits_effective",
+      "tool_plan_token_quota_effective",
+      "tool_plan_compute_units_effective",
+      "tool_plan_premium_requests_effective",
+      "break_even_vs_token_meter",
+    ],
     currencies,
     regions,
     token_meters: tokenMeters,
