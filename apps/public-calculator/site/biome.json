@@ -3,6 +3,7 @@
   "files": {
     "includes": [
       "src/**",
+      "scripts/**",
       "biome.json",
       "next.config.ts",
       "package.json",

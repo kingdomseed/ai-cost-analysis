@@ -14,3 +14,11 @@ Current file:
 Entitlements (separate axis from cost):
 - `apps/public-calculator/data/entitlements.sample.json` — starter entitlements dataset (intentionally incomplete).
 - `apps/public-calculator/data/entitlements.2026-02-21.json` — Feb 2026 entitlements snapshot (what’s included, where), with region + evidence type.
+
+## Schemas + validation
+
+Public datasets are validated against JSON Schemas in:
+- `apps/public-calculator/schemas/`
+
+Run validation from the Next.js app folder:
+- `cd apps/public-calculator/site && npm run validate:datasets`

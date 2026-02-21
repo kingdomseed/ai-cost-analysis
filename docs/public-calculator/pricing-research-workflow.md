@@ -19,6 +19,13 @@ For each item we add to the dataset, capture:
 - pricing unit (token, credit, pool USD, message cap)
 - caveats (e.g., long-context multipliers, caching tiers, batch discounts)
 
+## 2.5) Schema validation gate
+
+Before treating a snapshot as “ready for API,” validate it against the repo schemas:
+
+- Schemas: `apps/public-calculator/schemas/`
+- Command: `cd apps/public-calculator/site && npm run validate:datasets`
+
 ## 3) Normalization approach
 
 We normalize into:
@@ -34,4 +41,3 @@ We can include many tools, but comparisons only become “cost across tools” w
 - the user supplies an explicit assumption
 
 Otherwise, we still list the plan but do not present token-equivalent costs as factual.
-

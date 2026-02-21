@@ -1,13 +1,13 @@
 {
   "meta": {
-    "version_date": "YYYY-MM-DD",
+    "version_date": "2026-02-21",
     "notes": "Sample entitlements dataset. This is intentionally incomplete and uses placeholder values."
   },
   "sources": [
     {
       "id": "example_source",
       "url": "https://example.com",
-      "retrieved_at": "YYYY-MM-DD",
+      "retrieved_at": "2026-02-21",
       "verified": false
     }
   ],
@@ -31,4 +31,3 @@
     }
   ]
 }
-
