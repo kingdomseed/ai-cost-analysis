@@ -63,7 +63,7 @@ This file is a quick index of the **official sources** used in the sweep and whe
 - Windsurf pricing: `https://windsurf.com/pricing`
 - Windsurf credit usage docs: `https://docs.windsurf.com/windsurf/accounts/usage`
 - Windsurf PR Reviews: `https://docs.windsurf.com/windsurf-reviews/windsurf-reviews`
-- Windsurf PR Reviews (Chinese locale; keep as a potential region-variant reference only): `https://docs.windsurf.com/zh/windsurf-reviews/windsurf-reviews`
+- Windsurf PR Reviews (Chinese locale; region-variant reference only, not authoritative for US/global): `https://docs.windsurf.com/zh/windsurf-reviews/windsurf-reviews`
 - Codeium pricing (corroborates Windsurf tiers): `https://codeium.com/pricing`
 - Warp pricing: `https://www.warp.dev/pricing`
 - Warp add-on credits: `https://docs.warp.dev/support-and-community/plans-and-billing/add-on-credits`

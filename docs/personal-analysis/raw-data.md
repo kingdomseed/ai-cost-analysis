@@ -2,6 +2,11 @@
 
 This repo’s personal rollups are only as good as the **raw exports** we can reliably re-import later. This file is a checklist of what we **already have** and what we still need to collect.
 
+## Data collection status (as of 2026-02-21)
+
+- **Complete** for currently available sources **except**: **AWS Bedrock** (CUR/billing export pending; expected 2026-02-22).
+- **OpenRouter export:** intentionally **not collected** (user preference).
+
 ## What we already have in this repo (gitignored)
 
 Raw / ledger-like exports already present under `data/private/`:

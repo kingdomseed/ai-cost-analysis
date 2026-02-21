@@ -47,9 +47,10 @@ This sweep intentionally prefers official sources and labels anything uncertain.
    - Next: if we want to model Cody Enterprise, capture an official price sheet (if public) or encode as `custom` with explicit “contact sales” notes.
 
 10) **Windsurf: “code reviews” quota discrepancy**
-   - The PR Reviews docs include an explicit cap (**500 PR reviews/month org-wide**) in the Chinese locale page, but Jason’s Teams billing UI shows “50 code reviews” included (Feb 2026).
-   - Next: determine whether “50 code reviews” is a separate plan entitlement bucket, a UI label for something other than PR Reviews, or a region/legacy plan artifact. Prefer an official Windsurf pricing/FAQ page that enumerates PR Review quotas by plan.
-   - Update: repo owner provided an authenticated dashboard limit statement (`min(50 reviews per member, 1000 total)` over a rolling 30-day window). Treat this as authoritative for the repo’s target region, and treat any conflicting public docs as potentially stale/region-specific until clarified by Windsurf in a public URL.
+   - Jason’s Teams billing UI shows “50 code reviews” included (Feb 2026).
+   - Repo owner also provided an authenticated dashboard PR Reviews limit statement: `min(50 reviews per team member, 1000 reviews total)` over a rolling 30-day window.
+   - The public PR Reviews doc states “Organization-wide limit of 500 reviews/month”, which conflicts with the dashboard statement.
+   - For this repo’s target region (US/global self-serve), treat the **authenticated dashboard** as authoritative and treat conflicting public docs as potentially stale or region-specific until Windsurf publishes a single canonical statement.
 
 ## Dataset TODOs
 

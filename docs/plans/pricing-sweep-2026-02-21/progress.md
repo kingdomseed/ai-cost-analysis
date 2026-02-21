@@ -26,4 +26,5 @@
   - Windsurf entitlements: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-windsurf-entitlements.2026-02-21.md`
 - Re-checked Windsurf PR Reviews docs and captured an explicit PR review cap (org-wide monthly cap published in the Chinese locale page); updated `gaps.md` to track the remaining UI-vs-doc mismatch.
 - Captured a user-provided PR Reviews limit statement (min(50/member, 1000 total) rolling 30 days) as **unverified** pending an official URL match.
+- Updated Windsurf PR Reviews to treat the authenticated dashboard limit statement as authoritative for US/global targeting (and treat conflicting public docs as potentially stale/region-specific).
 - Updated Kimi membership pricing/quotas in the dataset using the official `member_benefits_v2.md` table (effective 2026-02-13) and added an official oversea Moderato $19/month signal from a Kimi event rules page.
