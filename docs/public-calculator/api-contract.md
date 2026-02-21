@@ -33,10 +33,12 @@ Input is a workload + one or more scenarios to evaluate. Output is a list of sce
 
 #### Current implementation (baseline-only)
 
-The first implementation supports three scenario kinds:
+The current implementation supports these scenario kinds:
 - `token_meter` (API-equivalent baseline for a specific provider/channel/model)
 - `tool_plan_floor` (subscription fee floor for a tool plan, if a monthly price exists)
 - `subscription_floor` (subscription fee floor for a provider plan, if a monthly price exists)
+- `tool_plan_api_pool_effective` (plan-effective estimate for USD pool plans; requires a token-meter reference)
+- `tool_plan_credits_effective` (plan-effective estimate for credit plans; derives USD/credit from a sourced pack when possible)
 
 ## Core design rule: always return a computable baseline
 
@@ -48,6 +50,43 @@ Even when a tool/plan is “opaque” (no published token quota) or “unknown�
    - The recurring subscription fee, and any known add-ons, as a minimum monthly cost.
 
 If we can compute “plan-effective cost” (pool, overage, top-ups, packs), we return that too.
+
+## Example requests (API-first)
+
+### Token-meter baseline (API-equivalent)
+
+```json
+{
+  "workload": { "kind": "tokens_per_month", "input_tokens": 3000000, "output_tokens": 1000000 },
+  "scenarios": [{ "kind": "token_meter", "provider": "openai", "channel": "api", "model": "gpt-5.2" }]
+}
+```
+
+### USD pool plan-effective (Cursor-style)
+
+```json
+{
+  "workload": { "kind": "tokens_per_month", "input_tokens": 3000000, "output_tokens": 1000000 },
+  "scenarios": [
+    {
+      "kind": "tool_plan_api_pool_effective",
+      "tool": "Cursor",
+      "plan_id": "cursor-individual",
+      "token_meter": { "provider": "openai", "channel": "api", "model": "gpt-5.2" },
+      "markup_multiplier": 0.2
+    }
+  ]
+}
+```
+
+### Credits plan-effective (Windsurf-style) from a credit pack
+
+```json
+{
+  "workload": { "kind": "credits_per_month", "credits": 2500 },
+  "scenarios": [{ "kind": "tool_plan_credits_effective", "tool": "Windsurf", "plan_id": "windsurf-teams" }]
+}
+```
 
 ## “Unknown” vs “Opaque”
 

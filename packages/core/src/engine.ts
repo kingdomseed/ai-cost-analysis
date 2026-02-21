@@ -65,6 +65,46 @@ export type ScenarioRequest =
       provider: string;
       plan_id: string;
       scenario_id?: string;
+    }
+  | {
+      /**
+       * Cursor-like: subscription includes a USD pool of metered usage.
+       * The plan-effective cost is:
+       *   subscription_fee + max(0, api_equivalent_cost*(1+markup) - included_pool)
+       */
+      kind: "tool_plan_api_pool_effective";
+      tool: string;
+      plan_id: string;
+      token_meter: {
+        provider: string;
+        channel: string;
+        model: string;
+        region?: string;
+      };
+      /** Optional markup applied to the metered token cost, e.g. 0.2 for +20%. */
+      markup_multiplier?: number;
+      scenario_id?: string;
+    }
+  | {
+      /**
+       * Credit plans: compute $/credit from a sourced pack when possible.
+       * If we cannot derive or are not given a $/credit assumption, we still return a plan price floor.
+       */
+      kind: "tool_plan_credits_effective";
+      tool: string;
+      plan_id: string;
+      /**
+       * Seat count is only meaningful when the plan has per-seat subscription pricing.
+       * If omitted, defaults to 1 (method: heuristic).
+       */
+      seat_count?: number;
+      /**
+       * Optional override for credit usage. If omitted, the engine uses credits from workload when workload is credits_per_month.
+       */
+      credits_per_month?: number;
+      /** Optional override; if omitted, attempt to derive from official top-up pack pricing. */
+      usd_per_credit?: number;
+      scenario_id?: string;
     };
 
 export interface ScenarioResult {
@@ -521,6 +561,252 @@ export function calculate(input: EngineInput): EngineOutput {
       results.push({
         ...result,
         scenario_id: scenario.scenario_id ?? `${scenario.provider}:${scenario.model}:token_meter`,
+      });
+      continue;
+    }
+
+    if (scenario.kind === "tool_plan_api_pool_effective") {
+      const plan = input.pricing.tool_plans.find(
+        (p) => p.tool === scenario.tool && p.plan_id === scenario.plan_id,
+      );
+      const planEvidence = (plan?.source_ids ?? []).map((id) => ({ source_id: id }));
+
+      const subscriptionFee =
+        plan?.subscription_price_usd ??
+        (plan?.subscription_price_usd_per_seat != null
+          ? plan.subscription_price_usd_per_seat
+          : 0);
+
+      const warnings: string[] = [];
+      const assumptions: CalculationAssumption[] = [];
+
+      if (!plan) {
+        warnings.push("Tool plan not found; returning baseline token-meter only.");
+      }
+
+      if (plan?.subscription_price_usd == null && plan?.subscription_price_usd_per_seat != null) {
+        warnings.push("Per-seat subscription price found; assuming seat_count=1.");
+        assumptions.push({ id: "seat_count", value: 1, notes: "Assumed because no seat_count provided." });
+      }
+
+      const poolUsd = plan?.included_pool_usd ?? 0;
+      if (plan?.included_pool_usd == null) {
+        warnings.push("Included USD pool not found; treating included_pool_usd as 0.");
+        assumptions.push({ id: "included_pool_usd", value: 0, notes: "Missing in dataset; treated as 0." });
+      }
+
+      const markup = scenario.markup_multiplier ?? 0;
+      if (scenario.markup_multiplier == null) {
+        warnings.push("No markup provided; assuming markup_multiplier=0.");
+        assumptions.push({ id: "markup_multiplier", value: 0, notes: "Assumed default." });
+      } else {
+        assumptions.push({ id: "markup_multiplier", value: markup, notes: "Provided by request." });
+      }
+
+      // Compute API-equivalent baseline for the referenced model.
+      const baseline = calculate({
+        pricing: input.pricing,
+        entitlements: input.entitlements,
+        workload: input.workload,
+        scenarios: [
+          {
+            kind: "token_meter",
+            provider: scenario.token_meter.provider,
+            channel: scenario.token_meter.channel,
+            model: scenario.token_meter.model,
+            region: scenario.token_meter.region,
+          },
+        ],
+        target_region: input.target_region,
+        evidence_policy: input.evidence_policy,
+      }).scenarios[0]!;
+
+      const metered = baseline.monthly_cost_estimate.point_usd * (1 + markup);
+      const overage = Math.max(0, metered - poolUsd);
+      const total = subscriptionFee + overage;
+
+      const evidence = [...planEvidence, ...baseline.evidence];
+      const confidenceReasons: string[] = [];
+      let confidence: ConfidenceLevel = "medium";
+      let method: EstimateMethod = "derived";
+
+      if (!plan?.verified) confidenceReasons.push("Tool plan pricing is not verified.");
+      if (baseline.monthly_cost_estimate.confidence !== "high") {
+        confidenceReasons.push(...baseline.monthly_cost_estimate.confidence_reasons);
+      }
+      if (scenario.markup_multiplier == null) {
+        method = "heuristic";
+        confidence = "low";
+        confidenceReasons.push("Markup multiplier was assumed.");
+      }
+      if (plan?.included_pool_usd == null) {
+        confidence = "low";
+        confidenceReasons.push("Included USD pool was missing and assumed as 0.");
+      }
+
+      const subscriptionAmount: EvidencedMoneyEstimate = {
+        currency,
+        point_usd: subscriptionFee,
+        method: plan?.subscription_price_usd != null || plan?.subscription_price_usd_per_seat != null ? "direct" : "heuristic",
+        confidence: plan?.verified ? "high" : "medium",
+        confidence_reasons: plan?.verified ? [] : ["Subscription price is not verified."],
+        evidence: planEvidence,
+      };
+
+      const overageAmount: EvidencedMoneyEstimate = {
+        currency,
+        point_usd: overage,
+        method,
+        confidence,
+        confidence_reasons: confidenceReasons,
+        evidence,
+      };
+
+      const totalAmount: EvidencedMoneyEstimate = {
+        currency,
+        point_usd: total,
+        method,
+        confidence,
+        confidence_reasons: confidenceReasons,
+        evidence,
+      };
+
+      results.push({
+        scenario_id: scenario.scenario_id ?? `${scenario.tool}:${scenario.plan_id}:api_pool_effective`,
+        monthly_cost_estimate: totalAmount,
+        line_items: [
+          { kind: "subscription_fee", label: "Subscription fee", amount: subscriptionAmount },
+          { kind: "overage", label: "Overage above included pool", amount: overageAmount, notes: `Included pool: $${poolUsd}` },
+        ],
+        assumptions,
+        evidence,
+        warnings: [...warnings, ...baseline.warnings],
+      });
+      continue;
+    }
+
+    if (scenario.kind === "tool_plan_credits_effective") {
+      const plan = input.pricing.tool_plans.find(
+        (p) => p.tool === scenario.tool && p.plan_id === scenario.plan_id,
+      );
+      const planEvidence = (plan?.source_ids ?? []).map((id) => ({ source_id: id }));
+
+      const warnings: string[] = [];
+      const assumptions: CalculationAssumption[] = [];
+
+      const seatCount =
+        scenario.seat_count ??
+        (plan?.subscription_price_usd_per_seat != null ? 1 : undefined);
+      if (plan?.subscription_price_usd_per_seat != null) {
+        if (scenario.seat_count == null) {
+          warnings.push("Per-seat pricing detected; assuming seat_count=1.");
+          assumptions.push({ id: "seat_count", value: 1, notes: "Assumed default." });
+        } else {
+          assumptions.push({ id: "seat_count", value: seatCount ?? 1, notes: "Provided by request." });
+        }
+      }
+
+      const subscriptionFee =
+        plan?.subscription_price_usd ??
+        (plan?.subscription_price_usd_per_seat != null && seatCount != null
+          ? plan.subscription_price_usd_per_seat * seatCount
+          : 0);
+
+      if (!plan) warnings.push("Tool plan not found; returning $0 with warnings.");
+      if (subscriptionFee === 0) warnings.push("Subscription fee missing; treated as $0.");
+
+      // Determine monthly credits usage.
+      let credits: number | null = null;
+      if (scenario.credits_per_month != null) {
+        credits = scenario.credits_per_month;
+        assumptions.push({ id: "credits_per_month", value: credits, notes: "Provided by request." });
+      } else if (input.workload.kind === "credits_per_month") {
+        credits = input.workload.credits;
+        assumptions.push({ id: "credits_per_month", value: credits, notes: "From workload." });
+      }
+
+      // Determine $/credit.
+      let usdPerCredit: number | null = null;
+      let usdPerCreditMethod: EstimateMethod = "assumed";
+      let usdPerCreditConfidence: ConfidenceLevel = "low";
+      const usdPerCreditReasons: string[] = [];
+
+      if (scenario.usd_per_credit != null) {
+        usdPerCredit = scenario.usd_per_credit;
+        usdPerCreditMethod = "assumed";
+        usdPerCreditConfidence = "low";
+        usdPerCreditReasons.push("USD/credit provided as an assumption.");
+        assumptions.push({ id: "usd_per_credit", value: usdPerCredit, notes: "Provided by request." });
+      } else {
+        const topup = plan?.topups_pricing as any;
+        const priceUsd = topup?.price_usd;
+        const packCredits = topup?.credits;
+        if (typeof priceUsd === "number" && typeof packCredits === "number" && packCredits > 0) {
+          usdPerCredit = priceUsd / packCredits;
+          usdPerCreditMethod = "derived";
+          usdPerCreditConfidence = plan?.verified ? "medium" : "low";
+          usdPerCreditReasons.push("Derived from pack price and credit count.");
+          assumptions.push({ id: "usd_per_credit", value: usdPerCredit, notes: "Derived from top-up pack pricing." });
+        } else {
+          warnings.push("No USD/credit provided and no top-up pack pricing available; cannot price credit usage.");
+          usdPerCreditReasons.push("No sourced credit pack price was found.");
+        }
+      }
+
+      // Compute credits cost if we can.
+      const creditSpendUsd =
+        credits != null && usdPerCredit != null ? credits * usdPerCredit : 0;
+
+      const confidenceReasons: string[] = [];
+      let confidence: ConfidenceLevel = "medium";
+      let method: EstimateMethod = "derived";
+
+      if (!plan?.verified) confidenceReasons.push("Tool plan pricing is not verified.");
+      if (usdPerCreditMethod !== "derived") {
+        confidence = "low";
+        method = "heuristic";
+        confidenceReasons.push(...usdPerCreditReasons);
+      } else {
+        confidenceReasons.push(...usdPerCreditReasons);
+      }
+
+      const subscriptionAmount: EvidencedMoneyEstimate = {
+        currency,
+        point_usd: subscriptionFee,
+        method: plan?.subscription_price_usd != null || plan?.subscription_price_usd_per_seat != null ? "direct" : "heuristic",
+        confidence: plan?.verified ? "high" : "medium",
+        confidence_reasons: plan?.verified ? [] : ["Subscription price is not verified."],
+        evidence: planEvidence,
+      };
+
+      const creditsAmount: EvidencedMoneyEstimate = {
+        currency,
+        point_usd: creditSpendUsd,
+        method: usdPerCreditMethod,
+        confidence: usdPerCreditConfidence,
+        confidence_reasons: usdPerCreditReasons,
+        evidence: planEvidence,
+      };
+
+      const totalAmount: EvidencedMoneyEstimate = {
+        currency,
+        point_usd: subscriptionFee + creditSpendUsd,
+        method,
+        confidence,
+        confidence_reasons: confidenceReasons,
+        evidence: planEvidence,
+      };
+
+      results.push({
+        scenario_id: scenario.scenario_id ?? `${scenario.tool}:${scenario.plan_id}:credits_effective`,
+        monthly_cost_estimate: totalAmount,
+        line_items: [
+          { kind: "subscription_fee", label: "Subscription fee", amount: subscriptionAmount },
+          { kind: "credits_spend", label: "Credits spend (best-effort)", amount: creditsAmount },
+        ],
+        assumptions,
+        evidence: planEvidence,
+        warnings,
       });
       continue;
     }

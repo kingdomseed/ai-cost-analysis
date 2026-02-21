@@ -100,6 +100,60 @@ function parseScenario(value: unknown): ScenarioRequest {
     };
   }
 
+  if (value.kind === "tool_plan_api_pool_effective") {
+    if (!isString(value.tool) || !isString(value.plan_id)) {
+      throw new Error("tool_plan_api_pool_effective requires tool and plan_id");
+    }
+    const token_meter = value.token_meter;
+    if (
+      !isRecord(token_meter) ||
+      !isString(token_meter.provider) ||
+      !isString(token_meter.channel) ||
+      !isString(token_meter.model)
+    ) {
+      throw new Error(
+        "tool_plan_api_pool_effective requires token_meter {provider, channel, model}",
+      );
+    }
+    const markup_multiplier = isNumber(value.markup_multiplier)
+      ? value.markup_multiplier
+      : undefined;
+    const region = isString(token_meter.region) ? token_meter.region : undefined;
+    return {
+      kind: "tool_plan_api_pool_effective",
+      tool: value.tool,
+      plan_id: value.plan_id,
+      token_meter: {
+        provider: token_meter.provider,
+        channel: token_meter.channel,
+        model: token_meter.model,
+        region,
+      },
+      markup_multiplier,
+      scenario_id,
+    };
+  }
+
+  if (value.kind === "tool_plan_credits_effective") {
+    if (!isString(value.tool) || !isString(value.plan_id)) {
+      throw new Error("tool_plan_credits_effective requires tool and plan_id");
+    }
+    const seat_count = isNumber(value.seat_count) ? value.seat_count : undefined;
+    const credits_per_month = isNumber(value.credits_per_month)
+      ? value.credits_per_month
+      : undefined;
+    const usd_per_credit = isNumber(value.usd_per_credit) ? value.usd_per_credit : undefined;
+    return {
+      kind: "tool_plan_credits_effective",
+      tool: value.tool,
+      plan_id: value.plan_id,
+      seat_count,
+      credits_per_month,
+      usd_per_credit,
+      scenario_id,
+    };
+  }
+
   throw new Error(`Unknown scenario kind: ${value.kind}`);
 }
 
