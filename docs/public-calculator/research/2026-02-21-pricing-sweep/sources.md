@@ -12,6 +12,7 @@ This file is a quick index of the **official sources** used in the sweep and whe
 - Captured in: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-openai.md`
   - Codex addendum: `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-openai-codex.md`
   - ChatGPT pricing (user-provided): `docs/public-calculator/research/2026-02-21-pricing-sweep/user-chatgpt-pricing-capture.2026-02-21.md`
+  - Entitlements addendum (partial; environment-limited): `docs/public-calculator/research/2026-02-21-pricing-sweep/agent-openai-entitlements.2026-02-21.md`
 
 ## Anthropic
 

@@ -38,3 +38,4 @@ New additions captured after the initial sweep (still dated 2026-02-21):
 - Windsurf entitlements (DeepWiki/Teams/PR Reviews surfaces): `agent-windsurf-entitlements.2026-02-21.md`
 - Windsurf PR Reviews limits (user-provided; unverified): `user-windsurf-prreviews-limits-capture.2026-02-21.md`
 - Kimi monthly USD tiers (user-provided; unverified): `user-kimi-monthly-pricing-capture.2026-02-21.md`
+- OpenAI/ChatGPT entitlements (partial; relies on Codex official docs + user capture): `agent-openai-entitlements.2026-02-21.md`
