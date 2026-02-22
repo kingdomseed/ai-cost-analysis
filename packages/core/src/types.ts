@@ -145,3 +145,40 @@ export interface FxSnapshotV01 {
   sources: SourceRef[];
   rates: Record<string, number>;
 }
+
+export interface ModelRatingV01 {
+  system: string;
+  metric: string;
+  score: number;
+  scale?: string | null;
+  as_of: ISODate;
+  source_ids: string[];
+  notes?: string | null;
+  [k: string]: unknown;
+}
+
+export interface ModelInfoV01 {
+  provider: string;
+  model: string;
+  channels: string[];
+  label?: string | null;
+  family?: string | null;
+  modalities?: string[] | null;
+  ratings?: ModelRatingV01[] | null;
+  notes?: string | null;
+  [k: string]: unknown;
+}
+
+export interface ModelsMetaV01 {
+  schema_version: string;
+  retrieved_at: ISODate;
+  last_verified_at: ISODate;
+  notes?: string | null;
+  [k: string]: unknown;
+}
+
+export interface ModelsSnapshotV01 {
+  meta: ModelsMetaV01;
+  sources: SourceRef[];
+  models: ModelInfoV01[];
+}

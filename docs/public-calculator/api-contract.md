@@ -39,6 +39,17 @@ Endpoint:
 
 Returns the current selectable universe for the UI (models/plans/currencies/regions) derived from the latest snapshots.
 
+### 4) Plan matrix API (budgeting + coverage)
+
+Endpoint:
+- `POST /api/plan-matrix`
+
+This endpoint is the “budgeting/efficiency” surface:
+- given an optional `budget` and optional `workload`, it computes per-plan cost floors and best-effort effective costs
+- returns `fits_budget` flags
+- can enumerate multi-subscription bundles when the user requires multiple providers
+- reports “coverage” only when it is explicitly encoded (or safely derived for single-provider subscriptions)
+
 #### Current implementation (backend-complete, API-first)
 
 The current implementation supports these scenario kinds:
@@ -84,6 +95,17 @@ If we can compute “plan-effective cost” (pool, overage, top-ups, packs), we 
   "scenarios": [
     { "kind": "token_meter_budget_capacity", "provider": "openai", "channel": "api", "model": "gpt-5.2", "input_to_output_ratio": "3:1" }
   ]
+}
+```
+
+### Budget → which plans fit (plan matrix)
+
+```json
+{
+  "output_currency": "EUR",
+  "budget": { "amount": 200, "currency": "EUR" },
+  "requirements": { "providers": ["openai", "anthropic"] },
+  "token_meter_default": { "provider": "openai", "channel": "api", "model": "gpt-5.2" }
 }
 ```
 

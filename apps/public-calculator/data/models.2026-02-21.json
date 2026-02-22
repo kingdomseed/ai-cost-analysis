@@ -1,0 +1,172 @@
+{
+  "meta": {
+    "schema_version": "v0.1",
+    "retrieved_at": "2026-02-21",
+    "last_verified_at": "2026-02-21",
+    "notes": "Derived from the set of models present in pricing.2026-02-21.json. Modalities and ratings are intentionally left null unless backed by explicit sources."
+  },
+  "sources": [
+    {
+      "id": "derived_from_pricing_2026_02_21",
+      "url": "apps/public-calculator/data/pricing.2026-02-21.json",
+      "retrieved_at": "2026-02-21",
+      "verified": true,
+      "notes": "This snapshot is generated from the pricing model universe; it is not a benchmark source."
+    }
+  ],
+  "models": [
+    {
+      "provider": "anthropic",
+      "model": "claude-haiku-4.5",
+      "channels": ["api"],
+      "family": "claude",
+      "modalities": null,
+      "ratings": null
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-opus-4.6",
+      "channels": ["api"],
+      "family": "claude",
+      "modalities": null,
+      "ratings": null
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4.6",
+      "channels": ["api"],
+      "family": "claude",
+      "modalities": null,
+      "ratings": null
+    },
+    {
+      "provider": "aws",
+      "model": "claude-opus-4.6",
+      "channels": ["bedrock"],
+      "family": "claude",
+      "modalities": null,
+      "ratings": null,
+      "notes": "AWS Bedrock channel pricing for Anthropic models."
+    },
+    {
+      "provider": "aws",
+      "model": "claude-sonnet-4.6",
+      "channels": ["bedrock"],
+      "family": "claude",
+      "modalities": null,
+      "ratings": null,
+      "notes": "AWS Bedrock channel pricing for Anthropic models."
+    },
+    {
+      "provider": "aws",
+      "model": "kimi-k2.5",
+      "channels": ["bedrock"],
+      "family": "kimi",
+      "modalities": null,
+      "ratings": null,
+      "notes": "AWS Bedrock channel pricing for Moonshot models."
+    },
+    {
+      "provider": "azure",
+      "model": "gpt-5.2",
+      "channels": ["azure-openai"],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": null
+    },
+    {
+      "provider": "azure",
+      "model": "gpt-5.2-codex",
+      "channels": ["azure-openai"],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": null
+    },
+    {
+      "provider": "google",
+      "model": "gemini-2.5-pro",
+      "channels": ["gemini-api"],
+      "family": "gemini",
+      "modalities": null,
+      "ratings": null
+    },
+    {
+      "provider": "google",
+      "model": "gemini-3-pro-preview",
+      "channels": ["gemini-api"],
+      "family": "gemini",
+      "modalities": null,
+      "ratings": null
+    },
+    {
+      "provider": "moonshot",
+      "model": "kimi-k2.5",
+      "channels": ["api"],
+      "family": "kimi",
+      "modalities": null,
+      "ratings": null
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.2",
+      "channels": ["api"],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": null
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.2-codex",
+      "channels": ["api"],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": null
+    },
+    {
+      "provider": "opencode",
+      "model": "claude-opus-4.6",
+      "channels": ["zen"],
+      "family": "claude",
+      "modalities": null,
+      "ratings": null,
+      "notes": "OpenCode Zen gateway pricing channel."
+    },
+    {
+      "provider": "opencode",
+      "model": "gemini-3-pro-preview",
+      "channels": ["zen"],
+      "family": "gemini",
+      "modalities": null,
+      "ratings": null,
+      "notes": "OpenCode Zen gateway pricing channel."
+    },
+    {
+      "provider": "opencode",
+      "model": "gpt-5.2",
+      "channels": ["zen"],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": null,
+      "notes": "OpenCode Zen gateway pricing channel."
+    },
+    {
+      "provider": "opencode",
+      "model": "gpt-5.2-codex",
+      "channels": ["zen"],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": null,
+      "notes": "OpenCode Zen gateway pricing channel."
+    },
+    {
+      "provider": "opencode",
+      "model": "kimi-k2.5",
+      "channels": ["zen"],
+      "family": "kimi",
+      "modalities": null,
+      "ratings": null,
+      "notes": "OpenCode Zen gateway pricing channel."
+    }
+  ]
+}
+

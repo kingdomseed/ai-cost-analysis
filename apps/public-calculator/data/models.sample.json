@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "schema_version": "v0.1",
+    "retrieved_at": "2026-02-21",
+    "last_verified_at": "2026-02-21",
+    "notes": "Sample-only. The real models snapshot should be derived from explicit sources (benchmarks/leaderboards/model cards) and kept separate from pricing snapshots."
+  },
+  "sources": [
+    {
+      "id": "example_models_source",
+      "url": "https://example.com/models",
+      "retrieved_at": "2026-02-21",
+      "verified": false,
+      "notes": "Placeholder source for schema validation."
+    }
+  ],
+  "models": [
+    {
+      "provider": "openai",
+      "model": "gpt-5.2",
+      "channels": ["api"],
+      "family": "gpt",
+      "modalities": ["text", "code"],
+      "ratings": [
+        {
+          "system": "example-benchmark",
+          "metric": "overall",
+          "score": 0.0,
+          "scale": "0-1",
+          "as_of": "2026-02-21",
+          "source_ids": ["example_models_source"],
+          "notes": "Example only."
+        }
+      ]
+    }
+  ]
+}
+

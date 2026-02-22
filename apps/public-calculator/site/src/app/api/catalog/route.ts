@@ -1,6 +1,7 @@
 import type {
   EntitlementsSnapshotV01,
   FxSnapshotV01,
+  ModelsSnapshotV01,
   PricingSnapshotV01,
 } from "@ai-cost-analysis/core";
 import { NextResponse } from "next/server";
@@ -8,6 +9,7 @@ import { NextResponse } from "next/server";
 import {
   loadLatestEntitlementsSnapshot,
   loadLatestFxSnapshot,
+  loadLatestModelsSnapshot,
   loadLatestPricingSnapshot,
 } from "@/lib/public-datasets";
 
@@ -46,15 +48,18 @@ export async function GET(): Promise<NextResponse> {
     { date: pricingDate, data: pricingRaw },
     { date: entitlementsDate, data: entitlementsRaw },
     { date: fxDate, data: fxRaw },
+    { date: modelsDate, data: modelsRaw },
   ] = await Promise.all([
     loadLatestPricingSnapshot(),
     loadLatestEntitlementsSnapshot(),
     loadLatestFxSnapshot(),
+    loadLatestModelsSnapshot(),
   ]);
 
   const pricing = pricingRaw as PricingSnapshotV01;
   const entitlements = entitlementsRaw as EntitlementsSnapshotV01;
   const fx = fxRaw as FxSnapshotV01;
+  const models = modelsRaw as ModelsSnapshotV01;
 
   const baseCurrency =
     isRecord(pricing.meta) && typeof pricing.meta.default_currency === "string"
@@ -117,8 +122,22 @@ export async function GET(): Promise<NextResponse> {
     scenario_kinds: ["subscription_floor", "break_even_vs_token_meter"],
   }));
 
+  const modelCatalog = models.models.map((m) => ({
+    provider: m.provider,
+    model: m.model,
+    channels: m.channels,
+    family: m.family ?? null,
+    modalities: m.modalities ?? null,
+    has_ratings: Array.isArray(m.ratings) && m.ratings.length > 0,
+  }));
+
   return NextResponse.json({
-    snapshot_dates: { pricing: pricingDate, entitlements: entitlementsDate, fx: fxDate },
+    snapshot_dates: {
+      pricing: pricingDate,
+      entitlements: entitlementsDate,
+      fx: fxDate,
+      models: modelsDate,
+    },
     base_currency: baseCurrency,
     supported_workload_kinds: [
       "tokens_per_month",
@@ -145,5 +164,6 @@ export async function GET(): Promise<NextResponse> {
     token_meters: tokenMeters,
     tool_plans: toolPlans,
     subscriptions,
+    models: modelCatalog,
   });
 }

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import {
   loadLatestEntitlementsSnapshot,
   loadLatestFxSnapshot,
+  loadLatestModelsSnapshot,
   loadLatestPricingSnapshot,
 } from "@/lib/public-datasets";
 
@@ -11,7 +12,7 @@ export async function GET(
 ): Promise<NextResponse> {
   const { kind } = await params;
 
-  if (kind !== "pricing" && kind !== "entitlements" && kind !== "fx") {
+  if (kind !== "pricing" && kind !== "entitlements" && kind !== "fx" && kind !== "models") {
     return NextResponse.json({ error: "Unknown dataset kind" }, { status: 404 });
   }
 
@@ -20,7 +21,9 @@ export async function GET(
       ? await loadLatestPricingSnapshot()
       : kind === "entitlements"
         ? await loadLatestEntitlementsSnapshot()
-        : await loadLatestFxSnapshot();
+        : kind === "fx"
+          ? await loadLatestFxSnapshot()
+          : await loadLatestModelsSnapshot();
 
   return NextResponse.json({
     kind,

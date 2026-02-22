@@ -30,11 +30,23 @@ This file defines the structure we will use. We will keep it **sourced and date-
 
 For each entitlement item we capture:
 - `provider`, `plan_id`
-- `feature_name`
-- `surface` (web, desktop, mobile, cli, ide, github, api, etc.)
+- `feature_id` (stable) and `surface_id` (stable)
 - `included` (boolean) and `notes`
 - `limits` (if published) and reset windows
 - `source_url` + `retrieved_at`
+
+### Stable ID conventions (required)
+
+To support “what LLMs do I get?” and “which modalities do I have?”, we encode these as entitlements too:
+
+- Provider coverage: `feature_id = provider_access:<provider>` (e.g., `provider_access:openai`)
+- Model coverage: `feature_id = model_access:<provider>:<model>` (e.g., `model_access:openai:gpt-5.2`)
+- Modality coverage: `feature_id = modality_access:<modality>` (e.g., `modality_access:video`)
+
+`surface_id` examples:
+- `web_app`, `desktop_app`, `mobile_app`, `cli`, `ide`, `github`, `api`
+
+If we cannot source a specific model/modality list, we omit it (unknown), rather than guessing.
 
 ## Next step
 

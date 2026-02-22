@@ -74,6 +74,7 @@ async function main() {
   const pricingSchemaPath = path.join(schemaDir, "pricing.schema.v0.1.json");
   const entitlementsSchemaPath = path.join(schemaDir, "entitlements.schema.v0.1.json");
   const fxSchemaPath = path.join(schemaDir, "fx.schema.v0.1.json");
+  const modelsSchemaPath = path.join(schemaDir, "models.schema.v0.1.json");
 
   const sourceSchema = await loadSchema(sourceSchemaPath);
   ajv.addSchema(sourceSchema, sourceSchema.$id);
@@ -82,14 +83,17 @@ async function main() {
   const pricingSchema = await loadSchema(pricingSchemaPath);
   const entitlementsSchema = await loadSchema(entitlementsSchemaPath);
   const fxSchema = await loadSchema(fxSchemaPath);
+  const modelsSchema = await loadSchema(modelsSchemaPath);
 
   const validatePricing = ajv.compile(pricingSchema);
   const validateEntitlements = ajv.compile(entitlementsSchema);
   const validateFx = ajv.compile(fxSchema);
+  const validateModels = ajv.compile(modelsSchema);
 
   const pricingFiles = await listSnapshotFiles("pricing");
   const entitlementsFiles = await listSnapshotFiles("entitlements");
   const fxFiles = await listSnapshotFiles("fx");
+  const modelsFiles = await listSnapshotFiles("models");
 
   const failures = [];
 
@@ -122,6 +126,17 @@ async function main() {
       failures.push({
         file,
         errors: validateFx.errors?.map(formatAjvError) ?? ["unknown validation error"],
+      });
+    }
+  }
+
+  for (const file of modelsFiles) {
+    const data = await readJson(file);
+    const ok = validateModels(data);
+    if (!ok) {
+      failures.push({
+        file,
+        errors: validateModels.errors?.map(formatAjvError) ?? ["unknown validation error"],
       });
     }
   }

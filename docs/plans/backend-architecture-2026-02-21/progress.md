@@ -5,3 +5,5 @@
 - Confirmed Next.js is on latest stable v16 and kept `npm audit` clean without npm `overrides` by switching linting to Biome (see `docs/public-calculator/research/2026-02-21-deps-linting/findings.md`).
 - Implemented “unknown/opaque” handling: computation always returns a baseline + explicit `method/confidence/evidence`, never silent conversions.
 - Expanded backend scenario support: quotas, compute units, premium requests (best-effort), break-even vs token-meter, budget→token capacity.
+- Added a plan-matrix API endpoint for budgeting (which plans fit) plus multi-provider bundle enumeration.
+- Added a `models` dataset scaffold for model metadata/ratings (ratings may be empty until sourced).

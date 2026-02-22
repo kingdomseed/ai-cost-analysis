@@ -58,6 +58,13 @@
       "url": "https://docs.windsurf.com/windsurf/deepwiki",
       "retrieved_at": "2026-02-21",
       "verified": true
+    },
+    {
+      "id": "openai_chatgpt_pricing_capture",
+      "url": "docs/public-calculator/research/2026-02-21-pricing-sweep/user-chatgpt-pricing-capture.2026-02-21.md",
+      "retrieved_at": "2026-02-21",
+      "verified": false,
+      "notes": "User-provided capture because chatgpt.com/pricing was Cloudflare-blocked from fetch in this environment."
     }
   ],
   "entitlements": [
@@ -197,7 +204,66 @@
         ]
       },
       "notes": "Bugbot posts PR review comments on GitHub."
+    },
+    {
+      "provider_id": "openai",
+      "product": "ChatGPT",
+      "plan_id": "chatgpt-pro",
+      "region": "global",
+      "feature_id": "provider_access:openai",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": "Usage described as 'unlimited' subject to reasonable use/abuse guardrails; no token-equivalent quota provided.",
+      "evidence": {
+        "type": "authenticated_ui_capture",
+        "source_ids": ["openai_chatgpt_pricing_capture"]
+      },
+      "notes": "Provider coverage derived from user-captured pricing page text."
+    },
+    {
+      "provider_id": "openai",
+      "product": "ChatGPT",
+      "plan_id": "chatgpt-pro",
+      "region": "global",
+      "feature_id": "model_access:openai:gpt-5.2-instant",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": "Described as unlimited access subject to guardrails.",
+      "evidence": {
+        "type": "authenticated_ui_capture",
+        "source_ids": ["openai_chatgpt_pricing_capture"]
+      },
+      "notes": "Model naming comes from the pricing page wording; map to API models separately."
+    },
+    {
+      "provider_id": "openai",
+      "product": "ChatGPT",
+      "plan_id": "chatgpt-pro",
+      "region": "global",
+      "feature_id": "model_access:openai:gpt-5.2-thinking",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": "Described as unlimited access subject to guardrails.",
+      "evidence": {
+        "type": "authenticated_ui_capture",
+        "source_ids": ["openai_chatgpt_pricing_capture"]
+      },
+      "notes": "Model naming comes from the pricing page wording; map to API models separately."
+    },
+    {
+      "provider_id": "openai",
+      "product": "ChatGPT",
+      "plan_id": "chatgpt-pro",
+      "region": "global",
+      "feature_id": "model_access:openai:gpt-5.2-pro",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": "Described as included access; quota not specified on pricing page capture.",
+      "evidence": {
+        "type": "authenticated_ui_capture",
+        "source_ids": ["openai_chatgpt_pricing_capture"]
+      },
+      "notes": "Model naming comes from the pricing page wording; map to API models separately."
     }
   ]
 }
-
