@@ -40,8 +40,8 @@ Phase 4
 
 ### Phase 4 — Verification + commit
 - [x] Run `npm audit`, dataset validation, lint, tests, build
-- [ ] Commit changes with a scoped message
-- **Status:** in_progress
+- [x] Commit changes with a scoped message
+- **Status:** complete
 
 ## Open Questions (defer until needed)
 
