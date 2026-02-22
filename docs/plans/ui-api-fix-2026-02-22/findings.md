@@ -63,6 +63,8 @@
 - `biome.json` and `layout.tsx` changes are minimal and consistent (no action needed).
 - Line-number references captured for reporting.
 - API contract line references captured for catalog additions.
+- Tool→provider entitlement mapping now falls back to plan_id-based provider inference when unambiguous.
+- Catalog regions now normalized to simplified tiers (us/eu/...) with a `global` fallback; UI treats region as pricing tier and exposes output currency selector.
 
 ## Technical Decisions
 <!-- 

@@ -50,8 +50,11 @@
 - Actions taken:
   - Removed UI heuristics and API-rate fetch; UI now renders plan-matrix outputs
   - Added token meter selector based on catalog token meters
+  - Added baseline token-meter calculation via `/api/calculate`
+  - Added region + currency selectors and provider requirement checkboxes
+  - Rendered multi-provider bundles in budget view
   - Fixed Radix imports and dependencies
-  - Repaired catalog regions derivation and tool→provider mapping
+  - Repaired catalog regions derivation and tool→provider mapping (with plan_id fallback)
   - Updated API contract catalog fields
 - Files created/modified:
   - `apps/public-calculator/site/src/app/page.tsx`
@@ -78,6 +81,8 @@
 | Test | Input | Expected | Actual | Status |
 |------|-------|----------|--------|--------|
 | Next build | `npm run build` (apps/public-calculator/site) | Build succeeds | Build succeeded | ✓ |
+| Next build (post UI changes) | `npm run build` (apps/public-calculator/site) | Build succeeds | Build succeeded | ✓ |
+| Next build (region/currency) | `npm run build` (apps/public-calculator/site) | Build succeeds | Build succeeded | ✓ |
 
 ## Error Log
 <!-- 

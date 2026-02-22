@@ -21,6 +21,20 @@ function uniqSorted(values: string[]): string[] {
   return Array.from(new Set(values)).sort();
 }
 
+function simplifiedRegionFrom(region: string): string | null {
+  const value = region.toLowerCase();
+  if (value === "us" || value === "eu" || value === "cn") return value;
+  if (value.startsWith("us-")) return "us";
+  if (value.startsWith("eu-")) return "eu";
+  if (value.startsWith("cn-")) return "cn";
+  if (value.startsWith("ap-")) return "ap";
+  if (value.startsWith("sa-")) return "sa";
+  if (value.startsWith("ca-")) return "ca";
+  if (value.startsWith("af-")) return "af";
+  if (value.startsWith("me-")) return "me";
+  return null;
+}
+
 const TOOL_PROVIDER_ID_MAP: Record<string, string> = {
   cursor: "cursor",
   "github copilot": "github",
@@ -28,8 +42,25 @@ const TOOL_PROVIDER_ID_MAP: Record<string, string> = {
   windsurf: "windsurf",
 };
 
-function providerIdForTool(tool: string): string | null {
-  return TOOL_PROVIDER_ID_MAP[tool.toLowerCase()] ?? null;
+function providerIdForTool(
+  tool: string,
+  planId: string,
+  entitlements: EntitlementsSnapshotV01,
+): string | null {
+  const explicit = TOOL_PROVIDER_ID_MAP[tool.toLowerCase()];
+  if (explicit) return explicit;
+
+  const candidates = new Set(
+    entitlements.entitlements
+      .filter((e) => e.plan_id === planId)
+      .map((e) => e.provider_id),
+  );
+
+  if (candidates.size === 1) {
+    return Array.from(candidates)[0] ?? null;
+  }
+
+  return null;
 }
 
 function scenarioKindsForToolPlan(pricingType: string): string[] {
@@ -84,11 +115,13 @@ export async function GET(): Promise<NextResponse> {
       ? uniqSorted([baseCurrency, ...Object.keys(fx.rates ?? {})])
       : [baseCurrency];
 
-  const regions = uniqSorted(
-    pricing.api_rates.flatMap((rate) =>
-      (rate.regional_rates ?? []).flatMap((entry) => entry.regions ?? []),
-    ),
+  const derivedRegions = uniqSorted(
+    pricing.api_rates
+      .flatMap((rate) => (rate.regional_rates ?? []).flatMap((entry) => entry.regions ?? []))
+      .map((region) => simplifiedRegionFrom(region))
+      .filter((region): region is string => typeof region === "string"),
   );
+  const regions = derivedRegions.length > 0 ? derivedRegions : ["global"];
 
   // Build unified providers list
   // Type 1: Direct API providers (token meters)
@@ -163,7 +196,7 @@ export async function GET(): Promise<NextResponse> {
     const price = plan.subscription_price_usd ?? plan.subscription_price_usd_per_seat ?? null;
 
     // Find what models this tool provides access to
-    const providerId = providerIdForTool(plan.tool);
+    const providerId = providerIdForTool(plan.tool, plan.plan_id, entitlements);
     const toolEntitlements = providerId
       ? entitlements.entitlements.filter(
           (e) => e.provider_id === providerId && e.plan_id === plan.plan_id,
