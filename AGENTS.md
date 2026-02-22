@@ -8,7 +8,9 @@ This repo supports two deliverables: **(1) private personal usage/spend analysis
 - **Every number has provenance**: attach `source_id` evidence and record `retrieved_at` / `last_verified_at`.
 - **No silent guessing**: do not invent credit↔token conversions; allow explicit user assumptions or sourced derivations.
 - **Region-aware**: store region variants side-by-side; never collapse CN and US/global.
-- **API-first**: keep the math in pure functions/types (`packages/core/`) and treat the UI as a renderer.
+- **API-first**: keep the math in pure functions/types (`packages/core/`) and treat the UI as a renderer (no client-side guessing).
+- **Always show a baseline**: when a workload is provided, call `/api/calculate` for token‑meter baseline; plan‑matrix alone is not sufficient.
+- **Region = pricing tier**: expose simplified tiers (US/EU/etc), not cloud regions. Use `target_region` + `token_meter_default.region` for pricing logic.
 
 ## Project Structure & Module Organization
 
@@ -68,3 +70,9 @@ Do **not** commit invoices, raw usage exports, or any personal identifiers. Keep
 - Prefer **official provider/tool pages**; add 1+ corroborating sources only if they’re reputable.
 - Encode uncertainty explicitly: set `verified: false` and add an `availability_note` / `notes` field rather than guessing.
 - Separate primitives: **API token meters** vs **credits/pools** vs **subscriptions/quotas** (do not conflate them).
+
+## API Integration Notes
+
+- **Catalog** (`GET /api/catalog`): provides `token_meters`, `tool_plans`, `subscriptions`, `options`, and `models_catalog`.
+- **Plan matrix** (`POST /api/plan-matrix`): use for plan floors/effective costs, `fits_budget`, and multi‑provider bundles.
+- **Baseline** (`POST /api/calculate`): use for token‑meter baseline cost and method/confidence labels.
