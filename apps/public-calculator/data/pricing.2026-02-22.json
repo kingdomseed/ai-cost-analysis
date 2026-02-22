@@ -1,0 +1,2422 @@
+{
+  "meta": {
+    "schema_version": "0.1",
+    "retrieved_at": "2026-02-22",
+    "last_verified_at": "2026-02-22",
+    "default_currency": "USD",
+    "notes": "Pricing snapshot for Feb 2026. All entries must include sources + dates. Unverified items should not be treated as authoritative."
+  },
+  "sources": [
+    {
+      "id": "anthropic_pricing",
+      "url": "https://www.anthropic.com/pricing",
+      "retrieved_at": "2026-02-22",
+      "verified": true
+    },
+    {
+      "id": "aws_bedrock_pricelist_api",
+      "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonBedrockFoundationModels/current/index.json",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "aws_bedrock_pricing",
+      "url": "https://aws.amazon.com/bedrock/pricing/",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "aws_q_developer_org_billing_docs",
+      "url": "https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/tracking-across-org-cost-usage.html",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "aws_q_developer_pricing",
+      "url": "https://aws.amazon.com/q/developer/pricing/",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "aws_q_developer_quotas_docs",
+      "url": "https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/quotas.html",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "aws_q_developer_tiers_docs",
+      "url": "https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/q-tiers.html",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "azure_retail_prices_api",
+      "url": "https://prices.azure.com/api/retail/prices",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "bolt_pricing",
+      "url": "https://bolt.new/pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "chatgpt_pricing",
+      "url": "https://chatgpt.com/pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": false
+    },
+    {
+      "id": "cline_authorizing",
+      "url": "https://docs.cline.bot/getting-started/authorizing-with-cline",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "cline_pricing",
+      "url": "https://cline.bot/pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "codeium_pricing",
+      "url": "https://codeium.com/pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "cognition_terms",
+      "url": "https://www.cognition.ai/pages/terms-of-service",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "cursor_account_pricing_docs",
+      "url": "https://cursor.com/docs/account/pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "cursor_marketing_pricing",
+      "url": "https://cursor.com/pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "cursor_model_pricing_docs",
+      "url": "https://cursor.com/docs/models#model-pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "devin_billing_docs",
+      "url": "https://docs.devin.ai/billing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "devin_pricing",
+      "url": "https://devin.ai/pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "gemini_api_pricing",
+      "url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "gemini_subscriptions_us",
+      "url": "https://gemini.google/us/subscriptions/?hl=en",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "github_copilot_individual_plans_docs",
+      "url": "https://docs.github.com/en/copilot/concepts/billing/individual-plans",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "github_copilot_premium_requests_docs",
+      "url": "https://docs.github.com/en/copilot/concepts/billing/copilot-requests",
+      "retrieved_at": "2026-02-22",
+      "verified": true
+    },
+    {
+      "id": "google_gemini_apps_limits",
+      "url": "https://support.google.com/gemini/answer/16275805?hl=en",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "google_one_ai_plans",
+      "url": "https://one.google.com/about/google-ai-plans/",
+      "retrieved_at": "2026-02-22",
+      "verified": true
+    },
+    {
+      "id": "google_one_ai_plus_benefits",
+      "url": "https://support.google.com/googleone/answer/16882689?hl=en",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "google_one_ai_pro_benefits",
+      "url": "https://support.google.com/googleone/answer/14534406?hl=en",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "google_one_ai_ultra_benefits",
+      "url": "https://support.google.com/googleone/answer/16286513?hl=en",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "google_one_pricing_feed_us",
+      "url": "https://one.google.com/intl/ALL_us/about/feeds/pricing_2026_01_27.json",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "jetbrains_ai_assistant_licensing",
+      "url": "https://www.jetbrains.com/help/ai-assistant/licensing-and-subscriptions.html",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "jetbrains_ai_buy",
+      "url": "https://www.jetbrains.com/ai-ides/buy/",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "jetbrains_ai_credits_terms",
+      "url": "https://jetbrains.com/legal/docs/terms/jetbrains-ai-credits",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "jetbrains_ai_faq",
+      "url": "https://lp.jetbrains.com/ai-ides-faq/",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "jetbrains_ai_quota_blog",
+      "url": "https://blog.jetbrains.com/ai/2025/09/faq-new-ai-quota/",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "jetbrains_console_ai_management",
+      "url": "https://www.jetbrains.com/help/jetbrains-console/ai-management.html",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "jetbrains_junie_cli",
+      "url": "https://junie.jetbrains.com/docs/junie-cli.html",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "jetbrains_junie_ide_plugin",
+      "url": "https://junie.jetbrains.com/docs/junie-ide-plugin.html",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "kimi_black_friday_rules",
+      "url": "https://www.kimi.com/user/agreement/black-friday",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "kimi_code_docs_benefits",
+      "url": "https://www.kimi.com/coding/docs/en/benefits.html",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "kimi_code_docs_overview",
+      "url": "https://www.kimi.com/coding/docs/en/",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "kimi_code_landing",
+      "url": "https://www.kimi.com/code",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "kimi_member_benefits_v2_md",
+      "url": "https://kimi-img.moonshot.cn/prod-chat-kimi/kimi/member_benefits_v2.md",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "kimi_membership_benefits",
+      "url": "https://www.kimi.com/user/agreement/zh/membershipBenefits",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "kimi_membership_landing",
+      "url": "https://www.kimi.com/membership/landing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "lovable_plans_and_credits_docs",
+      "url": "https://docs.lovable.dev/introduction/plans-and-credits",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "lovable_pricing",
+      "url": "https://lovable.dev/pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "moonshot_pricing_en",
+      "url": "https://platform.moonshot.ai/docs/pricing/chat",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "openai_api_pricing",
+      "url": "https://developers.openai.com/api/docs/pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "openai_codex_pricing",
+      "url": "https://developers.openai.com/codex/pricing/",
+      "retrieved_at": "2026-02-22",
+      "verified": true
+    },
+    {
+      "id": "opencode_zen_docs",
+      "url": "https://opencode.ai/docs/zen/",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "openrouter_faq",
+      "url": "https://openrouter.ai/docs/faq",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "qoder_credits_docs",
+      "url": "https://docs.qoder.com/Credits",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "qoder_pricing_docs",
+      "url": "https://docs.qoder.com/account/pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "replit_ai_billing",
+      "url": "https://docs.replit.com/billing/ai-billing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "replit_ai_integrations",
+      "url": "https://docs.replit.com/replitai/replit-ai-integrations",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "replit_deployment_pricing",
+      "url": "https://docs.replit.com/billing/deployment-pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "replit_managing_spend",
+      "url": "https://docs.replit.com/billing/managing-spend",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "replit_pricing",
+      "url": "https://replit.com/pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "replit_pro_plan_blog",
+      "url": "https://blog.replit.com/pro-plan",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "replit_teams_billing_overview",
+      "url": "https://docs.replit.com/billing/teams-billing/overview",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "replit_usage_based_billing",
+      "url": "https://docs.replit.com/billing/about-usage-based-billing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "sourcegraph_cody_faq",
+      "url": "https://sourcegraph.com/docs/cody/faq",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "sourcegraph_cody_plan_changes_blog",
+      "url": "https://sourcegraph.com/blog/changes-to-cody-free-pro-and-enterprise-starter-plans",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "sourcegraph_cody_plan_changes_changelog",
+      "url": "https://sourcegraph.com/changelog/cody-plan-changes",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "sourcegraph_pricing",
+      "url": "https://sourcegraph.com/pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "tabnine_pricing",
+      "url": "https://www.tabnine.com/pricing/",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "verdent_credits_detail",
+      "url": "https://www.verdent.ai/credits-detail",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "verdent_docs_pricing_overview",
+      "url": "https://docs.verdent.ai/verdent/pricing/overview",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "vertex_genai_pricing",
+      "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "warp_addon_credits",
+      "url": "https://docs.warp.dev/support-and-community/plans-and-billing/add-on-credits",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "warp_pricing",
+      "url": "https://www.warp.dev/pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "windsurf_pricing",
+      "url": "https://windsurf.com/pricing",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "windsurf_usage_docs",
+      "url": "https://docs.windsurf.com/windsurf/accounts/usage",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    }
+  ],
+  "api_rates": [
+    {
+      "provider": "anthropic",
+      "channel": "api",
+      "model": "claude-haiku-4.5",
+      "unit": "usd_per_1m_tokens",
+      "rates": {
+        "input": 1,
+        "output": 5,
+        "cache_write_5m": 1.25,
+        "cache_read_5m": 0.1
+      },
+      "notes": "Haiku row on Anthropic pricing page includes caching write/read prices; no <=200k/>200k split shown for this row.",
+      "source_ids": [
+        "anthropic_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "anthropic",
+      "channel": "api",
+      "model": "claude-opus-4.6",
+      "unit": "usd_per_1m_tokens",
+      "tiers": [
+        {
+          "name": "standard",
+          "applies_when": "prompts <= 200k input tokens",
+          "rates": {
+            "input": 5,
+            "output": 25,
+            "cache_write_5m": 6.25,
+            "cache_read_5m": 0.5
+          }
+        },
+        {
+          "name": "long_context",
+          "applies_when": "prompts > 200k input tokens",
+          "rates": {
+            "input": 10,
+            "output": 37.5,
+            "cache_write_5m": 12.5,
+            "cache_read_5m": 1
+          }
+        }
+      ],
+      "notes": "Anthropic also documents optional 1-hour cache write pricing; store separately if needed for the calculator UI.",
+      "source_ids": [
+        "anthropic_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "anthropic",
+      "channel": "api",
+      "model": "claude-sonnet-4.6",
+      "unit": "usd_per_1m_tokens",
+      "tiers": [
+        {
+          "name": "standard",
+          "applies_when": "prompts <= 200k input tokens",
+          "rates": {
+            "input": 3,
+            "output": 15,
+            "cache_write_5m": 3.75,
+            "cache_read_5m": 0.3
+          }
+        },
+        {
+          "name": "long_context",
+          "applies_when": "prompts > 200k input tokens",
+          "rates": {
+            "input": 6,
+            "output": 22.5,
+            "cache_write_5m": 7.5,
+            "cache_read_5m": 0.6
+          }
+        }
+      ],
+      "source_ids": [
+        "anthropic_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "aws",
+      "channel": "bedrock",
+      "model": "claude-opus-4.6",
+      "unit": "usd_per_1m_tokens",
+      "tiers": [
+        {
+          "name": "global",
+          "rates": {
+            "input": 5,
+            "output": 25,
+            "cache_write_5m": 6.25,
+            "cache_read": 0.5,
+            "cache_write_1h": 10,
+            "batch_input": 2.5,
+            "batch_output": 12.5
+          }
+        },
+        {
+          "name": "long_context_global",
+          "rates": {
+            "input": 10,
+            "output": 37.5,
+            "cache_write_5m": 12.5,
+            "cache_read": 1,
+            "cache_write_1h": 20,
+            "batch_input": 5,
+            "batch_output": 18.75
+          }
+        }
+      ],
+      "notes": "Numeric meters extracted from the AWS Price List API (Amazon Bedrock Foundation Models). Treat Global vs Long context as distinct meters/SKUs.",
+      "source_ids": [
+        "aws_bedrock_pricelist_api"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "aws",
+      "channel": "bedrock",
+      "model": "claude-sonnet-4.6",
+      "unit": "usd_per_1m_tokens",
+      "tiers": [
+        {
+          "name": "global",
+          "rates": {
+            "input": 3,
+            "output": 15,
+            "cache_write_5m": 3.75,
+            "cache_read": 0.3,
+            "cache_write_1h": 6,
+            "batch_input": 1.5,
+            "batch_output": 7.5
+          }
+        },
+        {
+          "name": "long_context_global",
+          "rates": {
+            "input": 6,
+            "output": 22.5,
+            "cache_write_5m": 7.5,
+            "cache_read": 0.6,
+            "cache_write_1h": 12,
+            "batch_input": 3,
+            "batch_output": 11.25
+          }
+        }
+      ],
+      "notes": "Numeric meters extracted from the AWS Price List API (Amazon Bedrock Foundation Models). Treat Global vs Long context as distinct meters/SKUs.",
+      "source_ids": [
+        "aws_bedrock_pricelist_api"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "aws",
+      "channel": "bedrock",
+      "model": "kimi-k2.5",
+      "unit": "usd_per_1m_tokens",
+      "regional_rates": [
+        {
+          "regions": [
+            "us-east-1",
+            "us-east-2",
+            "us-west-2"
+          ],
+          "input": 0.6,
+          "output": 3,
+          "notes": "Pricing page groups US regions as N. Virginia/Ohio/Oregon."
+        },
+        {
+          "regions": [
+            "ap-south-1"
+          ],
+          "input": 0.72,
+          "output": 3.6,
+          "notes": "Pricing page groups as Mumbai."
+        },
+        {
+          "regions": [
+            "ap-southeast-2"
+          ],
+          "input": 0.618,
+          "output": 3.09,
+          "notes": "Pricing page groups as Sydney."
+        }
+      ],
+      "source_ids": [
+        "aws_bedrock_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "azure",
+      "channel": "azure-openai",
+      "model": "gpt-5.2",
+      "unit": "usd_per_1m_tokens",
+      "tiers": [
+        {
+          "name": "global_standard",
+          "rates": {
+            "input": 1.75,
+            "cached_input": 0.175,
+            "output": 14
+          }
+        },
+        {
+          "name": "data_zone_standard",
+          "rates": {
+            "input": 1.925,
+            "cached_input": 0.1925,
+            "output": 15.4
+          }
+        },
+        {
+          "name": "global_batch",
+          "rates": {
+            "input": 0.875,
+            "cached_input": 0.0875,
+            "output": 7
+          }
+        }
+      ],
+      "evidence": {
+        "retail_prices_api_sample_region": "eastus",
+        "effective_start_date": "2025-12-01T00:00:00Z",
+        "example_queries": [
+          "https://prices.azure.com/api/retail/prices?$top=1&$filter=meterName%20eq%20%27GPT%205.2%20inp%20Gl%201M%20Tokens%27%20and%20armRegionName%20eq%20%27eastus%27",
+          "https://prices.azure.com/api/retail/prices?$top=1&$filter=meterName%20eq%20%27GPT%205.2%20cd%20inp%20Gl%201M%20Tokens%27%20and%20armRegionName%20eq%20%27eastus%27",
+          "https://prices.azure.com/api/retail/prices?$top=1&$filter=meterName%20eq%20%27GPT%205.2%20opt%20Gl%201M%20Tokens%27%20and%20armRegionName%20eq%20%27eastus%27",
+          "https://prices.azure.com/api/retail/prices?$top=1&$filter=meterName%20eq%20%27GPT%205.2%20Batch%20inp%20Gl%201M%20Tokens%27%20and%20armRegionName%20eq%20%27eastus%27"
+        ]
+      },
+      "notes": "Azure pricing page shows $- placeholders for GPT-5.2; Retail Prices API provides numeric source-of-truth meters.",
+      "source_ids": [
+        "azure_retail_prices_api"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "azure",
+      "channel": "azure-openai",
+      "model": "gpt-5.2-codex",
+      "unit": "usd_per_1m_tokens",
+      "tiers": [
+        {
+          "name": "global_standard",
+          "rates": {
+            "input": 1.75,
+            "cached_input": 0.175,
+            "output": 14
+          }
+        },
+        {
+          "name": "data_zone_standard",
+          "rates": {
+            "input": 1.925,
+            "cached_input": 0.1925,
+            "output": 15.4
+          }
+        }
+      ],
+      "notes": "No batch meters verified for gpt-5.2-codex on Azure in this sweep.",
+      "source_ids": [
+        "azure_retail_prices_api"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "google",
+      "channel": "gemini-api",
+      "model": "gemini-2.5-pro",
+      "unit": "usd_per_1m_tokens",
+      "tiers": [
+        {
+          "name": "standard_<=200k",
+          "rates": {
+            "input": 1.25,
+            "output": 10,
+            "cached_input": 0.125,
+            "cache_storage_per_1m_tokens_per_hour": 4.5
+          }
+        },
+        {
+          "name": "standard_>200k",
+          "rates": {
+            "input": 2.5,
+            "output": 15,
+            "cached_input": 0.25,
+            "cache_storage_per_1m_tokens_per_hour": 4.5
+          }
+        }
+      ],
+      "source_ids": [
+        "gemini_api_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "google",
+      "channel": "gemini-api",
+      "model": "gemini-3-pro-preview",
+      "unit": "usd_per_1m_tokens",
+      "tiers": [
+        {
+          "name": "standard_<=200k",
+          "rates": {
+            "input": 2,
+            "output": 12,
+            "cached_input": 0.2,
+            "cache_storage_per_1m_tokens_per_hour": 4.5
+          }
+        },
+        {
+          "name": "standard_>200k",
+          "rates": {
+            "input": 4,
+            "output": 18,
+            "cached_input": 0.4,
+            "cache_storage_per_1m_tokens_per_hour": 4.5
+          }
+        }
+      ],
+      "source_ids": [
+        "gemini_api_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "moonshot",
+      "channel": "api",
+      "model": "kimi-k2.5",
+      "unit": "usd_per_1m_tokens",
+      "rates": {
+        "input_cache_hit": 0.1,
+        "input_cache_miss": 0.6,
+        "output": 3
+      },
+      "notes": "Moonshot bills input tokens at different rates depending on cache hit vs cache miss. The pricing doc states values are per 1M tokens and inclusive of tax.",
+      "source_ids": [
+        "moonshot_pricing_en"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "openai",
+      "channel": "api",
+      "model": "gpt-5.2",
+      "unit": "usd_per_1m_tokens",
+      "rates": {
+        "input": 1.75,
+        "cached_input": 0.175,
+        "output": 14
+      },
+      "notes": "OpenAI pricing table states reasoning tokens are billed as output tokens.",
+      "source_ids": [
+        "openai_api_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "openai",
+      "channel": "api",
+      "model": "gpt-5.2-codex",
+      "unit": "usd_per_1m_tokens",
+      "rates": {
+        "input": 1.75,
+        "cached_input": 0.175,
+        "output": 14
+      },
+      "notes": "Same token rates as gpt-5.2 on the OpenAI pricing table.",
+      "source_ids": [
+        "openai_api_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "opencode",
+      "channel": "zen",
+      "model": "claude-opus-4.6",
+      "unit": "usd_per_1m_tokens",
+      "tiers": [
+        {
+          "name": "standard_<=200k",
+          "rates": {
+            "input": 5,
+            "output": 25,
+            "cached_input": 0.5,
+            "cache_write": 6.25
+          }
+        },
+        {
+          "name": "standard_>200k",
+          "rates": {
+            "input": 10,
+            "output": 37.5,
+            "cached_input": 1,
+            "cache_write": 12.5
+          }
+        }
+      ],
+      "notes": "OpenCode Zen price table includes long-context premiums as separate tiers (<=200k vs >200k).",
+      "source_ids": [
+        "opencode_zen_docs"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "opencode",
+      "channel": "zen",
+      "model": "gemini-3-pro-preview",
+      "unit": "usd_per_1m_tokens",
+      "tiers": [
+        {
+          "name": "standard_<=200k",
+          "rates": {
+            "input": 2,
+            "output": 12,
+            "cached_input": 0.2
+          }
+        }
+      ],
+      "notes": "Zen lists Gemini 3 Pro prices; this is captured as a separate channel from Google’s direct API pricing.",
+      "source_ids": [
+        "opencode_zen_docs"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "opencode",
+      "channel": "zen",
+      "model": "gpt-5.2",
+      "unit": "usd_per_1m_tokens",
+      "rates": {
+        "input": 1.75,
+        "cached_input": 0.175,
+        "output": 14
+      },
+      "notes": "OpenCode Zen publishes per-1M token prices; this entry reflects the Zen price table for GPT 5.2.",
+      "source_ids": [
+        "opencode_zen_docs"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "opencode",
+      "channel": "zen",
+      "model": "gpt-5.2-codex",
+      "unit": "usd_per_1m_tokens",
+      "rates": {
+        "input": 1.75,
+        "cached_input": 0.175,
+        "output": 14
+      },
+      "notes": "OpenCode Zen publishes per-1M token prices; this entry reflects the Zen price table for GPT 5.2 Codex.",
+      "source_ids": [
+        "opencode_zen_docs"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "opencode",
+      "channel": "zen",
+      "model": "kimi-k2.5",
+      "unit": "usd_per_1m_tokens",
+      "rates": {
+        "input": 0.6,
+        "cached_input": 0.08,
+        "output": 3
+      },
+      "notes": "Zen lists a single cached read price; this is not the same structure as Moonshot’s cache hit/miss meter.",
+      "source_ids": [
+        "opencode_zen_docs"
+      ],
+      "verified": true
+    }
+  ],
+  "tool_plans": [
+    {
+      "tool": "Amazon Q Developer",
+      "plan_id": "amazon-q-free",
+      "pricing_type": "free_with_limits",
+      "subscription_price_usd": 0,
+      "included_agentic_requests_per_month": 50,
+      "included_java_transform_loc_per_month": 1000,
+      "metering": "Free tier has fixed monthly limits for agentic requests and Java upgrade (transformation) lines of code. Limits vary by login type (IAM user vs Builder ID); see quotas docs.",
+      "source_ids": [
+        "aws_q_developer_pricing",
+        "aws_q_developer_quotas_docs",
+        "aws_q_developer_tiers_docs"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Amazon Q Developer",
+      "plan_id": "amazon-q-pro",
+      "pricing_type": "seat_subscription_with_usage_overage",
+      "subscription_price_usd_per_seat": 19,
+      "included_java_transform_loc_per_month_per_seat": 4000,
+      "included_java_transform_pooling": "Pooled at payer account level across Pro subscriptions.",
+      "overage_java_transform_usd_per_loc": 0.003,
+      "included_agentic_requests_per_month": null,
+      "included_agentic_requests_note": "Pricing page states Pro includes increased agentic request limits; the quotas doc lists IDE/CLI limits as inference calls/month per user.",
+      "metering": "Seat-based Pro subscription billed per user-month. Java transformation has an included LOC allocation and pay-per-use overage beyond pooled included LOC.",
+      "source_ids": [
+        "aws_q_developer_pricing",
+        "aws_q_developer_quotas_docs",
+        "aws_q_developer_org_billing_docs"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Bolt.new",
+      "plan_id": "bolt-free",
+      "pricing_type": "token_quota",
+      "subscription_price_usd": 0,
+      "included_tokens_daily": 300000,
+      "included_tokens_per_month": 1000000,
+      "metering": "Usage is described in tokens with daily and monthly limits.",
+      "source_ids": [
+        "bolt_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Bolt.new",
+      "plan_id": "bolt-pro",
+      "pricing_type": "token_quota",
+      "subscription_price_usd": 25,
+      "included_tokens_daily": null,
+      "included_tokens_per_month": 10000000,
+      "rollover": "P1M",
+      "metering": "Pricing page describes no daily token limit and a monthly token allowance that 'starts at 10M tokens per month'; unused tokens roll over.",
+      "source_ids": [
+        "bolt_pricing"
+      ],
+      "verified": true,
+      "notes": "Bolt does not publish an explicit per-token overage rate on the pricing page; treat this as a quota-based plan unless overage pricing is published."
+    },
+    {
+      "tool": "Bolt.new",
+      "plan_id": "bolt-teams",
+      "pricing_type": "seat_subscription_with_token_quota",
+      "subscription_price_usd_per_seat": 30,
+      "metering": "Teams plan is priced per member and includes Pro features (including token quota mechanics) plus team admin/billing controls.",
+      "source_ids": [
+        "bolt_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Cline",
+      "plan_id": "cline-open-source",
+      "pricing_type": "subscription",
+      "subscription_price_usd": 0,
+      "metering": "BYOK token billing via your chosen provider, or Cline Provider credits if enabled.",
+      "notes": "Pricing page lists an Open Source free tier for individual developers. The Cline Provider credit pack pricing was not captured publicly in this sweep.",
+      "source_ids": [
+        "cline_pricing",
+        "cline_authorizing"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Cline",
+      "plan_id": "cline-teams",
+      "pricing_type": "seat_subscription",
+      "subscription_price_usd_per_seat": 0,
+      "regular_subscription_price_usd_per_seat": 20,
+      "promotions": [
+        {
+          "kind": "intro_promo",
+          "price_usd_per_seat": 0,
+          "effective_until": "2026-03-31",
+          "effective_until_notes": "Pricing page states '$0/mo through Q1 2026'. Q1 2026 ends 2026-03-31.",
+          "source_ids": [
+            "cline_pricing"
+          ]
+        }
+      ],
+      "notes": "Seat-based plan; pricing page states it becomes $20/mo/user after the promo period.",
+      "source_ids": [
+        "cline_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Cursor",
+      "plan_id": "cursor-individual",
+      "pricing_type": "api_pool_usd",
+      "subscription_price_usd": 60,
+      "included_pool_usd": 70,
+      "overage_policy": "payg_after_pool",
+      "metering": "Token-metered at model list API prices. Max Mode adds a 20% upcharge.",
+      "source_ids": [
+        "cursor_marketing_pricing",
+        "cursor_account_pricing_docs",
+        "cursor_model_pricing_docs"
+      ],
+      "verified": true,
+      "notes": "Cursor docs list additional tiers (e.g., Pro $20) that are not visible on the marketing pricing page; treat those as separate plan entries only when availability is confirmed."
+    },
+    {
+      "tool": "Cursor",
+      "plan_id": "cursor-pro",
+      "pricing_type": "api_pool_usd",
+      "subscription_price_usd": 20,
+      "included_pool_usd": 20,
+      "overage_policy": "payg_after_pool",
+      "metering": "Token-metered at model list API prices. Max Mode adds a 20% upcharge.",
+      "source_ids": [
+        "cursor_account_pricing_docs",
+        "cursor_model_pricing_docs"
+      ],
+      "verified": true,
+      "availability_note": "Cursor docs describe this tier, but it is not prominently listed on cursor.com/pricing in this sweep; may be legacy or not purchasable for new users."
+    },
+    {
+      "tool": "Cursor",
+      "plan_id": "cursor-ultra",
+      "pricing_type": "api_pool_usd",
+      "subscription_price_usd": 200,
+      "included_pool_usd": 400,
+      "overage_policy": "payg_after_pool",
+      "metering": "Token-metered at model list API prices. Max Mode adds a 20% upcharge.",
+      "source_ids": [
+        "cursor_account_pricing_docs",
+        "cursor_model_pricing_docs"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Devin",
+      "plan_id": "devin-core",
+      "pricing_type": "compute_units",
+      "subscription_price_usd": 0,
+      "unit_name": "ACU",
+      "unit_price_usd": 2.25,
+      "notes": "Core is pay-as-you-go ACUs (pricing page says 'starting at $20'). ACU consumption depends on task runtime and VM activity; no token conversion is published.",
+      "source_ids": [
+        "devin_pricing",
+        "devin_billing_docs"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Devin",
+      "plan_id": "devin-team",
+      "pricing_type": "compute_units",
+      "subscription_price_usd": 500,
+      "included_units": 250,
+      "unit_name": "ACU",
+      "notes": "Team subscription includes 250 ACUs; on-demand ACU pricing after included units is not explicitly stated on the pricing page.",
+      "source_ids": [
+        "devin_pricing",
+        "devin_billing_docs"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "GitHub Copilot",
+      "plan_id": "copilot-free",
+      "pricing_type": "premium_requests",
+      "subscription_price_usd": 0,
+      "included_premium_requests_per_month": 50,
+      "included_inline_suggestions_per_month": 2000,
+      "overage_usd_per_premium_request": null,
+      "metering": "Premium requests are deducted per interaction according to the model multiplier table. Counters reset on the 1st of each month at 00:00:00 UTC.",
+      "premium_request_multipliers": "See copilot-requests source; multipliers are subject to change and are not embedded in the markdown API response.",
+      "source_ids": [
+        "github_copilot_individual_plans_docs",
+        "github_copilot_premium_requests_docs"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "GitHub Copilot",
+      "plan_id": "copilot-pro",
+      "pricing_type": "premium_requests",
+      "subscription_price_usd": 10,
+      "subscription_price_usd_per_year": 100,
+      "included_premium_requests_per_month": 300,
+      "overage_usd_per_premium_request": 0.04,
+      "metering": "On paid plans, some included models have a 0x multiplier (no premium requests consumed). Premium request counters reset on the 1st of each month at 00:00:00 UTC.",
+      "premium_request_multipliers": [
+        {
+          "model": "Claude Haiku 4.5",
+          "multiplier_paid": 0.33,
+          "multiplier_free": 1
+        },
+        {
+          "model": "Claude Opus 4.5",
+          "multiplier_paid": 3,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "Claude Opus 4.6",
+          "multiplier_paid": 3,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "Claude Opus 4.6 (fast mode) (preview)",
+          "multiplier_paid": 30,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "Claude Sonnet 4",
+          "multiplier_paid": 1,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "Claude Sonnet 4.5",
+          "multiplier_paid": 1,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "Claude Sonnet 4.6",
+          "multiplier_paid": 1,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "Gemini 2.5 Pro",
+          "multiplier_paid": 1,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "Gemini 3 Flash",
+          "multiplier_paid": 0.33,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "Gemini 3 Pro",
+          "multiplier_paid": 1,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "Gemini 3.1 Pro",
+          "multiplier_paid": 1,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "GPT-4.1",
+          "multiplier_paid": 0,
+          "multiplier_free": 1
+        },
+        {
+          "model": "GPT-4o",
+          "multiplier_paid": 0,
+          "multiplier_free": 1
+        },
+        {
+          "model": "GPT-5 mini",
+          "multiplier_paid": 0,
+          "multiplier_free": 1
+        },
+        {
+          "model": "GPT-5.1",
+          "multiplier_paid": 1,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "GPT-5.1-Codex",
+          "multiplier_paid": 1,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "GPT-5.1-Codex-Mini",
+          "multiplier_paid": 0.33,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "GPT-5.1-Codex-Max",
+          "multiplier_paid": 1,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "GPT-5.2",
+          "multiplier_paid": 1,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "GPT-5.2-Codex",
+          "multiplier_paid": 1,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "GPT-5.3-Codex",
+          "multiplier_paid": 1,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "Grok Code Fast 1",
+          "multiplier_paid": 0.25,
+          "multiplier_free": null,
+          "multiplier_free_note": "Not applicable"
+        },
+        {
+          "model": "Raptor mini",
+          "multiplier_paid": 0,
+          "multiplier_free": 1
+        },
+        {
+          "model": "Goldeneye",
+          "multiplier_paid": null,
+          "multiplier_paid_note": "Not applicable",
+          "multiplier_free": 1
+        }
+      ],
+      "multiplier_discount_notes": "Copilot requests doc notes a 10% multiplier discount for auto model selection in Copilot Chat in VS Code on paid plans (not available for Copilot Free).",
+      "source_ids": [
+        "github_copilot_individual_plans_docs",
+        "github_copilot_premium_requests_docs"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "GitHub Copilot",
+      "plan_id": "copilot-pro-plus",
+      "pricing_type": "premium_requests",
+      "subscription_price_usd": 39,
+      "subscription_price_usd_per_year": 390,
+      "included_premium_requests_per_month": 1500,
+      "overage_usd_per_premium_request": 0.04,
+      "metering": "Premium requests are deducted per interaction according to the model multiplier table. Counters reset on the 1st of each month at 00:00:00 UTC.",
+      "source_ids": [
+        "github_copilot_individual_plans_docs",
+        "github_copilot_premium_requests_docs"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "JetBrains AI",
+      "plan_id": "jetbrains-ai-enterprise",
+      "pricing_type": "seat_subscription",
+      "subscription_price_usd_per_seat": 60,
+      "subscription_price_usd_per_seat_per_year": 720,
+      "included_credits_per_30_days_per_seat": null,
+      "metering": "AI Enterprise is part of JetBrains IDE Services. JetBrains states the AI Enterprise quota is on par with AI Ultimate or higher, but does not disclose an exact number. Top-up credits are not yet available for this tier.",
+      "source_ids": [
+        "jetbrains_ai_buy",
+        "jetbrains_ai_assistant_licensing",
+        "jetbrains_ai_faq"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "JetBrains AI",
+      "plan_id": "jetbrains-ai-free",
+      "pricing_type": "credits",
+      "subscription_price_usd": 0,
+      "included_credits_per_30_days": 3,
+      "quota_reset": "P30D_from_first_use",
+      "metering": "AI Free includes a small monthly cloud credit quota (AI Credits) for JetBrains AI. Local models and some built-in completion features may not consume quota; see JetBrains docs.",
+      "source_ids": [
+        "jetbrains_ai_buy",
+        "jetbrains_ai_assistant_licensing"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "JetBrains AI",
+      "plan_id": "jetbrains-ai-pro-commercial",
+      "pricing_type": "seat_subscription_with_credits",
+      "subscription_price_usd_per_seat": 20,
+      "subscription_price_usd_per_seat_per_year": 200,
+      "included_credits_per_30_days_per_seat": 20,
+      "quota_reset": "P30D_from_first_use",
+      "topups_pricing": {
+        "kind": "ai_credits",
+        "usd_per_credit": 1,
+        "expires_after": "P1Y",
+        "notes": "Organizations can purchase and allocate Top-up AI Credits; admins can set limits and manage usage in JetBrains Console."
+      },
+      "credit_conversion": {
+        "kind": "usd_per_credit",
+        "usd_per_credit": 1,
+        "notes": "Explicitly stated by JetBrains for AI Credits."
+      },
+      "metering": "Commercial AI Pro is per seat and includes a larger dedicated quota of AI Credits than personal AI Pro.",
+      "source_ids": [
+        "jetbrains_ai_buy",
+        "jetbrains_ai_assistant_licensing",
+        "jetbrains_ai_faq",
+        "jetbrains_console_ai_management",
+        "jetbrains_ai_credits_terms"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "JetBrains AI",
+      "plan_id": "jetbrains-ai-pro-personal",
+      "pricing_type": "credits",
+      "subscription_price_usd": 10,
+      "subscription_price_usd_per_year": 100,
+      "included_credits_per_30_days": 10,
+      "quota_reset": "P30D_from_first_use",
+      "topups_pricing": {
+        "kind": "ai_credits",
+        "usd_per_credit": 1,
+        "expires_after": "P1Y",
+        "notes": "Top-up AI Credits can be purchased to continue using cloud-based AI features after the included quota is exhausted. JetBrains states 1 AI Credit equals USD 1.00 (charged in local currency)."
+      },
+      "credit_conversion": {
+        "kind": "usd_per_credit",
+        "usd_per_credit": 1,
+        "notes": "Explicitly stated by JetBrains for AI Credits."
+      },
+      "metering": "AI Pro includes a monthly quota of AI Credits used for cloud-based features. When included quota is exhausted, the product can switch to Top-up AI Credits if available.",
+      "source_ids": [
+        "jetbrains_ai_buy",
+        "jetbrains_ai_assistant_licensing",
+        "jetbrains_ai_faq",
+        "jetbrains_ai_credits_terms"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "JetBrains AI",
+      "plan_id": "jetbrains-ai-ultimate-commercial",
+      "pricing_type": "seat_subscription_with_credits",
+      "subscription_price_usd_per_seat": 60,
+      "subscription_price_usd_per_seat_per_year": 600,
+      "included_credits_per_30_days_per_seat": 70,
+      "quota_reset": "P30D_from_first_use",
+      "topups_pricing": {
+        "kind": "ai_credits",
+        "usd_per_credit": 1,
+        "expires_after": "P1Y",
+        "notes": "Organizations can purchase and allocate Top-up AI Credits; admins can set limits and manage usage in JetBrains Console."
+      },
+      "credit_conversion": {
+        "kind": "usd_per_credit",
+        "usd_per_credit": 1,
+        "notes": "Explicitly stated by JetBrains for AI Credits."
+      },
+      "metering": "Commercial AI Ultimate is per seat and includes a larger dedicated quota of AI Credits intended for more frequent agent usage.",
+      "source_ids": [
+        "jetbrains_ai_buy",
+        "jetbrains_ai_assistant_licensing",
+        "jetbrains_ai_faq",
+        "jetbrains_console_ai_management",
+        "jetbrains_ai_credits_terms"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "JetBrains AI",
+      "plan_id": "jetbrains-ai-ultimate-personal",
+      "pricing_type": "credits",
+      "subscription_price_usd": 30,
+      "subscription_price_usd_per_year": 300,
+      "included_credits_per_30_days": 35,
+      "quota_reset": "P30D_from_first_use",
+      "topups_pricing": {
+        "kind": "ai_credits",
+        "usd_per_credit": 1,
+        "expires_after": "P1Y",
+        "notes": "Top-up AI Credits can be purchased to continue using cloud-based AI features after the included quota is exhausted. JetBrains states 1 AI Credit equals USD 1.00 (charged in local currency)."
+      },
+      "credit_conversion": {
+        "kind": "usd_per_credit",
+        "usd_per_credit": 1,
+        "notes": "Explicitly stated by JetBrains for AI Credits."
+      },
+      "metering": "AI Ultimate includes a larger monthly quota of AI Credits intended for more frequent use of coding agents.",
+      "source_ids": [
+        "jetbrains_ai_buy",
+        "jetbrains_ai_assistant_licensing",
+        "jetbrains_ai_faq",
+        "jetbrains_ai_quota_blog",
+        "jetbrains_ai_credits_terms"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Lovable",
+      "plan_id": "lovable-business",
+      "pricing_type": "credits",
+      "credit_tiers": [
+        {
+          "monthly_credits": 100,
+          "monthly_billing_usd": 50,
+          "annual_billing_usd": 500
+        },
+        {
+          "monthly_credits": 200,
+          "monthly_billing_usd": 100,
+          "annual_billing_usd": 1000
+        },
+        {
+          "monthly_credits": 400,
+          "monthly_billing_usd": 200,
+          "annual_billing_usd": 2000
+        },
+        {
+          "monthly_credits": 800,
+          "monthly_billing_usd": 400,
+          "annual_billing_usd": 4000
+        },
+        {
+          "monthly_credits": 1200,
+          "monthly_billing_usd": 588,
+          "annual_billing_usd": 5880
+        },
+        {
+          "monthly_credits": 2000,
+          "monthly_billing_usd": 960,
+          "annual_billing_usd": 9600
+        },
+        {
+          "monthly_credits": 3000,
+          "monthly_billing_usd": 1410,
+          "annual_billing_usd": 14100
+        },
+        {
+          "monthly_credits": 4000,
+          "monthly_billing_usd": 1840,
+          "annual_billing_usd": 18400
+        },
+        {
+          "monthly_credits": 5000,
+          "monthly_billing_usd": 2250,
+          "annual_billing_usd": 22500
+        },
+        {
+          "monthly_credits": 7500,
+          "monthly_billing_usd": 3300,
+          "annual_billing_usd": 33000
+        },
+        {
+          "monthly_credits": 10000,
+          "monthly_billing_usd": 4300,
+          "annual_billing_usd": 43000
+        }
+      ],
+      "topups_pricing": {
+        "increment_credits": 50,
+        "minimum_credits": 50,
+        "maximum_credits": 1000,
+        "price_usd_per_50_credits": 30,
+        "expires_after": "P12M"
+      },
+      "metering": "Credits are usage-based; business plan adds admin/security features plus a higher top-up price.",
+      "source_ids": [
+        "lovable_plans_and_credits_docs",
+        "lovable_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Lovable",
+      "plan_id": "lovable-pro",
+      "pricing_type": "credits",
+      "daily_credits": 5,
+      "daily_credits_monthly_cap": 150,
+      "credit_tiers": [
+        {
+          "monthly_credits": 100,
+          "monthly_billing_usd": 25,
+          "annual_billing_usd": 250
+        },
+        {
+          "monthly_credits": 200,
+          "monthly_billing_usd": 50,
+          "annual_billing_usd": 500
+        },
+        {
+          "monthly_credits": 400,
+          "monthly_billing_usd": 100,
+          "annual_billing_usd": 1000
+        },
+        {
+          "monthly_credits": 800,
+          "monthly_billing_usd": 200,
+          "annual_billing_usd": 2000
+        },
+        {
+          "monthly_credits": 1200,
+          "monthly_billing_usd": 294,
+          "annual_billing_usd": 2940
+        },
+        {
+          "monthly_credits": 2000,
+          "monthly_billing_usd": 480,
+          "annual_billing_usd": 4800
+        },
+        {
+          "monthly_credits": 3000,
+          "monthly_billing_usd": 705,
+          "annual_billing_usd": 7050
+        },
+        {
+          "monthly_credits": 4000,
+          "monthly_billing_usd": 920,
+          "annual_billing_usd": 9200
+        },
+        {
+          "monthly_credits": 5000,
+          "monthly_billing_usd": 1125,
+          "annual_billing_usd": 11250
+        },
+        {
+          "monthly_credits": 7500,
+          "monthly_billing_usd": 1688,
+          "annual_billing_usd": 16880
+        },
+        {
+          "monthly_credits": 10000,
+          "monthly_billing_usd": 2250,
+          "annual_billing_usd": 22500
+        }
+      ],
+      "topups_pricing": {
+        "increment_credits": 50,
+        "minimum_credits": 50,
+        "maximum_credits": 1000,
+        "price_usd_per_50_credits": 15,
+        "expires_after": "P12M"
+      },
+      "metering": "Credits are usage-based; many messages cost < 1 credit, complex tasks may cost more.",
+      "source_ids": [
+        "lovable_plans_and_credits_docs",
+        "lovable_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "OpenAI Codex",
+      "plan_id": "openai-codex-credits",
+      "pricing_type": "credits",
+      "subscription_dependency": "Included with ChatGPT plans; limits vary by plan. Can also be used with an API key (billed separately at standard API token rates).",
+      "included_usage_limits": [
+        {
+          "chatgpt_plan": "Plus",
+          "local_messages_per_5h": [
+            45,
+            225
+          ],
+          "cloud_tasks_per_5h": [
+            10,
+            60
+          ],
+          "code_reviews_per_week": [
+            10,
+            25
+          ]
+        },
+        {
+          "chatgpt_plan": "Pro",
+          "local_messages_per_5h": [
+            300,
+            1500
+          ],
+          "cloud_tasks_per_5h": [
+            50,
+            400
+          ],
+          "code_reviews_per_week": [
+            100,
+            250
+          ]
+        },
+        {
+          "chatgpt_plan": "Business",
+          "local_messages_per_5h": [
+            45,
+            225
+          ],
+          "cloud_tasks_per_5h": [
+            10,
+            60
+          ],
+          "code_reviews_per_week": [
+            10,
+            25
+          ]
+        },
+        {
+          "chatgpt_plan": "Enterprise & Edu",
+          "limits": "No fixed limits — usage scales with credits."
+        }
+      ],
+      "average_credit_costs": [
+        {
+          "task_type": "local_tasks",
+          "unit": "message",
+          "gpt_5_3_codex_or_5_2_codex": 5,
+          "gpt_5_1_codex_mini": 1
+        },
+        {
+          "task_type": "cloud_tasks",
+          "unit": "message",
+          "gpt_5_3_codex_or_5_2_codex": 25,
+          "gpt_5_1_codex_mini": null
+        },
+        {
+          "task_type": "code_review",
+          "unit": "pull_request",
+          "gpt_5_3_codex_or_5_2_codex": 25,
+          "gpt_5_1_codex_mini": null
+        }
+      ],
+      "notes": "OpenAI publishes credit costs but does not publish a public USD-per-credit conversion on the Codex pricing page. The page also notes a limited-time period where Codex is available on some lower tiers and/or rate limits are increased; treat promotional language as time-sensitive.",
+      "source_ids": [
+        "openai_codex_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "OpenCode",
+      "plan_id": "opencode-zen-payg",
+      "pricing_type": "prepaid_usd_credits",
+      "subscription_price_usd": 0,
+      "metering": "Zen is a paid gateway with per-1M token prices; usage is deducted from a USD balance and can auto-reload.",
+      "fees": [
+        {
+          "type": "card_processing_fee",
+          "note": "Landing page shows +$1.23 card processing fee when adding $20 balance."
+        }
+      ],
+      "autopay": {
+        "auto_reload_threshold_usd": 5,
+        "auto_reload_amount_usd": 20
+      },
+      "source_ids": [
+        "opencode_zen_docs"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "OpenRouter",
+      "plan_id": "openrouter-payg",
+      "pricing_type": "prepaid_usd_credits",
+      "subscription_price_usd": 0,
+      "metering": "Deducts costs from prepaid USD credits at per-model token prices; no inference markup. Fees apply when purchasing credits.",
+      "fees": [
+        {
+          "type": "credit_purchase_fee",
+          "percent": 5.5,
+          "minimum_usd": 0.8
+        },
+        {
+          "type": "byok_fee_after_free_quota",
+          "percent": 5,
+          "free_quota_note": "First 1M BYOK requests/month are free; subsequent BYOK usage charged 5% of equivalent OpenRouter cost."
+        }
+      ],
+      "source_ids": [
+        "openrouter_faq"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Qoder",
+      "plan_id": "qoder-pro",
+      "pricing_type": "credits",
+      "subscription_price_usd": 10,
+      "regular_subscription_price_usd": 20,
+      "promotions": [
+        {
+          "kind": "limited_time_discount",
+          "notes": "Pricing docs describe a limited-time discount (50% off) with an end date not yet announced.",
+          "source_ids": [
+            "qoder_pricing_docs"
+          ]
+        }
+      ],
+      "included_credits": 2000,
+      "metering": "Premium Credits are usage-based (depend on model tier and tokens processed). After premium credits are exhausted, Qoder switches to basic models with a daily message limit (not specified in the pricing doc).",
+      "notes": "Personal credit packs are priced per-credit and expire after 1 month. Credits are usage-based and can vary by model tier and workload category.",
+      "tier_multipliers": [
+        {
+          "tier": "auto",
+          "multiplier": 1
+        },
+        {
+          "tier": "ultimate",
+          "multiplier": 1.6
+        },
+        {
+          "tier": "performance",
+          "multiplier": 1.1
+        },
+        {
+          "tier": "efficient",
+          "multiplier": 0.3
+        },
+        {
+          "tier": "lite",
+          "multiplier": 0
+        }
+      ],
+      "topups_pricing": {
+        "unit_price_usd_per_credit_discount": 0.01,
+        "unit_price_usd_per_credit_regular": 0.02,
+        "minimum_credits": 1000,
+        "increments": 1000,
+        "expires_after": "P1M"
+      },
+      "credit_conversion": {
+        "kind": "usd_per_credit",
+        "usd_per_credit_discount": 0.01,
+        "usd_per_credit_regular": 0.02,
+        "notes": "This is derived from published Qoder credit pack pricing (not a token conversion). User-observed charges in Feb 2026 align closely with ~$0.01/credit under discount pricing."
+      },
+      "source_ids": [
+        "qoder_pricing_docs",
+        "qoder_credits_docs"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Qoder",
+      "plan_id": "qoder-pro-plus",
+      "pricing_type": "credits",
+      "subscription_price_usd": 30,
+      "regular_subscription_price_usd": 60,
+      "promotions": [
+        {
+          "kind": "limited_time_discount",
+          "notes": "Pricing docs describe a limited-time discount (50% off) with an end date not yet announced.",
+          "source_ids": [
+            "qoder_pricing_docs"
+          ]
+        }
+      ],
+      "included_credits": 6000,
+      "metering": "Premium Credits are usage-based (depend on model tier and tokens processed).",
+      "notes": "Credits are usage-based and can vary by model tier and workload category.",
+      "tier_multipliers": [
+        {
+          "tier": "auto",
+          "multiplier": 1
+        },
+        {
+          "tier": "ultimate",
+          "multiplier": 1.6
+        },
+        {
+          "tier": "performance",
+          "multiplier": 1.1
+        },
+        {
+          "tier": "efficient",
+          "multiplier": 0.3
+        },
+        {
+          "tier": "lite",
+          "multiplier": 0
+        }
+      ],
+      "topups_pricing": {
+        "unit_price_usd_per_credit_discount": 0.01,
+        "unit_price_usd_per_credit_regular": 0.02,
+        "minimum_credits": 1000,
+        "increments": 1000,
+        "expires_after": "P1M"
+      },
+      "credit_conversion": {
+        "kind": "usd_per_credit",
+        "usd_per_credit_discount": 0.01,
+        "usd_per_credit_regular": 0.02,
+        "notes": "Derived from published credit pack pricing (not a token conversion)."
+      },
+      "source_ids": [
+        "qoder_pricing_docs",
+        "qoder_credits_docs"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Qoder",
+      "plan_id": "qoder-teams",
+      "pricing_type": "seat_subscription_with_credits",
+      "subscription_price_usd_per_seat": 30,
+      "included_credits_per_seat": 2000,
+      "minimum_seats": 2,
+      "notes": "Teams pricing is per seat/month; credits are per seat and reset each cycle. Seat-based plans exist primarily for admin, billing, and organizational features rather than individual usage.",
+      "source_ids": [
+        "qoder_pricing_docs",
+        "qoder_credits_docs"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Qoder",
+      "plan_id": "qoder-ultra",
+      "pricing_type": "credits",
+      "subscription_price_usd": 100,
+      "regular_subscription_price_usd": 200,
+      "promotions": [
+        {
+          "kind": "limited_time_discount",
+          "notes": "Pricing docs describe a limited-time discount (50% off) with an end date not yet announced.",
+          "source_ids": [
+            "qoder_pricing_docs"
+          ]
+        }
+      ],
+      "included_credits": 20000,
+      "metering": "Premium Credits are usage-based (depend on model tier and tokens processed).",
+      "notes": "Credits are usage-based and can vary by model tier and workload category.",
+      "tier_multipliers": [
+        {
+          "tier": "auto",
+          "multiplier": 1
+        },
+        {
+          "tier": "ultimate",
+          "multiplier": 1.6
+        },
+        {
+          "tier": "performance",
+          "multiplier": 1.1
+        },
+        {
+          "tier": "efficient",
+          "multiplier": 0.3
+        },
+        {
+          "tier": "lite",
+          "multiplier": 0
+        }
+      ],
+      "topups_pricing": {
+        "unit_price_usd_per_credit_discount": 0.01,
+        "unit_price_usd_per_credit_regular": 0.02,
+        "minimum_credits": 1000,
+        "increments": 1000,
+        "expires_after": "P1M"
+      },
+      "credit_conversion": {
+        "kind": "usd_per_credit",
+        "usd_per_credit_discount": 0.01,
+        "usd_per_credit_regular": 0.02,
+        "notes": "Derived from published credit pack pricing (not a token conversion)."
+      },
+      "source_ids": [
+        "qoder_pricing_docs",
+        "qoder_credits_docs"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Replit",
+      "plan_id": "replit-core",
+      "pricing_type": "usd_credits_pool",
+      "subscription_price_usd": 25,
+      "subscription_price_usd_per_year": 240,
+      "included_pool_usd": 25,
+      "overage_policy": "usage_based_after_credits",
+      "metering": "Credits are used against usage-based costs (Agent checkpoints, deployments, etc.). AI Integrations via Replit-managed provider access are billed to credits at public API prices; BYOK shifts billing to the provider.",
+      "source_ids": [
+        "replit_pricing",
+        "replit_ai_billing",
+        "replit_ai_integrations",
+        "replit_usage_based_billing"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Replit",
+      "plan_id": "replit-hacker",
+      "pricing_type": "subscription",
+      "subscription_price_usd": 7,
+      "subscription_price_usd_per_year": 74,
+      "metering": "Legacy plan ID appears in the pricing page embedded data, but is not clearly documented on current pricing + docs pages.",
+      "source_ids": [
+        "replit_pricing"
+      ],
+      "verified": false,
+      "availability_note": "Treat as legacy/unconfirmed until the pricing page UI or official docs explicitly describe this plan."
+    },
+    {
+      "tool": "Replit",
+      "plan_id": "replit-pro-teams",
+      "pricing_type": "team_subscription_with_credits",
+      "subscription_price_usd": 100,
+      "effective_from": "2026-02-24",
+      "metering": "Replit announced a new Pro plan starting at $100/month for teams with tiered credits and up to 15 builders. Exact tier breakdown was not captured as structured data in this sweep.",
+      "source_ids": [
+        "replit_pro_plan_blog"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Replit",
+      "plan_id": "replit-starter",
+      "pricing_type": "free_with_limits",
+      "subscription_price_usd": 0,
+      "metering": "Starter is a free tier with limited usage and an Agent trial. Replit bills many features usage-based (Agent checkpoints, publishing, databases); charges are deducted from credits first when present.",
+      "source_ids": [
+        "replit_pricing",
+        "replit_ai_billing",
+        "replit_usage_based_billing"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Replit",
+      "plan_id": "replit-teams",
+      "pricing_type": "seat_subscription_with_credits",
+      "subscription_price_usd_per_seat": 40,
+      "subscription_price_usd_per_seat_per_year": 420,
+      "included_pool_usd_per_seat": 40,
+      "overage_policy": "usage_based_after_credits",
+      "metering": "Seat subscription plus usage-based charges; credits apply first. Pricing changes were announced to take effect 2026-02-24 (Teams sunset → Pro).",
+      "source_ids": [
+        "replit_pricing",
+        "replit_teams_billing_overview",
+        "replit_pro_plan_blog"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Sourcegraph",
+      "plan_id": "sourcegraph-cody-enterprise",
+      "pricing_type": "custom_enterprise",
+      "metering": "Cody Free/Pro were discontinued (effective 2025-07-23). Cody Enterprise remains available but is not publicly priced as a self-serve plan in these sources. Enterprise supports BYOK and routes to third-party LLM providers.",
+      "source_ids": [
+        "sourcegraph_cody_plan_changes_blog",
+        "sourcegraph_cody_plan_changes_changelog",
+        "sourcegraph_cody_faq"
+      ],
+      "verified": true,
+      "availability_note": "As of Feb 2026, treat Cody as enterprise/custom unless a current public self-serve price is published."
+    },
+    {
+      "tool": "Sourcegraph",
+      "plan_id": "sourcegraph-enterprise-search",
+      "pricing_type": "seat_subscription",
+      "subscription_price_usd_per_seat_per_month": 49,
+      "metering": "Seat subscription for Enterprise Search (code search + insights).",
+      "source_ids": [
+        "sourcegraph_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Tabnine",
+      "plan_id": "tabnine-agentic-platform",
+      "pricing_type": "seat_subscription",
+      "subscription_price_usd_per_seat_per_month": 59,
+      "billing_cycle": "annual",
+      "metering": "Seat subscription for agentic platform. Pricing page describes optional Tabnine-provided LLM access with provider prices + 5% handling fee.",
+      "handling_fee_percent": 5,
+      "source_ids": [
+        "tabnine_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Tabnine",
+      "plan_id": "tabnine-code-assistant",
+      "pricing_type": "seat_subscription",
+      "subscription_price_usd_per_seat_per_month": 39,
+      "billing_cycle": "annual",
+      "metering": "Seat subscription. Pricing page describes unlimited usage when using your own LLM endpoint; Tabnine-provided LLM access is priced based on provider prices + 5% handling fee.",
+      "handling_fee_percent": 5,
+      "source_ids": [
+        "tabnine_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Verdent",
+      "plan_id": "verdent-max",
+      "pricing_type": "credits",
+      "subscription_price_usd": 179,
+      "included_credits": 3000,
+      "topups": [
+        {
+          "price_usd": 20,
+          "credits": 240
+        },
+        {
+          "price_usd": 60,
+          "credits": 720
+        },
+        {
+          "price_usd": 80,
+          "credits": 960
+        },
+        {
+          "price_usd": 100,
+          "credits": 1200
+        },
+        {
+          "price_usd": 200,
+          "credits": 2400
+        }
+      ],
+      "metering": "Credits consumed based on model type and workload. Subscription credits refresh monthly; top-up credits do not expire.",
+      "notes": "Verdent docs describe a limited-time 2× credit bonus on subscription credits with 15+ days notice before it ends; no stable token↔credit conversion is published.",
+      "source_ids": [
+        "verdent_docs_pricing_overview",
+        "verdent_credits_detail"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Verdent",
+      "plan_id": "verdent-pro",
+      "pricing_type": "credits",
+      "subscription_price_usd": 59,
+      "included_credits": 1000,
+      "topups": [
+        {
+          "price_usd": 20,
+          "credits": 240
+        },
+        {
+          "price_usd": 60,
+          "credits": 720
+        },
+        {
+          "price_usd": 80,
+          "credits": 960
+        },
+        {
+          "price_usd": 100,
+          "credits": 1200
+        },
+        {
+          "price_usd": 200,
+          "credits": 2400
+        }
+      ],
+      "metering": "Credits consumed based on model type and workload. Subscription credits refresh monthly; top-up credits do not expire.",
+      "notes": "Verdent docs describe a limited-time 2× credit bonus on subscription credits with 15+ days notice before it ends; no stable token↔credit conversion is published.",
+      "source_ids": [
+        "verdent_docs_pricing_overview",
+        "verdent_credits_detail"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Verdent",
+      "plan_id": "verdent-starter",
+      "pricing_type": "credits",
+      "subscription_price_usd": 19,
+      "included_credits": 320,
+      "topups": [
+        {
+          "price_usd": 20,
+          "credits": 240
+        },
+        {
+          "price_usd": 60,
+          "credits": 720
+        },
+        {
+          "price_usd": 80,
+          "credits": 960
+        },
+        {
+          "price_usd": 100,
+          "credits": 1200
+        },
+        {
+          "price_usd": 200,
+          "credits": 2400
+        }
+      ],
+      "metering": "Credits consumed based on model type and workload. Subscription credits refresh monthly; top-up credits do not expire.",
+      "notes": "Verdent docs describe a limited-time 2× credit bonus on subscription credits with 15+ days notice before it ends; no stable token↔credit conversion is published.",
+      "source_ids": [
+        "verdent_docs_pricing_overview",
+        "verdent_credits_detail"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Warp",
+      "plan_id": "warp-build",
+      "pricing_type": "credits",
+      "subscription_price_usd": 18,
+      "included_credits": 1500,
+      "topups": [
+        {
+          "price_usd": 10,
+          "credits": 400
+        },
+        {
+          "price_usd": 20,
+          "credits": 1000
+        },
+        {
+          "price_usd": 50,
+          "credits": 3000
+        },
+        {
+          "price_usd": 100,
+          "credits": 6500
+        }
+      ],
+      "metering": "Credits scale with the amount of work (tokens, model choice, tool calls); BYOK routes some requests to provider billing and does not consume Warp credits.",
+      "source_ids": [
+        "warp_pricing",
+        "warp_addon_credits"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Windsurf",
+      "plan_id": "windsurf-pro",
+      "pricing_type": "credits",
+      "subscription_price_usd": 15,
+      "included_credits": 500,
+      "topups": [
+        {
+          "price_usd": 10,
+          "credits": 250
+        }
+      ],
+      "metering": "Prompt credits are consumed per user message to Cascade with premium models; per-model credit multipliers apply.",
+      "source_ids": [
+        "windsurf_pricing",
+        "windsurf_usage_docs",
+        "codeium_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "tool": "Windsurf",
+      "plan_id": "windsurf-teams",
+      "pricing_type": "seat_subscription_with_credits",
+      "subscription_price_usd_per_seat": 30,
+      "included_credits_per_month_per_seat": 500,
+      "topups_pricing": {
+        "price_usd": 40,
+        "credits": 1000,
+        "pooled": true
+      },
+      "add_ons": [
+        {
+          "name": "access_control_features",
+          "price_usd_per_seat_per_month": 10,
+          "notes": "Pricing page mentions access control features as an add-on under team management."
+        }
+      ],
+      "metering": "Prompt credits are consumed per message to Cascade with premium models; per-model credit multipliers apply. Seat credits are per-seat (not pooled); purchased add-on credits are pooled across the team.",
+      "source_ids": [
+        "windsurf_pricing",
+        "windsurf_usage_docs",
+        "codeium_pricing"
+      ],
+      "verified": true
+    }
+  ],
+  "subscriptions": [
+    {
+      "provider": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-20x",
+      "price_usd_per_month": 200,
+      "usage_limits": "Described as 20x more usage than Pro per session; exact token/message counts are not fixed and depend on usage patterns; subject to usage limits documentation.",
+      "source_ids": [
+        "anthropic_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-5x",
+      "price_usd_per_month": 100,
+      "usage_limits": "Described as 5x more usage than Pro per session; exact token/message counts are not fixed and depend on usage patterns; subject to usage limits documentation.",
+      "source_ids": [
+        "anthropic_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-pro",
+      "price_usd_per_month": 20,
+      "usage_limits": "Usage is described as variable budgets with a 5-hour session limit and a weekly usage limit (rolling). No fixed token cap published.",
+      "source_ids": [
+        "anthropic_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "google",
+      "product": "Google AI",
+      "plan_id": "google-ai-plus",
+      "price_usd_per_month": 7.99,
+      "usage_limits": "Subscription (non-token) with feature quotas; page includes daily AI credits for certain experiences (e.g., Flow/Whisk). Treat as opaque quotas unless an official conversion is found.",
+      "promotions": [
+        {
+          "kind": "intro_price",
+          "price_usd_per_month": 3.99,
+          "duration": "P2M",
+          "notes": "US pricing feed includes a $3.99 promo price for 2 months.",
+          "source_ids": [
+            "google_one_pricing_feed_us"
+          ]
+        }
+      ],
+      "source_ids": [
+        "google_one_pricing_feed_us",
+        "google_one_ai_plans",
+        "google_one_ai_plus_benefits",
+        "google_gemini_apps_limits"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "google",
+      "product": "Google AI",
+      "plan_id": "google-ai-pro",
+      "price_usd_per_month": 19.99,
+      "usage_limits": "Subscription (non-token) with feature quotas; page describes 'higher access' and includes daily AI credits for certain experiences.",
+      "promotions": [
+        {
+          "kind": "trial_price",
+          "price_usd_per_month": 0,
+          "duration": "P1M",
+          "notes": "US pricing feed includes a $0 promo price for the first month.",
+          "source_ids": [
+            "google_one_pricing_feed_us"
+          ]
+        }
+      ],
+      "source_ids": [
+        "google_one_pricing_feed_us",
+        "google_one_ai_plans",
+        "google_one_ai_pro_benefits",
+        "google_gemini_apps_limits"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "google",
+      "product": "Google AI",
+      "plan_id": "google-ai-ultra",
+      "price_usd_per_month": 249.99,
+      "usage_limits": "Subscription (non-token) with feature quotas; page describes 'highest level of access' and includes daily AI credits for certain experiences.",
+      "promotions": [
+        {
+          "kind": "intro_price",
+          "price_usd_per_month": 124.99,
+          "duration": "P3M",
+          "notes": "US pricing feed includes a $124.99 promo price for 3 months.",
+          "source_ids": [
+            "google_one_pricing_feed_us"
+          ]
+        }
+      ],
+      "source_ids": [
+        "google_one_pricing_feed_us",
+        "google_one_ai_plans",
+        "google_one_ai_ultra_benefits",
+        "google_gemini_apps_limits"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "moonshot",
+      "product": "Kimi",
+      "plan_id": "kimi-adagio",
+      "price_cny_per_month": 0,
+      "usage_limits": "Free tier. Includes small monthly trial quotas for Agent/Deep Research/PPT; see membership benefits doc for current values.",
+      "source_ids": [
+        "kimi_member_benefits_v2_md"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "moonshot",
+      "product": "Kimi",
+      "plan_id": "kimi-allegretto",
+      "price_cny_per_year": 1948,
+      "usage_limits": "Membership subscription with feature quotas (not token-metered). Agent: 40 uses/month; Deep Research: 40 uses/month; PPT: 40 uses/month. Supports 2 concurrent Agent/Deep Research/PPT tasks. Includes Agent swarm preview and Kimi Claw. Kimi Code is a membership perk with a 7-day rolling quota refresh (see Kimi Code docs). API usage fees are not included; Open Platform API is billed separately.",
+      "source_ids": [
+        "kimi_code_docs_benefits",
+        "kimi_code_docs_overview",
+        "kimi_member_benefits_v2_md",
+        "kimi_membership_landing"
+      ],
+      "verified": true,
+      "price_cny_per_month": 199
+    },
+    {
+      "provider": "moonshot",
+      "product": "Kimi",
+      "plan_id": "kimi-allegro",
+      "source_ids": [
+        "kimi_member_benefits_v2_md"
+      ],
+      "verified": true,
+      "price_cny_per_month": 699,
+      "price_cny_per_year": 6788,
+      "usage_limits": "Membership subscription with feature quotas (not token-metered). Agent: 100 uses/month; Deep Research: 100 uses/month; PPT: 100 uses/month. Supports 2 concurrent Agent/Deep Research/PPT tasks. Includes Agent swarm preview and Kimi Claw. Kimi Code is a membership perk with a 7-day rolling quota refresh (see Kimi Code docs). API usage fees are not included; Open Platform API is billed separately."
+    },
+    {
+      "provider": "moonshot",
+      "product": "Kimi",
+      "plan_id": "kimi-andante",
+      "price_cny_per_year": 468,
+      "usage_limits": "Membership subscription with feature quotas (not token-metered). Agent: 10 uses/month; Deep Research: 10 uses/month; PPT: 10 uses/month. Does not support 2 concurrent tasks for Agent/Deep Research/PPT. Agent swarm/Kimi Claw not included. Kimi Code is a membership perk with a 7-day rolling quota refresh (see Kimi Code docs). API usage fees are not included; Open Platform API is billed separately.",
+      "source_ids": [
+        "kimi_code_docs_benefits",
+        "kimi_code_docs_overview",
+        "kimi_member_benefits_v2_md",
+        "kimi_membership_landing"
+      ],
+      "verified": true,
+      "price_cny_per_month": 49
+    },
+    {
+      "provider": "moonshot",
+      "product": "Kimi",
+      "plan_id": "kimi-moderato",
+      "price_cny_per_year": 948,
+      "usage_limits": "Membership subscription with feature quotas (not token-metered). Agent: 20 uses/month; Deep Research: 20 uses/month; PPT: 20 uses/month. Supports 2 concurrent Agent/Deep Research/PPT tasks. Agent swarm/Kimi Claw not included. Kimi Code is a membership perk with a 7-day rolling quota refresh (see Kimi Code docs). API usage fees are not included; Open Platform API is billed separately.",
+      "source_ids": [
+        "kimi_code_docs_benefits",
+        "kimi_code_docs_overview",
+        "kimi_member_benefits_v2_md",
+        "kimi_membership_landing"
+      ],
+      "verified": true,
+      "price_cny_per_month": 99
+    },
+    {
+      "provider": "moonshot",
+      "product": "Kimi",
+      "plan_id": "kimi-moderato-oversea-usd",
+      "price_usd_per_month": 19,
+      "usage_limits": "Overseas event rules state Moderato monthly renews at $19/month. Appendix lists: 20 Deep Research uses/month (2 concurrent), 20 Agent uses/month (2 concurrent), 2048 Kimi Code requests/week. Excludes API usage fees (Open Platform billed separately).",
+      "source_ids": [
+        "kimi_black_friday_rules"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "openai",
+      "product": "ChatGPT",
+      "plan_id": "chatgpt-pro",
+      "price_usd_per_month": 200,
+      "price_eur_per_month": 229,
+      "usage_limits": "Pricing page describes unlimited access subject to reasonable use/abuse guardrails; no token-equivalent quota is published; API billed separately. Codex usage limits are documented separately on the Codex pricing page.",
+      "source_ids": [
+        "chatgpt_pricing",
+        "openai_codex_pricing"
+      ],
+      "verified": false,
+      "notes": "The ChatGPT pricing page was Cloudflare-blocked from direct fetch in this environment during the sweep. The EUR price and plan details are captured from a user-provided snapshot; treat as region-variant and unverified until we can capture an official, fetchable copy."
+    }
+  ]
+}

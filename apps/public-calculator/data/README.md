@@ -9,11 +9,13 @@ Key rules:
 
 Current file:
 - `apps/public-calculator/data/pricing.sample.json` — a starter dataset (intentionally incomplete + unverified).
-- `apps/public-calculator/data/pricing.2026-02-21.json` — Feb 2026 pricing snapshot built from official sources (still incomplete; see notes + `verified` flags).
+- `apps/public-calculator/data/pricing.2026-02-21.json` — initial Feb 2026 pricing snapshot.
+- `apps/public-calculator/data/pricing.2026-02-22.json` — updated snapshot with additional plan coverage and refreshed sources (see `meta.last_verified_at`).
 
 Entitlements (separate axis from cost):
 - `apps/public-calculator/data/entitlements.sample.json` — starter entitlements dataset (intentionally incomplete).
-- `apps/public-calculator/data/entitlements.2026-02-21.json` — Feb 2026 entitlements snapshot (what’s included, where), with region + evidence type.
+- `apps/public-calculator/data/entitlements.2026-02-21.json` — initial entitlements snapshot.
+- `apps/public-calculator/data/entitlements.2026-02-22.json` — expanded entitlements + new sources (developer tool surfaces + quota links).
 
 FX (currency conversion):
 - `apps/public-calculator/data/fx.sample.json` — starter FX dataset (placeholder).

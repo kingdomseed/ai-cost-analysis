@@ -200,6 +200,43 @@ function familyForProvider(provider: string): string | null {
   }
 }
 
+function findModelInfo(
+  models: ModelsSnapshotV01,
+  provider: string,
+  model: string,
+): ModelsSnapshotV01["models"][number] | null {
+  const direct = models.models.find((m) => m.provider === provider && m.model === model);
+  if (direct) return direct;
+
+  const target = model.toLowerCase();
+  const aliasMatch = models.models.find((m) => {
+    if (m.provider !== provider) return false;
+    const aliases = Array.isArray(m.aliases) ? m.aliases : [];
+    if (aliases.some((a) => String(a).toLowerCase() === target)) return true;
+    const maybeRecord = m as unknown as Record<string, unknown>;
+    const azureLabel =
+      typeof maybeRecord.azure_model_label === "string" ? maybeRecord.azure_model_label : null;
+    if (azureLabel && String(azureLabel).toLowerCase() === target) return true;
+    return false;
+  });
+
+  return aliasMatch ?? null;
+}
+
+function ratingValue(
+  model: ModelsSnapshotV01["models"][number],
+  system: string,
+  metric: string,
+): { score: number; scale: string | null; as_of: string } | null {
+  const ratings = Array.isArray(model.ratings) ? model.ratings : [];
+  const candidates = ratings
+    .filter((r) => r.system === system && r.metric === metric && typeof r.score === "number")
+    .sort((a, b) => String(b.as_of).localeCompare(String(a.as_of)));
+  const best = candidates[0];
+  if (!best) return null;
+  return { score: best.score, scale: best.scale ?? null, as_of: best.as_of };
+}
+
 function cartesianProduct<T>(lists: T[][]): T[][] {
   if (lists.length === 0) return [[]];
   let acc: T[][] = [[]];
@@ -484,15 +521,30 @@ export async function POST(request: Request): Promise<NextResponse> {
       const modelDetails = modelAccess
         .map((id) => {
           const [provider, model] = id.split(":");
-          const match = models.models.find((m) => m.provider === provider && m.model === model);
-          return match
-            ? {
-                provider: match.provider,
-                model: match.model,
-                family: match.family ?? null,
-                has_ratings: Array.isArray(match.ratings) && match.ratings.length > 0,
-              }
-            : null;
+          const match = provider && model ? findModelInfo(models, provider, model) : null;
+          if (!match) return null;
+
+          const azureQuality = ratingValue(
+            match,
+            "azure-foundry-model-leaderboard",
+            "quality_index",
+          );
+          const azureSafety = ratingValue(
+            match,
+            "azure-foundry-model-leaderboard",
+            "safety_attack_success_rate_percent",
+          );
+
+          return {
+            provider: match.provider,
+            model: match.model,
+            family: match.family ?? null,
+            has_ratings: Array.isArray(match.ratings) && match.ratings.length > 0,
+            ratings_summary: {
+              azure_quality_index: azureQuality,
+              azure_safety_attack_success_rate_percent: azureSafety,
+            },
+          };
         })
         .filter(Boolean);
 
@@ -547,15 +599,30 @@ export async function POST(request: Request): Promise<NextResponse> {
       const modelDetails = modelAccess
         .map((id) => {
           const [provider, model] = id.split(":");
-          const match = models.models.find((m) => m.provider === provider && m.model === model);
-          return match
-            ? {
-                provider: match.provider,
-                model: match.model,
-                family: match.family ?? null,
-                has_ratings: Array.isArray(match.ratings) && match.ratings.length > 0,
-              }
-            : null;
+          const match = provider && model ? findModelInfo(models, provider, model) : null;
+          if (!match) return null;
+
+          const azureQuality = ratingValue(
+            match,
+            "azure-foundry-model-leaderboard",
+            "quality_index",
+          );
+          const azureSafety = ratingValue(
+            match,
+            "azure-foundry-model-leaderboard",
+            "safety_attack_success_rate_percent",
+          );
+
+          return {
+            provider: match.provider,
+            model: match.model,
+            family: match.family ?? null,
+            has_ratings: Array.isArray(match.ratings) && match.ratings.length > 0,
+            ratings_summary: {
+              azure_quality_index: azureQuality,
+              azure_safety_attack_success_rate_percent: azureSafety,
+            },
+          };
         })
         .filter(Boolean);
 

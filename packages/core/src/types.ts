@@ -163,6 +163,7 @@ export interface ModelInfoV01 {
   channels: string[];
   label?: string | null;
   family?: string | null;
+  aliases?: string[] | null;
   modalities?: string[] | null;
   ratings?: ModelRatingV01[] | null;
   notes?: string | null;

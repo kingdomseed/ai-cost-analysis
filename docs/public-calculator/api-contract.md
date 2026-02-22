@@ -144,6 +144,27 @@ If we can compute “plan-effective cost” (pool, overage, top-ups, packs), we 
 
 Both can still be compared honestly by returning a baseline + explicit uncertainty.
 
+## Where “unknown/opaque handling” lives (API layer)
+
+These rules live in **two places**:
+
+1) **Datasets (`pricing.*.json`, `entitlements.*.json`)**
+   - Missing pricing primitives (no token rates, no USD/credit, no quota) are represented as *missing fields* plus `notes` and/or `verified: false`.
+   - Region variants are represented as separate entries (no averaging).
+   - “What you get” is represented as entitlement rows with evidence (`public_url` vs `authenticated_ui_capture`).
+
+2) **Engine scenario results (returned by `POST /api/calculate` and embedded in `POST /api/plan-matrix`)**
+   - Every scenario returns a **computable** `monthly_cost_estimate` with:
+     - `method` (`direct|derived|assumed|heuristic`)
+     - `confidence` (`high|medium|low`)
+     - `confidence_reasons[]` and `warnings[]` explaining what’s unknown/opaque and what assumptions were used.
+   - If a mapping is unknown (e.g. credits→tokens), the engine does **not** invent it:
+     - it returns the **plan price floor** where applicable
+     - it can return “implied $/credit” only if there is a sourced pack price
+     - it returns warnings telling the UI exactly what’s missing and which user inputs could make it computable
+
+This keeps uncertainty out of the UI layer: the UI just displays the engine’s estimates and warnings.
+
 ## Evidence and confidence (required fields)
 
 Every numeric output must carry:

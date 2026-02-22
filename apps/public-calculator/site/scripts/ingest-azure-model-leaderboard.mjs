@@ -128,6 +128,10 @@ function canonicalModel(providerId, azureModelLabel) {
   return lower.replace(/\s+/g, "-");
 }
 
+function uniqStrings(values) {
+  return Array.from(new Set(values.map((v) => String(v).trim()).filter((v) => v.length > 0)));
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const csvArg = args.find((a) => !a.startsWith("--"));
@@ -251,6 +255,7 @@ async function main() {
         model: modelId,
         channels: [],
         family: familyForProvider(providerId),
+        aliases: uniqStrings([azureLabel, String(azureLabel).toLowerCase()]),
         modalities: null,
         ratings,
         azure_model_label: azureLabel,
@@ -260,6 +265,11 @@ async function main() {
       existing.ratings = [...(existing.ratings ?? []), ...ratings];
       if (!existing.azure_model_label) existing.azure_model_label = azureLabel;
       if (!existing.azure_provider_label) existing.azure_provider_label = providerRaw;
+      existing.aliases = uniqStrings([
+        ...(existing.aliases ?? []),
+        azureLabel,
+        String(azureLabel).toLowerCase(),
+      ]);
     }
   }
 

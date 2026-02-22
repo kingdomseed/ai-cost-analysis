@@ -48,14 +48,15 @@ For credit/pool tools, we’ll show costs using **explicit assumptions** and cle
 - what is measured vs estimated
 - what inputs the user can override (e.g., effective $/credit, assumed cache hit rate, input:output split)
 
-## Pricing Snapshot (2026-02-21)
+## Pricing Snapshot (2026-02-22)
 
 The current public pricing snapshot lives in:
 - `apps/public-calculator/data/pricing.2026-02-21.json`
+- `apps/public-calculator/data/pricing.2026-02-22.json` (latest)
 
 This is a **date-stamped dataset** built from official sources (see `docs/public-calculator/research/2026-02-21-pricing-sweep/`). Pricing changes fast; do not treat these values as timeless.
 
-Quick reference (selected developer tools; USD, retrieved 2026-02-21):
+Quick reference (selected developer tools; USD unless noted, retrieved 2026-02-22):
 
 | Tool | Plan | Price | Billing primitive | Notes |
 | --- | --- | --- | --- | --- |
@@ -78,4 +79,8 @@ Quick reference (selected developer tools; USD, retrieved 2026-02-21):
 | OpenCode | Zen (Pay-as-you-go) | $0/mo | Prepaid USD | Pay-per-token rates deducted from a USD balance; auto-reload supported |
 | Devin | Core | $20+ | ACUs | Metered in ACUs (not tokens); pay-as-you-go pricing published |
 | Google One | Google AI Pro / Ultra | $19.99 / $249.99 | Opaque quotas | Includes higher limits for Gemini app and dev tools (Gemini CLI, Code Assist, Jules, etc.) |
-| Kimi | Moderato (overseas signal) | $19/mo | Opaque quotas | Official event rules state Moderato renews at $19/mo (outside mainland China); other tiers vary by region |
+| Kimi | Moderato (overseas signal) | $19/mo | Opaque quotas | Separate from Moonshot API metering (e.g., Kimi K2.5 API). Subscription benefits/quotas vary by region; record CN vs US/global separately. |
+
+Notes:
+- Use `apps/public-calculator/data/pricing.*.json` as the source of truth; entries there include `verified` flags and `source_ids`.
+- Some subscription pricing pages are region- or bot-protected (e.g. `chatgpt.com/pricing`). When blocked, we record an authenticated capture and mark it `verified: false` until replaced with a public source.

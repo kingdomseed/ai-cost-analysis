@@ -1,0 +1,1261 @@
+{
+  "meta": {
+    "version_date": "2026-02-22",
+    "target_region": "us",
+    "notes": "Entitlements snapshot (what you get, where you get it). Prefer public URLs; allow authenticated UI captures when public docs conflict or are blocked."
+  },
+  "sources": [
+    {
+      "id": "claude_feature_availability_example",
+      "url": "https://support.claude.com/en/articles/9999062-claude-for-product-management",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "claude_pricing",
+      "url": "https://claude.com/pricing",
+      "retrieved_at": "2026-02-22",
+      "verified": true
+    },
+    {
+      "id": "claude_projects_intro",
+      "url": "https://support.claude.com/en/articles/9945648-intro-to-projects",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "cursor_bugbot",
+      "url": "https://cursor.com/docs/bugbot",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "github_copilot_code_review",
+      "url": "https://docs.github.com/en/copilot/concepts/agents/code-review",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "github_copilot_plans",
+      "url": "https://github.com/features/copilot/plans",
+      "retrieved_at": "2026-02-22",
+      "verified": true
+    },
+    {
+      "id": "google_ai_plans_marketing",
+      "url": "https://one.google.com/about/google-ai-plans/",
+      "retrieved_at": "2026-02-22",
+      "verified": true
+    },
+    {
+      "id": "google_code_assist_locations",
+      "url": "https://developers.google.com/gemini-code-assist/resources/available-locations",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "google_code_assist_quotas",
+      "url": "https://developers.google.com/gemini-code-assist/resources/quotas",
+      "retrieved_at": "2026-02-22",
+      "verified": true
+    },
+    {
+      "id": "google_gemini_cli_doc",
+      "url": "https://developers.google.com/gemini-code-assist/docs/gemini-cli",
+      "retrieved_at": "2026-02-22",
+      "verified": true
+    },
+    {
+      "id": "openai_chatgpt_pricing_capture",
+      "url": "docs/public-calculator/research/2026-02-21-pricing-sweep/user-chatgpt-pricing-capture.2026-02-21.md",
+      "retrieved_at": "2026-02-21",
+      "verified": false,
+      "notes": "User-provided capture because chatgpt.com/pricing was Cloudflare-blocked from fetch in this environment."
+    },
+    {
+      "id": "openai_codex_pricing",
+      "url": "https://developers.openai.com/codex/pricing/",
+      "retrieved_at": "2026-02-22",
+      "verified": true
+    },
+    {
+      "id": "windsurf_deepwiki",
+      "url": "https://docs.windsurf.com/windsurf/deepwiki",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "windsurf_pr_reviews_dashboard_capture",
+      "url": "docs/public-calculator/research/2026-02-21-pricing-sweep/user-windsurf-prreviews-limits-capture.2026-02-21.md",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    },
+    {
+      "id": "windsurf_pr_reviews_public",
+      "url": "https://docs.windsurf.com/windsurf-reviews/windsurf-reviews",
+      "retrieved_at": "2026-02-21",
+      "verified": true
+    }
+  ],
+  "entitlements": [
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-free",
+      "region": "global",
+      "feature_id": "artifacts",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_feature_availability_example"
+        ]
+      },
+      "notes": "Help Center states Artifacts are available on all Claude.ai plans."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-free",
+      "region": "global",
+      "feature_id": "modality_access:image",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Based on pricing page capability list; verify plan gating for voice if needed."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-free",
+      "region": "global",
+      "feature_id": "modality_access:text",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Based on pricing page capability list; verify plan gating for voice if needed."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-free",
+      "region": "global",
+      "feature_id": "modality_access:voice",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Based on pricing page capability list; verify plan gating for voice if needed."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-20x",
+      "region": "global",
+      "feature_id": "claude_code",
+      "surface_id": "cli",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Pricing page states Claude Code is included with Pro and Max."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-20x",
+      "region": "global",
+      "feature_id": "memory",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Pricing page lists Memory across conversations on Pro and Max."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-20x",
+      "region": "global",
+      "feature_id": "modality_access:image",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Based on pricing page capability list; verify plan gating for voice if needed."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-20x",
+      "region": "global",
+      "feature_id": "modality_access:text",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Based on pricing page capability list; verify plan gating for voice if needed."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-20x",
+      "region": "global",
+      "feature_id": "modality_access:voice",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Based on pricing page capability list; verify plan gating for voice if needed."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-20x",
+      "region": "global",
+      "feature_id": "projects",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": "Described as “unlimited projects” on paid plans; see pricing page for exact wording.",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Plan gating for Projects is also documented in Anthropic support pages; keep both sources as corroboration when updating."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-20x",
+      "region": "global",
+      "feature_id": "provider_access:anthropic",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Provider/model coverage here means access to Anthropic models via Claude apps; it does not imply API credits."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-20x",
+      "region": "global",
+      "feature_id": "research",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Pricing page lists Research as included on Pro and Max."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-5x",
+      "region": "global",
+      "feature_id": "claude_code",
+      "surface_id": "cli",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Pricing page states Claude Code is included with Pro and Max."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-5x",
+      "region": "global",
+      "feature_id": "memory",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Pricing page lists Memory across conversations on Pro and Max."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-5x",
+      "region": "global",
+      "feature_id": "modality_access:image",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Based on pricing page capability list; verify plan gating for voice if needed."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-5x",
+      "region": "global",
+      "feature_id": "modality_access:text",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Based on pricing page capability list; verify plan gating for voice if needed."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-5x",
+      "region": "global",
+      "feature_id": "modality_access:voice",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Based on pricing page capability list; verify plan gating for voice if needed."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-5x",
+      "region": "global",
+      "feature_id": "projects",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": "Described as “unlimited projects” on paid plans; see pricing page for exact wording.",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Plan gating for Projects is also documented in Anthropic support pages; keep both sources as corroboration when updating."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-5x",
+      "region": "global",
+      "feature_id": "provider_access:anthropic",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Provider/model coverage here means access to Anthropic models via Claude apps; it does not imply API credits."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-max-5x",
+      "region": "global",
+      "feature_id": "research",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Pricing page lists Research as included on Pro and Max."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-pro",
+      "region": "global",
+      "feature_id": "claude_code",
+      "surface_id": "cli",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Pricing page states Claude Code is included with Pro and Max."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-pro",
+      "region": "global",
+      "feature_id": "memory",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Pricing page lists Memory across conversations on Pro and Max."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-pro",
+      "region": "global",
+      "feature_id": "modality_access:image",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Based on pricing page capability list; verify plan gating for voice if needed."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-pro",
+      "region": "global",
+      "feature_id": "modality_access:text",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Based on pricing page capability list; verify plan gating for voice if needed."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-pro",
+      "region": "global",
+      "feature_id": "modality_access:voice",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Based on pricing page capability list; verify plan gating for voice if needed."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-pro",
+      "region": "global",
+      "feature_id": "projects",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_projects_intro"
+        ]
+      },
+      "notes": "Projects are available on Claude Pro and Claude for Work (Team & Enterprise)."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-pro",
+      "region": "global",
+      "feature_id": "provider_access:anthropic",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Provider/model coverage here means access to Anthropic models via Claude apps; it does not imply API credits."
+    },
+    {
+      "provider_id": "anthropic",
+      "product": "Claude",
+      "plan_id": "claude-pro",
+      "region": "global",
+      "feature_id": "research",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "claude_pricing"
+        ]
+      },
+      "notes": "Pricing page lists Research as included on Pro and Max."
+    },
+    {
+      "provider_id": "cursor",
+      "product": "Cursor",
+      "plan_id": "cursor-individual",
+      "region": "global",
+      "feature_id": "bugbot",
+      "surface_id": "github_integration",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "cursor_bugbot"
+        ]
+      },
+      "notes": "Bugbot posts PR review comments on GitHub."
+    },
+    {
+      "provider_id": "github",
+      "product": "GitHub Copilot",
+      "plan_id": "copilot-free",
+      "region": "global",
+      "feature_id": "copilot_cli",
+      "surface_id": "cli",
+      "included": false,
+      "limits": "Not included on Free plan (per Copilot plans page).",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "github_copilot_plans"
+        ]
+      },
+      "notes": null
+    },
+    {
+      "provider_id": "github",
+      "product": "GitHub Copilot",
+      "plan_id": "copilot-free",
+      "region": "global",
+      "feature_id": "modality_access:text",
+      "surface_id": "ide_extension",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "github_copilot_plans"
+        ]
+      },
+      "notes": "Copilot plan pages describe IDE experiences; treat as text modality unless the vendor documents other modalities explicitly."
+    },
+    {
+      "provider_id": "github",
+      "product": "GitHub Copilot",
+      "plan_id": "copilot-pro",
+      "region": "global",
+      "feature_id": "code_review",
+      "surface_id": "github_integration",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "github_copilot_code_review"
+        ]
+      },
+      "notes": "Copilot code review availability is plan-gated; see doc for full list."
+    },
+    {
+      "provider_id": "github",
+      "product": "GitHub Copilot",
+      "plan_id": "copilot-pro",
+      "region": "global",
+      "feature_id": "copilot_cli",
+      "surface_id": "cli",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "github_copilot_plans"
+        ]
+      },
+      "notes": null
+    },
+    {
+      "provider_id": "github",
+      "product": "GitHub Copilot",
+      "plan_id": "copilot-pro",
+      "region": "global",
+      "feature_id": "modality_access:text",
+      "surface_id": "ide_extension",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "github_copilot_plans"
+        ]
+      },
+      "notes": "Copilot plan pages describe IDE experiences; treat as text modality unless the vendor documents other modalities explicitly."
+    },
+    {
+      "provider_id": "github",
+      "product": "GitHub Copilot",
+      "plan_id": "copilot-pro-plus",
+      "region": "global",
+      "feature_id": "copilot_cli",
+      "surface_id": "cli",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "github_copilot_plans"
+        ]
+      },
+      "notes": null
+    },
+    {
+      "provider_id": "github",
+      "product": "GitHub Copilot",
+      "plan_id": "copilot-pro-plus",
+      "region": "global",
+      "feature_id": "modality_access:text",
+      "surface_id": "ide_extension",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "github_copilot_plans"
+        ]
+      },
+      "notes": "Copilot plan pages describe IDE experiences; treat as text modality unless the vendor documents other modalities explicitly."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-plus",
+      "region": "us",
+      "feature_id": "modality_access:image",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_ai_plans_marketing"
+        ]
+      },
+      "notes": "Marketing page describes access to image/video features in the Gemini app; numeric quotas are not specified here."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-plus",
+      "region": "us",
+      "feature_id": "modality_access:text",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_ai_plans_marketing"
+        ]
+      },
+      "notes": "Marketing page describes access to image/video features in the Gemini app; numeric quotas are not specified here."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-plus",
+      "region": "us",
+      "feature_id": "modality_access:video",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_ai_plans_marketing"
+        ]
+      },
+      "notes": "Marketing page describes access to image/video features in the Gemini app; numeric quotas are not specified here."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-pro",
+      "region": "us",
+      "feature_id": "gemini_cli",
+      "surface_id": "cli",
+      "included": true,
+      "limits": "Marketing page states higher limits; numeric quotas may be published elsewhere.",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_ai_plans_marketing",
+          "google_code_assist_locations"
+        ]
+      },
+      "notes": "We track existence + surface; quota sizing is separate."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-pro",
+      "region": "us",
+      "feature_id": "gemini_code_assist",
+      "surface_id": "ide_extension",
+      "included": true,
+      "limits": "Agent mode + Gemini CLI requests: 1500/day and 120/min per user (shared quotas).",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_ai_plans_marketing",
+          "google_code_assist_quotas"
+        ]
+      },
+      "notes": "IDE extension limits refer to agent mode requests; completions may have separate limits."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-pro",
+      "region": "us",
+      "feature_id": "modality_access:image",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_ai_plans_marketing"
+        ]
+      },
+      "notes": "Marketing page describes access to image/video features in the Gemini app; numeric quotas are not specified here."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-pro",
+      "region": "us",
+      "feature_id": "modality_access:text",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_ai_plans_marketing"
+        ]
+      },
+      "notes": "Marketing page describes access to image/video features in the Gemini app; numeric quotas are not specified here."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-pro",
+      "region": "us",
+      "feature_id": "modality_access:video",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_ai_plans_marketing"
+        ]
+      },
+      "notes": "Marketing page describes access to image/video features in the Gemini app; numeric quotas are not specified here."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-pro",
+      "region": "us",
+      "feature_id": "provider_access:google",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": "Higher access to Gemini app + developer tools; see Google AI plans page for detailed benefits and regional notes.",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_ai_plans_marketing"
+        ]
+      },
+      "notes": "Use quotas docs for numeric limits; marketing page is authoritative for inclusion claims."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-ultra",
+      "region": "us",
+      "feature_id": "antigravity",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": "Marketing page calls out higher rate limits to agent model in Google Antigravity (US only).",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_ai_plans_marketing"
+        ]
+      },
+      "notes": "US-only per plan page; treat as region-specific."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-ultra",
+      "region": "us",
+      "feature_id": "gemini_cli",
+      "surface_id": "cli",
+      "included": true,
+      "limits": "Agent mode + Gemini CLI requests: 2000/day and 120/min per user (shared quotas).",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_gemini_cli_doc",
+          "google_code_assist_quotas"
+        ]
+      },
+      "notes": "Quotas are shared between Gemini CLI and Gemini Code Assist agent mode."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-ultra",
+      "region": "us",
+      "feature_id": "google_cloud_credits",
+      "surface_id": "google_cloud",
+      "included": true,
+      "limits": "Marketing page states $100/month in Google Cloud credits via Google Developer Program.",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_ai_plans_marketing"
+        ]
+      },
+      "notes": "Treat as USD pool credit on Google Cloud; exact redemption rules may vary."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-ultra",
+      "region": "us",
+      "feature_id": "jules",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": "Marketing page indicates higher (and highest) limits by tier; numeric quotas not published on that page.",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_ai_plans_marketing"
+        ]
+      },
+      "notes": "Treat as entitlement existence only; do not convert to tokens."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-ultra",
+      "region": "us",
+      "feature_id": "modality_access:image",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_ai_plans_marketing"
+        ]
+      },
+      "notes": "Marketing page describes access to image/video features in the Gemini app; numeric quotas are not specified here."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-ultra",
+      "region": "us",
+      "feature_id": "modality_access:text",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_ai_plans_marketing"
+        ]
+      },
+      "notes": "Marketing page describes access to image/video features in the Gemini app; numeric quotas are not specified here."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-ultra",
+      "region": "us",
+      "feature_id": "modality_access:video",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_ai_plans_marketing"
+        ]
+      },
+      "notes": "Marketing page describes access to image/video features in the Gemini app; numeric quotas are not specified here."
+    },
+    {
+      "provider_id": "google",
+      "product": "Google AI Plans",
+      "plan_id": "google-ai-ultra",
+      "region": "us",
+      "feature_id": "provider_access:google",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": "Highest access to Gemini app + developer tools; see Google AI plans page for detailed benefits and regional notes.",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "google_ai_plans_marketing"
+        ]
+      },
+      "notes": null
+    },
+    {
+      "provider_id": "openai",
+      "product": "ChatGPT",
+      "plan_id": "chatgpt-pro",
+      "region": "global",
+      "feature_id": "codex",
+      "surface_id": "cli",
+      "included": true,
+      "limits": "Usage for Codex is rate-limited by plan; see Codex pricing page for per-5h ranges and code review/week limits.",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "openai_codex_pricing"
+        ]
+      },
+      "notes": "Codex pricing page is authoritative for bundled Codex capabilities; ChatGPT pricing page may be region-blocked in some environments."
+    },
+    {
+      "provider_id": "openai",
+      "product": "ChatGPT",
+      "plan_id": "chatgpt-pro",
+      "region": "global",
+      "feature_id": "codex",
+      "surface_id": "ide_extension",
+      "included": true,
+      "limits": "Usage for Codex is rate-limited by plan; see Codex pricing page for per-5h ranges and code review/week limits.",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "openai_codex_pricing"
+        ]
+      },
+      "notes": "Codex pricing page is authoritative for bundled Codex capabilities; ChatGPT pricing page may be region-blocked in some environments."
+    },
+    {
+      "provider_id": "openai",
+      "product": "ChatGPT",
+      "plan_id": "chatgpt-pro",
+      "region": "global",
+      "feature_id": "codex",
+      "surface_id": "ios",
+      "included": true,
+      "limits": "Usage for Codex is rate-limited by plan; see Codex pricing page for per-5h ranges and code review/week limits.",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "openai_codex_pricing"
+        ]
+      },
+      "notes": "Codex pricing page is authoritative for bundled Codex capabilities; ChatGPT pricing page may be region-blocked in some environments."
+    },
+    {
+      "provider_id": "openai",
+      "product": "ChatGPT",
+      "plan_id": "chatgpt-pro",
+      "region": "global",
+      "feature_id": "codex",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": "Usage for Codex is rate-limited by plan; see Codex pricing page for per-5h ranges and code review/week limits.",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "openai_codex_pricing"
+        ]
+      },
+      "notes": "Codex pricing page is authoritative for bundled Codex capabilities; ChatGPT pricing page may be region-blocked in some environments."
+    },
+    {
+      "provider_id": "openai",
+      "product": "ChatGPT",
+      "plan_id": "chatgpt-pro",
+      "region": "global",
+      "feature_id": "modality_access:image",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "openai_chatgpt_pricing_capture"
+        ]
+      },
+      "notes": "Derived from an authenticated UI capture; replace with a public OpenAI source when accessible."
+    },
+    {
+      "provider_id": "openai",
+      "product": "ChatGPT",
+      "plan_id": "chatgpt-pro",
+      "region": "global",
+      "feature_id": "modality_access:text",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "openai_chatgpt_pricing_capture"
+        ]
+      },
+      "notes": "Derived from an authenticated UI capture; replace with a public OpenAI source when accessible."
+    },
+    {
+      "provider_id": "openai",
+      "product": "ChatGPT",
+      "plan_id": "chatgpt-pro",
+      "region": "global",
+      "feature_id": "modality_access:video",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "openai_chatgpt_pricing_capture"
+        ]
+      },
+      "notes": "Derived from an authenticated UI capture; replace with a public OpenAI source when accessible."
+    },
+    {
+      "provider_id": "openai",
+      "product": "ChatGPT",
+      "plan_id": "chatgpt-pro",
+      "region": "global",
+      "feature_id": "modality_access:voice",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "openai_chatgpt_pricing_capture"
+        ]
+      },
+      "notes": "Derived from an authenticated UI capture; replace with a public OpenAI source when accessible."
+    },
+    {
+      "provider_id": "openai",
+      "product": "ChatGPT",
+      "plan_id": "chatgpt-pro",
+      "region": "global",
+      "feature_id": "model_access:openai:gpt-5.2-instant",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": "Described as unlimited access subject to guardrails.",
+      "evidence": {
+        "type": "authenticated_ui_capture",
+        "source_ids": [
+          "openai_chatgpt_pricing_capture"
+        ]
+      },
+      "notes": "Model naming comes from the pricing page wording; map to API models separately."
+    },
+    {
+      "provider_id": "openai",
+      "product": "ChatGPT",
+      "plan_id": "chatgpt-pro",
+      "region": "global",
+      "feature_id": "model_access:openai:gpt-5.2-pro",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": "Described as included access; quota not specified on pricing page capture.",
+      "evidence": {
+        "type": "authenticated_ui_capture",
+        "source_ids": [
+          "openai_chatgpt_pricing_capture"
+        ]
+      },
+      "notes": "Model naming comes from the pricing page wording; map to API models separately."
+    },
+    {
+      "provider_id": "openai",
+      "product": "ChatGPT",
+      "plan_id": "chatgpt-pro",
+      "region": "global",
+      "feature_id": "model_access:openai:gpt-5.2-thinking",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": "Described as unlimited access subject to guardrails.",
+      "evidence": {
+        "type": "authenticated_ui_capture",
+        "source_ids": [
+          "openai_chatgpt_pricing_capture"
+        ]
+      },
+      "notes": "Model naming comes from the pricing page wording; map to API models separately."
+    },
+    {
+      "provider_id": "openai",
+      "product": "ChatGPT",
+      "plan_id": "chatgpt-pro",
+      "region": "global",
+      "feature_id": "provider_access:openai",
+      "surface_id": "web_app",
+      "included": true,
+      "limits": "Usage described as 'unlimited' subject to reasonable use/abuse guardrails; no token-equivalent quota provided.",
+      "evidence": {
+        "type": "authenticated_ui_capture",
+        "source_ids": [
+          "openai_chatgpt_pricing_capture"
+        ]
+      },
+      "notes": "Provider coverage derived from user-captured pricing page text."
+    },
+    {
+      "provider_id": "windsurf",
+      "product": "Windsurf",
+      "plan_id": "windsurf-teams",
+      "region": "global",
+      "feature_id": "deepwiki",
+      "surface_id": "ide_extension",
+      "included": true,
+      "limits": null,
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "windsurf_deepwiki"
+        ]
+      },
+      "notes": "DeepWiki is an editor feature (hover symbols for explanations)."
+    },
+    {
+      "provider_id": "windsurf",
+      "product": "Windsurf",
+      "plan_id": "windsurf-teams",
+      "region": "global",
+      "feature_id": "pr_reviews",
+      "surface_id": "github_integration",
+      "included": true,
+      "limits": "Public doc states: max 50 files per PR; organization-wide limit of 500 reviews/month.",
+      "evidence": {
+        "type": "public_url",
+        "source_ids": [
+          "windsurf_pr_reviews_public"
+        ]
+      },
+      "notes": "Potentially stale or region-specific; keep as a separate variant."
+    },
+    {
+      "provider_id": "windsurf",
+      "product": "Windsurf",
+      "plan_id": "windsurf-teams",
+      "region": "us",
+      "feature_id": "pr_reviews",
+      "surface_id": "github_integration",
+      "included": true,
+      "limits": "Rolling 30-day rate limit: min(50 reviews per team member, 1000 reviews total).",
+      "evidence": {
+        "type": "authenticated_ui_capture",
+        "source_ids": [
+          "windsurf_pr_reviews_dashboard_capture"
+        ]
+      },
+      "notes": "Treat as authoritative for US/global target when public docs conflict."
+    }
+  ]
+}
