@@ -1,1 +1,151 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --radius-sm: 0px;
+    --radius-md: 0px;
+    --radius-lg: 0px;
+    --radius-xl: 0px;
+    --radius-2xl: 0px;
+    --radius-3xl: 0px;
+    --radius-4xl: 0px;
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+    --radius: 0px;
+    --background: #ffffff;
+    --foreground: #000000;
+    --card: #ffffff;
+    --card-foreground: #000000;
+    --popover: #ffffff;
+    --popover-foreground: #000000;
+    --primary: #000000;
+    --primary-foreground: #ffffff;
+    --secondary: #f0f0f0;
+    --secondary-foreground: #000000;
+    --muted: #f0f0f0;
+    --muted-foreground: #555555;
+    --accent: #ff3300;
+    --accent-foreground: #ffffff;
+    --destructive: #ff0000;
+    --border: #000000;
+    --input: #000000;
+    --ring: #000000;
+    --chart-1: #000000;
+    --chart-2: #333333;
+    --chart-3: #666666;
+    --chart-4: #999999;
+    --chart-5: #cccccc;
+    --sidebar: #ffffff;
+    --sidebar-foreground: #000000;
+    --sidebar-primary: #000000;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #f0f0f0;
+    --sidebar-accent-foreground: #000000;
+    --sidebar-border: #000000;
+    --sidebar-ring: #000000;
+}
+
+.dark {
+    --background: #000000;
+    --foreground: #ffffff;
+    --card: #000000;
+    --card-foreground: #ffffff;
+    --popover: #000000;
+    --popover-foreground: #ffffff;
+    --primary: #ffffff;
+    --primary-foreground: #000000;
+    --secondary: #1a1a1a;
+    --secondary-foreground: #ffffff;
+    --muted: #1a1a1a;
+    --muted-foreground: #aaaaaa;
+    --accent: #ff3300;
+    --accent-foreground: #ffffff;
+    --destructive: #ff3333;
+    --border: #ffffff;
+    --input: #ffffff;
+    --ring: #ffffff;
+    --chart-1: #ffffff;
+    --chart-2: #cccccc;
+    --chart-3: #999999;
+    --chart-4: #666666;
+    --chart-5: #333333;
+    --sidebar: #000000;
+    --sidebar-foreground: #ffffff;
+    --sidebar-primary: #ffffff;
+    --sidebar-primary-foreground: #000000;
+    --sidebar-accent: #1a1a1a;
+    --sidebar-accent-foreground: #ffffff;
+    --sidebar-border: #ffffff;
+    --sidebar-ring: #ffffff;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+}
+
+/* Neo-brutalist overrides */
+@layer components {
+  .neo-panel {
+    @apply border-2 border-black bg-white p-6;
+  }
+  
+  .neo-input {
+    @apply border-2 border-black bg-white px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-black;
+  }
+  
+  .neo-button {
+    @apply border-2 border-black bg-black px-6 py-3 text-white font-medium hover:bg-white hover:text-black transition-colors;
+  }
+  
+  .neo-button-secondary {
+    @apply border-2 border-black bg-white px-6 py-3 text-black font-medium hover:bg-black hover:text-white transition-colors;
+  }
+  
+  .neo-heading {
+    @apply text-2xl font-bold tracking-tight uppercase;
+  }
+  
+  .neo-label {
+    @apply text-sm font-bold uppercase tracking-wide;
+  }
+}

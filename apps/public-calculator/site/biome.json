@@ -2,13 +2,13 @@
   "$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
   "files": {
     "includes": [
-      "src/**",
-      "scripts/**",
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "scripts/**/*.mjs",
       "biome.json",
       "next.config.ts",
       "package.json",
       "postcss.config.mjs",
-      "tailwind.config.*",
       "tsconfig.json"
     ]
   },

@@ -267,6 +267,33 @@ function findApiRate(pricing: PricingSnapshotV01, provider: string, channel: str
   );
 }
 
+/**
+ * Match a simplified region (us, eu, cn) against actual cloud regions.
+ * Supports prefix matching for simplified region selection.
+ */
+function regionMatches(simplifiedRegion: string, actualRegion: string): boolean {
+  const simplified = simplifiedRegion.toLowerCase();
+  const actual = actualRegion.toLowerCase();
+  
+  // Exact match
+  if (simplified === actual) return true;
+  
+  // Simplified region prefix matching
+  // "us" matches "us-east-1", "us-west-2", etc.
+  // "eu" matches "eu-west-1", "eu-central-1", etc.
+  // "cn" matches "cn-north-1", "cn-northwest-1", etc.
+  if (simplified === "us" && actual.startsWith("us-")) return true;
+  if (simplified === "eu" && actual.startsWith("eu-")) return true;
+  if (simplified === "cn" && actual.startsWith("cn-")) return true;
+  if (simplified === "ap" && actual.startsWith("ap-")) return true;
+  if (simplified === "sa" && actual.startsWith("sa-")) return true;
+  if (simplified === "ca" && actual.startsWith("ca-")) return true;
+  if (simplified === "af" && actual.startsWith("af-")) return true;
+  if (simplified === "me" && actual.startsWith("me-")) return true;
+  
+  return false;
+}
+
 function ensureFiniteNonNegative(n: number, label: string): number {
   if (!Number.isFinite(n) || n < 0) {
     throw new Error(`Invalid ${label}: must be a finite non-negative number`);
@@ -786,10 +813,10 @@ export function calculate(input: EngineInput): EngineOutput {
       if (apiRate.regional_rates && apiRate.regional_rates.length > 0) {
         const region = scenario.region ?? input.target_region;
         const match = region
-          ? apiRate.regional_rates.find((rr) => rr.regions.includes(region))
+          ? apiRate.regional_rates.find((rr) => rr.regions.some((r) => regionMatches(region, r)))
           : null;
         const picked = match ?? apiRate.regional_rates[0];
-        if (!match) warnings.push("Regional token pricing exists but no matching region provided; using first regional rate set.");
+        if (!match) warnings.push(`Regional pricing for '${region}' not found; using ${picked.regions[0]} rates.`);
         if (typeof picked.input === "number") pickedRates.input = picked.input;
         if (typeof picked.output === "number") pickedRates.output = picked.output;
       } else if (apiRate.tiers && apiRate.tiers.length > 0) {

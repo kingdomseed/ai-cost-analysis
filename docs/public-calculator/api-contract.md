@@ -39,6 +39,12 @@ Endpoint:
 
 Returns the current selectable universe for the UI (models/plans/currencies/regions) derived from the latest snapshots.
 
+Response includes:
+- `token_meters[]` (provider/channel/model + evidence)
+- `tool_plans[]` and `subscriptions[]` (with scenario kinds)
+- `options[]` (flattened list of selectable items)
+- `models_catalog[]` (model metadata + modalities/ratings when present)
+
 ### 4) Plan matrix API (budgeting + coverage)
 
 Endpoint:

@@ -21,6 +21,17 @@ function uniqSorted(values: string[]): string[] {
   return Array.from(new Set(values)).sort();
 }
 
+const TOOL_PROVIDER_ID_MAP: Record<string, string> = {
+  cursor: "cursor",
+  "github copilot": "github",
+  "openai codex": "openai",
+  windsurf: "windsurf",
+};
+
+function providerIdForTool(tool: string): string | null {
+  return TOOL_PROVIDER_ID_MAP[tool.toLowerCase()] ?? null;
+}
+
 function scenarioKindsForToolPlan(pricingType: string): string[] {
   const base = ["tool_plan_floor"];
   switch (pricingType) {
@@ -73,19 +84,136 @@ export async function GET(): Promise<NextResponse> {
       ? uniqSorted([baseCurrency, ...Object.keys(fx.rates ?? {})])
       : [baseCurrency];
 
-  const regionsFromApiRates: string[] = [];
+  const regions = uniqSorted(
+    pricing.api_rates.flatMap((rate) =>
+      (rate.regional_rates ?? []).flatMap((entry) => entry.regions ?? []),
+    ),
+  );
+
+  // Build unified providers list
+  // Type 1: Direct API providers (token meters)
+  const apiProviders = uniqSorted(pricing.api_rates.map((r) => r.provider));
+
+  // Type 2: Tools (Cursor, Copilot, etc.)
+  const toolProviders = uniqSorted(pricing.tool_plans.map((p) => p.tool));
+
+  // Type 3: Consumer subscriptions (ChatGPT, Claude, etc.)
+  const subscriptionProviders = uniqSorted(pricing.subscriptions.map((s) => s.provider));
+
+  // All unique providers
+  const allProviders = uniqSorted([...apiProviders, ...toolProviders, ...subscriptionProviders]);
+
+  // Build models list with provider info
+  const modelMap = new Map<string, { provider: string; model: string; channels: string[] }>();
+
+  // From API rates
   for (const rate of pricing.api_rates) {
-    if (Array.isArray(rate.regional_rates)) {
-      for (const rr of rate.regional_rates) {
-        regionsFromApiRates.push(...rr.regions);
-      }
+    const key = `${rate.provider}:${rate.model}`;
+    if (!modelMap.has(key)) {
+      modelMap.set(key, { provider: rate.provider, model: rate.model, channels: [] });
+    }
+    modelMap.get(key)!.channels.push(rate.channel);
+  }
+
+  // From models catalog
+  for (const m of models.models) {
+    const key = `${m.provider}:${m.model}`;
+    if (!modelMap.has(key)) {
+      modelMap.set(key, { provider: m.provider, model: m.model, channels: m.channels || [] });
     }
   }
 
-  const regionsFromEntitlements = entitlements.entitlements
-    .map((e) => e.region)
-    .filter((r) => typeof r === "string");
-  const regions = uniqSorted([...regionsFromApiRates, ...regionsFromEntitlements]);
+  const allModels = Array.from(modelMap.values()).sort((a, b) => {
+    if (a.provider !== b.provider) return a.provider.localeCompare(b.provider);
+    return a.model.localeCompare(b.model);
+  });
+
+  // Build unified options list (what users select from)
+  const options: Array<{
+    id: string;
+    kind: "api" | "tool" | "subscription";
+    name: string;
+    provider?: string;
+    model?: string;
+    channel?: string;
+    plan_id?: string;
+    price_usd_per_month: number | null;
+    pricing_type: string;
+    verified: boolean;
+    models_included?: string[];
+  }> = [];
+
+  // Add API rate options (direct model access)
+  for (const rate of pricing.api_rates) {
+    options.push({
+      id: `api:${rate.provider}:${rate.channel}:${rate.model}`,
+      kind: "api",
+      name: `${rate.provider} ${rate.model}`,
+      provider: rate.provider,
+      model: rate.model,
+      channel: rate.channel,
+      price_usd_per_month: null, // Pay per use, no fixed price
+      pricing_type: "token_meter",
+      verified: rate.verified,
+    });
+  }
+
+  // Add tool plan options
+  for (const plan of pricing.tool_plans) {
+    const price = plan.subscription_price_usd ?? plan.subscription_price_usd_per_seat ?? null;
+
+    // Find what models this tool provides access to
+    const providerId = providerIdForTool(plan.tool);
+    const toolEntitlements = providerId
+      ? entitlements.entitlements.filter(
+          (e) => e.provider_id === providerId && e.plan_id === plan.plan_id,
+        )
+      : [];
+    const modelsIncluded = toolEntitlements
+      .filter((e) => e.feature_id.startsWith("model_access:"))
+      .map((e) => e.feature_id.replace("model_access:", ""));
+
+    options.push({
+      id: `tool:${plan.tool}:${plan.plan_id}`,
+      kind: "tool",
+      name: `${plan.tool} (${plan.plan_id})`,
+      plan_id: plan.plan_id,
+      price_usd_per_month: price,
+      pricing_type: plan.pricing_type,
+      verified: plan.verified,
+      models_included: modelsIncluded.length > 0 ? modelsIncluded : undefined,
+    });
+  }
+
+  // Add subscription options
+  for (const sub of pricing.subscriptions) {
+    const subEntitlements = entitlements.entitlements.filter(
+      (e) => e.provider_id === sub.provider && e.plan_id === sub.plan_id,
+    );
+    const modelsIncluded = subEntitlements
+      .filter((e) => e.feature_id.startsWith("model_access:"))
+      .map((e) => e.feature_id.replace("model_access:", ""));
+
+    options.push({
+      id: `subscription:${sub.provider}:${sub.plan_id}`,
+      kind: "subscription",
+      name: `${sub.provider} ${sub.plan_id}`,
+      provider: sub.provider,
+      plan_id: sub.plan_id,
+      price_usd_per_month: sub.price_usd_per_month ?? null,
+      pricing_type: "subscription",
+      verified: sub.verified,
+      models_included: modelsIncluded.length > 0 ? modelsIncluded : undefined,
+    });
+  }
+
+  // Sort options by price (nulls last)
+  options.sort((a, b) => {
+    if (a.price_usd_per_month === null && b.price_usd_per_month === null) return 0;
+    if (a.price_usd_per_month === null) return 1;
+    if (b.price_usd_per_month === null) return -1;
+    return a.price_usd_per_month - b.price_usd_per_month;
+  });
 
   const tokenMeters = pricing.api_rates.map((r) => ({
     provider: r.provider,
@@ -161,9 +289,12 @@ export async function GET(): Promise<NextResponse> {
     ],
     currencies,
     regions,
+    providers: allProviders,
+    models: allModels,
+    options,
     token_meters: tokenMeters,
     tool_plans: toolPlans,
     subscriptions,
-    models: modelCatalog,
+    models_catalog: modelCatalog,
   });
 }
