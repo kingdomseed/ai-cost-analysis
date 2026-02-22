@@ -1,0 +1,2581 @@
+{
+  "meta": {
+    "schema_version": "v0.1",
+    "retrieved_at": "2026-02-22",
+    "last_verified_at": "2026-02-22",
+    "notes": "Model ratings ingested from a user-downloaded Azure Foundry model leaderboard CSV export. Ratings are external signals and should not be treated as canonical pricing."
+  },
+  "sources": [
+    {
+      "id": "azure_foundry_model_leaderboard_export",
+      "url": "https://ai.azure.com/ (leaderboard export from Azure Foundry UI)",
+      "retrieved_at": "2026-02-22",
+      "verified": false,
+      "notes": "Derived from local export at /Users/jholt/Downloads/azure_model_leaderboard/azure_foundry_model_leaderboard.csv. Prefer a stable Azure URL if/when available."
+    },
+    {
+      "id": "pricing_snapshot_for_channel_mapping",
+      "url": "apps/public-calculator/data/pricing.2026-02-21.json",
+      "retrieved_at": "2026-02-21",
+      "verified": true,
+      "notes": "Used to seed provider/model/channel identities for known priced models."
+    }
+  ],
+  "models": [
+    {
+      "provider": "anthropic",
+      "model": "claude-haiku-4.5",
+      "channels": [
+        "api"
+      ],
+      "family": "claude",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.84,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 0.17,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 90,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 2,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced.",
+      "azure_model_label": "claude-haiku-4-5",
+      "azure_provider_label": "Anthropic"
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-opus-4.1",
+      "channels": [],
+      "family": "claude",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.9,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 1.28,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 32,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 30,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "claude-opus-4-1",
+      "azure_provider_label": "Anthropic"
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-opus-4.5",
+      "channels": [],
+      "family": "claude",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.93,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 1.47,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 42,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 10,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "claude-opus-4-5",
+      "azure_provider_label": "Anthropic"
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-opus-4.6",
+      "channels": [
+        "api"
+      ],
+      "family": "claude",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.93,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 2.41,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 43,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 10,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced.",
+      "azure_model_label": "claude-opus-4-6",
+      "azure_provider_label": "Anthropic"
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4.5",
+      "channels": [],
+      "family": "claude",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.92,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 2.19,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 43,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 6,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "claude-sonnet-4-5",
+      "azure_provider_label": "Anthropic"
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4.6",
+      "channels": [
+        "api"
+      ],
+      "family": "claude",
+      "modalities": null,
+      "ratings": null,
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced."
+    },
+    {
+      "provider": "aws",
+      "model": "claude-opus-4.6",
+      "channels": [
+        "bedrock"
+      ],
+      "family": null,
+      "modalities": null,
+      "ratings": null,
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced."
+    },
+    {
+      "provider": "aws",
+      "model": "claude-sonnet-4.6",
+      "channels": [
+        "bedrock"
+      ],
+      "family": null,
+      "modalities": null,
+      "ratings": null,
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced."
+    },
+    {
+      "provider": "aws",
+      "model": "kimi-k2.5",
+      "channels": [
+        "bedrock"
+      ],
+      "family": null,
+      "modalities": null,
+      "ratings": null,
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced."
+    },
+    {
+      "provider": "azure",
+      "model": "gpt-5.2",
+      "channels": [
+        "azure-openai"
+      ],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": null,
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced."
+    },
+    {
+      "provider": "azure",
+      "model": "gpt-5.2-codex",
+      "channels": [
+        "azure-openai"
+      ],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": null,
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced."
+    },
+    {
+      "provider": "cohere",
+      "model": "cohere-command-a",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.76,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 38.98,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 33,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 4.38,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "cohere-command-a",
+      "azure_provider_label": "Cohere"
+    },
+    {
+      "provider": "cohere",
+      "model": "cohere-command-r-plus-08-2024",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.54,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 51.77,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 30,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 4.38,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "cohere-command-r-plus-08-2024",
+      "azure_provider_label": "Cohere"
+    },
+    {
+      "provider": "deepseek",
+      "model": "deepseek-r1-0528",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.87,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 40,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 43,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 2.36,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "DeepSeek-R1-0528",
+      "azure_provider_label": "DeepSeek"
+    },
+    {
+      "provider": "deepseek",
+      "model": "deepseek-v3-0324",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.78,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 41.83,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 60,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 2,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "DeepSeek-V3-0324",
+      "azure_provider_label": "DeepSeek"
+    },
+    {
+      "provider": "deepseek",
+      "model": "deepseek-v3.1",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.85,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 40.5,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 91,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.84,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "DeepSeek-V3.1",
+      "azure_provider_label": "DeepSeek"
+    },
+    {
+      "provider": "google",
+      "model": "gemini-2.5-pro",
+      "channels": [
+        "gemini-api"
+      ],
+      "family": "gemini",
+      "modalities": null,
+      "ratings": null,
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced."
+    },
+    {
+      "provider": "google",
+      "model": "gemini-3-pro-preview",
+      "channels": [
+        "gemini-api"
+      ],
+      "family": "gemini",
+      "modalities": null,
+      "ratings": null,
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced."
+    },
+    {
+      "provider": "meta",
+      "model": "llama-3.3-70b-instruct",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.74,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 32.67,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 23,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.71,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "Llama-3.3-70B-Instruct",
+      "azure_provider_label": "Meta"
+    },
+    {
+      "provider": "meta",
+      "model": "llama-4-maverick-17b-128e-instruct-fp8",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.78,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 27.5,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 49,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.61,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "azure_provider_label": "Meta"
+    },
+    {
+      "provider": "meta",
+      "model": "llama-4-scout-17b-16e-instruct",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.71,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 24.83,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 30,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.34,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "Llama-4-Scout-17B-16E-Instruct",
+      "azure_provider_label": "Meta"
+    },
+    {
+      "provider": "microsoft",
+      "model": "mai-ds-r1",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.87,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 41.99,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 92,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 2.36,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "MAI-DS-R1",
+      "azure_provider_label": "Microsoft"
+    },
+    {
+      "provider": "microsoft",
+      "model": "phi-4-reasoning",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.76,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 2.67,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 29,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.22,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "Phi-4-reasoning",
+      "azure_provider_label": "Microsoft"
+    },
+    {
+      "provider": "mistral",
+      "model": "mistral-medium-2505",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.77,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 48.99,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 43,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.8,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "mistral-medium-2505",
+      "azure_provider_label": "Mistral AI"
+    },
+    {
+      "provider": "mistral",
+      "model": "mistral-small-2503",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.7,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 41.25,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 113,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.15,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "mistral-small-2503",
+      "azure_provider_label": "Mistral AI"
+    },
+    {
+      "provider": "moonshot",
+      "model": "kimi-k2-thinking",
+      "channels": [],
+      "family": "kimi",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.91,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 13.34,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 65,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 1.07,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "Kimi-K2-Thinking",
+      "azure_provider_label": "Moonshot AI"
+    },
+    {
+      "provider": "moonshot",
+      "model": "kimi-k2.5",
+      "channels": [
+        "api"
+      ],
+      "family": "kimi",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.93,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 12.17,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 75,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 1.2,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced.",
+      "azure_model_label": "Kimi-K2.5",
+      "azure_provider_label": "Moonshot AI"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.83,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 9.83,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 95,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 3.5,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "gpt-4.1",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1-mini",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.8,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 17.5,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 125,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.7,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "gpt-4.1-mini",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1-nano",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.69,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 13.83,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 116,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.17,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "gpt-4.1-nano",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.75,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 7.33,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 65,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 4.38,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "gpt-4o",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.72,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 12,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 74,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.26,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "gpt-4o-mini",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.91,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 1.09,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 69,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 3.69,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "gpt-5",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.89,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 0.53,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 127,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.69,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "gpt-5-mini",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5-nano",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.83,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 1.67,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 224,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.14,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "gpt-5-nano",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5-pro",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.91,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 0,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 41,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 41.25,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "gpt-5-pro",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.1",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.9,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 0.34,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 76,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 3.44,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "gpt-5.1",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.1-chat",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.9,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 0.34,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 76,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 3.44,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "gpt-5.1-chat",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.1-codex",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.9,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 0.33,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 33,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 3.44,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "gpt-5.1-codex",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.1-codex-max",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.92,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 0.69,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 86,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 3.44,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "gpt-5.1-codex-max",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.1-codex-mini",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.86,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 0.33,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 43,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.69,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "gpt-5.1-codex-mini",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.2",
+      "channels": [
+        "api"
+      ],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.93,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 1.87,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 60,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 4.81,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced.",
+      "azure_model_label": "gpt-5.2",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.2-codex",
+      "channels": [
+        "api"
+      ],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.93,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 0.18,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 32,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 4.81,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced.",
+      "azure_model_label": "gpt-5.2-codex",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-oss-120b",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.85,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 1.33,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 249,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.85,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "gpt-oss-120b",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "o1",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.87,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 0.83,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 46,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 26.25,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "o1",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "o3",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.9,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 2.5,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 62,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 3.5,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "o3",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "o3-mini",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.87,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 4.83,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 131,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 1.93,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "o3-mini",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "o3-pro",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.91,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 0.67,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 12,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 35,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "o3-pro",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "openai",
+      "model": "o4-mini",
+      "channels": [],
+      "family": "gpt",
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.89,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 2.33,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 52,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 1.93,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "o4-mini",
+      "azure_provider_label": "OpenAI"
+    },
+    {
+      "provider": "opencode",
+      "model": "claude-opus-4.6",
+      "channels": [
+        "zen"
+      ],
+      "family": null,
+      "modalities": null,
+      "ratings": null,
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced."
+    },
+    {
+      "provider": "opencode",
+      "model": "gemini-3-pro-preview",
+      "channels": [
+        "zen"
+      ],
+      "family": null,
+      "modalities": null,
+      "ratings": null,
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced."
+    },
+    {
+      "provider": "opencode",
+      "model": "gpt-5.2",
+      "channels": [
+        "zen"
+      ],
+      "family": null,
+      "modalities": null,
+      "ratings": null,
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced."
+    },
+    {
+      "provider": "opencode",
+      "model": "gpt-5.2-codex",
+      "channels": [
+        "zen"
+      ],
+      "family": null,
+      "modalities": null,
+      "ratings": null,
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced."
+    },
+    {
+      "provider": "opencode",
+      "model": "kimi-k2.5",
+      "channels": [
+        "zen"
+      ],
+      "family": null,
+      "modalities": null,
+      "ratings": null,
+      "notes": "Seeded from pricing snapshot; ratings may be added from leaderboards where sourced."
+    },
+    {
+      "provider": "xai",
+      "model": "grok-3",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.85,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 48.67,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 24,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 6,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "grok-3",
+      "azure_provider_label": "xAI"
+    },
+    {
+      "provider": "xai",
+      "model": "grok-3-mini",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.87,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 49.5,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 148,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.51,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "grok-3-mini",
+      "azure_provider_label": "xAI"
+    },
+    {
+      "provider": "xai",
+      "model": "grok-4",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.91,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 23.59,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 55,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 6,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "grok-4",
+      "azure_provider_label": "xAI"
+    },
+    {
+      "provider": "xai",
+      "model": "grok-4-fast-non-reasoning",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.78,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 36.27,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 127,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.28,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "grok-4-fast-non-reasoning",
+      "azure_provider_label": "xAI"
+    },
+    {
+      "provider": "xai",
+      "model": "grok-4-fast-reasoning",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.89,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 24.67,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 58,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.28,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "grok-4-fast-reasoning",
+      "azure_provider_label": "xAI"
+    },
+    {
+      "provider": "xai",
+      "model": "grok-code-fast-1",
+      "channels": [],
+      "family": null,
+      "modalities": null,
+      "ratings": [
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "quality_index",
+          "score": 0.82,
+          "scale": "0-1",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "safety_attack_success_rate_percent",
+          "score": 23.04,
+          "scale": "percent",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "throughput_tokens_per_sec",
+          "score": 157,
+          "scale": "tokens/sec",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        },
+        {
+          "system": "azure-foundry-model-leaderboard",
+          "metric": "estimated_cost_usd_per_1m_tokens",
+          "score": 0.53,
+          "scale": "USD/1M",
+          "as_of": "2026-02-22",
+          "source_ids": [
+            "azure_foundry_model_leaderboard_export"
+          ]
+        }
+      ],
+      "azure_model_label": "grok-code-fast-1",
+      "azure_provider_label": "xAI"
+    }
+  ]
+}
