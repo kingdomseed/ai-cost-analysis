@@ -5,17 +5,18 @@ import type {
   ModelsSnapshotV01,
   PricingSnapshotV01,
   ScenarioResult,
+  ToolPlanV01,
   WorkloadRequest,
 } from "@ai-cost-analysis/core";
 import { calculate } from "@ai-cost-analysis/core";
 import { NextResponse } from "next/server";
-
 import {
   loadLatestEntitlementsSnapshot,
   loadLatestFxSnapshot,
   loadLatestModelsSnapshot,
   loadLatestPricingSnapshot,
 } from "@/lib/public-datasets";
+import type { PlanViability } from "@/types/api";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
@@ -250,6 +251,299 @@ function cartesianProduct<T>(lists: T[][]): T[][] {
   return acc;
 }
 
+/**
+ * Resolve the total number of tokens the user's workload represents.
+ * Returns null if the workload isn't token-denominated.
+ */
+function resolveWorkloadTokens(workload: WorkloadRequest | null): number | null {
+  if (!workload) return null;
+  if (workload.kind === "tokens_per_month") {
+    return workload.input_tokens + workload.output_tokens;
+  }
+  if (workload.kind === "total_tokens_per_month") {
+    return workload.total_tokens;
+  }
+  return null;
+}
+
+/**
+ * Assess whether a tool plan can plausibly serve the user's stated workload.
+ *
+ * Returns a viability classification and human-readable reason.
+ * The logic checks known capacity fields in the pricing snapshot against the
+ * workload's token volume.  When capacity data is absent or the plan's
+ * metering unit is incommensurable with the workload unit, viability is
+ * "viability_unknown" rather than a false positive.
+ */
+function assessToolPlanViability(
+  tp: ToolPlanV01,
+  workload: WorkloadRequest | null,
+): { viability: PlanViability; reason: string } {
+  const raw = tp as Record<string, unknown>;
+  const pricingType = tp.pricing_type;
+
+  const fmt = (tokens: number) => `${(tokens / 1_000_000).toFixed(1)}M`;
+
+  // ── Resolve price from all known field name variants ───────────────
+  const subPrice = raw.subscription_price_usd as number | null | undefined;
+  const seatPrice = raw.subscription_price_usd_per_seat as number | null | undefined;
+  const seatPricePerMonth = raw.subscription_price_usd_per_seat_per_month as
+    | number
+    | null
+    | undefined;
+  const creditTiers = raw.credit_tiers as unknown[] | null | undefined;
+  const metering = (raw.metering as string | undefined) ?? "";
+  const isByok =
+    metering.toLowerCase().includes("byok") ||
+    metering.toLowerCase().includes("your chosen provider");
+
+  const hasPositivePrice =
+    (typeof subPrice === "number" && subPrice > 0) ||
+    (typeof seatPrice === "number" && seatPrice > 0) ||
+    (typeof seatPricePerMonth === "number" && seatPricePerMonth > 0) ||
+    (Array.isArray(creditTiers) && creditTiers.length > 0);
+
+  const isExplicitlyFree =
+    pricingType === "free_with_limits" ||
+    (typeof subPrice === "number" && subPrice === 0 && !isByok);
+
+  // ── Custom/enterprise pricing → always price_unavailable ──────────
+  if (pricingType === "custom_enterprise") {
+    return { viability: "price_unavailable", reason: "Enterprise pricing; contact vendor." };
+  }
+
+  // ── No discoverable price and not free → price_unavailable ────────
+  if (!hasPositivePrice && !isExplicitlyFree && pricingType !== "prepaid_usd_credits") {
+    // BYOK tools have $0 subscription intentionally — handle separately below
+    if (!isByok && pricingType !== "compute_units") {
+      return {
+        viability: "price_unavailable",
+        reason: "Pricing not publicly available; check vendor directly.",
+      };
+    }
+  }
+
+  // ── BYOK: $0 subscription but user always pays API costs ─────────
+  // Always viability_unknown regardless of workload — the $0 subscription
+  // is misleading since cost entirely depends on usage.
+  if (isByok && !hasPositivePrice) {
+    return {
+      viability: "viability_unknown",
+      reason:
+        "BYOK — $0 subscription but you pay API costs through your provider. Switch to Token Usage tab to estimate your cost.",
+    };
+  }
+
+  // ── PAYG: user always pays real usage costs ───────────────────────
+  // Same logic — always flag even with no workload.
+  if (pricingType === "prepaid_usd_credits" && !workload) {
+    return {
+      viability: "viability_unknown",
+      reason:
+        "Pay-as-you-go — no subscription fee, but you pay per-token usage costs. Switch to Token Usage tab to estimate your cost.",
+    };
+  }
+
+  // ── No workload provided → can't assess further ───────────────────
+  if (!workload) {
+    return { viability: "viable", reason: "" };
+  }
+
+  const totalTokens = resolveWorkloadTokens(workload);
+
+  // ── Prepaid USD credits (PAYG): user pays real usage costs ────────
+  if (pricingType === "prepaid_usd_credits") {
+    return {
+      viability: "viability_unknown",
+      reason:
+        "Pay-as-you-go — no subscription fee, but you pay per-token usage costs. Actual monthly cost depends on your token usage and model choice.",
+    };
+  }
+
+  // ── Compute units / opaque metering with $0 floor ─────────────────
+  if (pricingType === "compute_units" && !hasPositivePrice) {
+    return {
+      viability: "viability_unknown",
+      reason: "Compute-unit pricing is opaque; check vendor for capacity at your usage level.",
+    };
+  }
+
+  // ── Free-with-limits: check hard capacity ─────────────────────────
+  if (pricingType === "free_with_limits") {
+    const includedTokens = raw.included_tokens_per_month as number | undefined;
+    if (totalTokens != null && includedTokens != null && totalTokens > includedTokens) {
+      return {
+        viability: "non_viable",
+        reason: `Free tier includes ${fmt(includedTokens)} tokens/month; workload requires ${fmt(totalTokens)}.`,
+      };
+    }
+
+    const includedRequests = raw.included_agentic_requests_per_month as number | undefined;
+    if (includedRequests != null && totalTokens != null) {
+      const cap = includedRequests * 10_000;
+      if (totalTokens > cap) {
+        return {
+          viability: "non_viable",
+          reason: `Free tier includes ~${includedRequests} agentic requests/month (~${fmt(cap)} tokens equivalent); workload requires ${fmt(totalTokens)}.`,
+        };
+      }
+    }
+
+    const includedInline = raw.included_inline_suggestions_per_month as number | undefined;
+    const includedPremium = raw.included_premium_requests_per_month as number | undefined;
+    if (includedPremium != null && totalTokens != null) {
+      const cap = includedPremium * 5_000 + (includedInline ?? 0) * 500;
+      if (totalTokens > cap) {
+        return {
+          viability: "non_viable",
+          reason: `Free tier includes ${includedPremium} premium requests/month (~${fmt(cap)} tokens equivalent); workload requires ${fmt(totalTokens)}.`,
+        };
+      }
+    }
+
+    const includedCredits30d = raw.included_credits_per_30_days as number | undefined;
+    if (
+      includedCredits30d != null &&
+      includedCredits30d <= 10 &&
+      totalTokens != null &&
+      totalTokens > 100_000
+    ) {
+      return {
+        viability: "non_viable",
+        reason: `Free tier includes only ${includedCredits30d} credits per 30 days; insufficient for ${fmt(totalTokens)} tokens/month workload.`,
+      };
+    }
+
+    if (
+      includedTokens == null &&
+      includedRequests == null &&
+      includedPremium == null &&
+      includedCredits30d == null
+    ) {
+      return {
+        viability: "viability_unknown",
+        reason: "Free tier capacity limits not quantified in our data.",
+      };
+    }
+  }
+
+  // ── Token quota plans: check if workload exceeds included tokens ───
+  if (pricingType === "token_quota" || pricingType.includes("token_quota")) {
+    const includedTokens = raw.included_tokens_per_month as number | undefined;
+    if (totalTokens != null && includedTokens != null && totalTokens > includedTokens) {
+      return {
+        viability: "non_viable",
+        reason: `Plan includes ${fmt(includedTokens)} tokens/month; workload requires ${fmt(totalTokens)}.`,
+      };
+    }
+  }
+
+  // ── Premium request plans at $0: check request capacity ───────────
+  if (pricingType === "premium_requests" && typeof subPrice === "number" && subPrice === 0) {
+    const includedRequests = raw.included_premium_requests_per_month as number | undefined;
+    if (includedRequests != null && totalTokens != null) {
+      const cap = includedRequests * 5_000;
+      if (totalTokens > cap) {
+        return {
+          viability: "non_viable",
+          reason: `Free tier includes ${includedRequests} premium requests/month (~${fmt(cap)} tokens equivalent); workload requires ${fmt(totalTokens)}.`,
+        };
+      }
+    }
+  }
+
+  // ── Credits-based plans with very low credit counts ────────────────
+  if (pricingType === "credits" || pricingType.includes("credits")) {
+    const includedCredits = (raw.included_credits_per_month_per_seat ??
+      raw.included_credits_per_month ??
+      raw.included_credits_per_30_days_per_seat ??
+      raw.included_credits_per_30_days ??
+      raw.included_credits_per_seat ??
+      raw.included_credits) as number | undefined;
+
+    if (
+      includedCredits != null &&
+      includedCredits <= 10 &&
+      totalTokens != null &&
+      totalTokens > 100_000
+    ) {
+      return {
+        viability: "non_viable",
+        reason: `Plan includes only ${includedCredits} credits; insufficient for ${fmt(totalTokens)} tokens/month workload.`,
+      };
+    }
+  }
+
+  // ── Default: plan has a real price and no disqualifying capacity issue
+  return { viability: "viable", reason: "" };
+}
+
+/**
+ * Derive USD-per-credit from a tool plan's topup pricing data.
+ * Different platforms store topup info in different shapes; this
+ * normalizes them all to a single number (or null).
+ */
+function deriveUsdPerCredit(plan: Record<string, unknown>): {
+  usd_per_credit: number | null;
+  source: string;
+} {
+  // 1. Explicit credit_conversion field (JetBrains, Qoder)
+  const cc = plan.credit_conversion as Record<string, unknown> | undefined;
+  if (cc) {
+    const explicit = cc.usd_per_credit ?? cc.usd_per_credit_regular ?? cc.usd_per_credit_discount;
+    if (typeof explicit === "number") {
+      return { usd_per_credit: explicit, source: "explicit credit_conversion" };
+    }
+  }
+
+  // 2. topups_pricing with usd_per_credit (JetBrains style)
+  const tp = plan.topups_pricing as Record<string, unknown> | undefined;
+  if (tp && typeof tp.usd_per_credit === "number") {
+    return { usd_per_credit: tp.usd_per_credit, source: "topup pack pricing" };
+  }
+  if (tp && typeof tp.price_usd_per_credit === "number") {
+    return { usd_per_credit: tp.price_usd_per_credit, source: "topup pack pricing" };
+  }
+  // Lovable style: price_usd_per_50_credits
+  if (tp && typeof tp.price_usd_per_50_credits === "number") {
+    return {
+      usd_per_credit: (tp.price_usd_per_50_credits as number) / 50,
+      source: "derived from topup pack (price_per_50_credits)",
+    };
+  }
+  // topups_pricing with credits+price (Windsurf teams style)
+  if (
+    tp &&
+    typeof tp.price_usd === "number" &&
+    typeof tp.credits === "number" &&
+    (tp.credits as number) > 0
+  ) {
+    return {
+      usd_per_credit: (tp.price_usd as number) / (tp.credits as number),
+      source: "derived from topup pack",
+    };
+  }
+
+  // 3. topups array (Windsurf, Warp, Verdent style) — use the best rate
+  const topupsArr = plan.topups as Array<Record<string, unknown>> | undefined;
+  if (Array.isArray(topupsArr) && topupsArr.length > 0) {
+    let bestRate = Infinity;
+    for (const t of topupsArr) {
+      const price = t.price_usd as number | undefined;
+      const credits = t.credits as number | undefined;
+      if (typeof price === "number" && typeof credits === "number" && credits > 0) {
+        const rate = price / credits;
+        if (rate < bestRate) bestRate = rate;
+      }
+    }
+    if (bestRate < Infinity) {
+      return { usd_per_credit: bestRate, source: "derived from best topup pack rate" };
+    }
+  }
+
+  return { usd_per_credit: null, source: "" };
+}
+
 export async function POST(request: Request): Promise<NextResponse> {
   try {
     const body = (await request.json()) as unknown;
@@ -360,6 +654,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       });
 
       if (workload) {
+        // Credits plans: if workload is credits_per_month, use directly
         if (
           (tp.pricing_type === "credits" || tp.pricing_type.includes("credits")) &&
           workload.kind === "credits_per_month"
@@ -369,6 +664,29 @@ export async function POST(request: Request): Promise<NextResponse> {
             tool: tp.tool,
             plan_id: tp.plan_id,
             seat_count: seatCount,
+            scenario_id: `tool_plan_effective:${key}`,
+          });
+        }
+
+        // Credits plans with token workloads: we know $/credit but NOT tokens→credits
+        // conversion, so we cannot compute a meaningful effective cost without
+        // fabricating a conversion ratio.  Skip the effective scenario; the credit
+        // rate will be surfaced in the plan card metadata instead.
+
+        // PAYG / prepaid_usd_credits plans with token workloads: the effective
+        // cost is the token-meter baseline (they're pass-through gateways).
+        if (
+          tp.pricing_type === "prepaid_usd_credits" &&
+          tokenMeterDefault &&
+          (workload.kind === "tokens_per_month" || workload.kind === "total_tokens_per_month")
+        ) {
+          scenarios.push({
+            kind: "tool_plan_api_pool_effective" as const,
+            tool: tp.tool,
+            plan_id: tp.plan_id,
+            seat_count: seatCount,
+            token_meter: tokenMeterDefault,
+            markup_multiplier: 0,
             scenario_id: `tool_plan_effective:${key}`,
           });
         }
@@ -427,6 +745,31 @@ export async function POST(request: Request): Promise<NextResponse> {
             markup_multiplier: markup,
             scenario_id: `tool_plan_effective:${key}`,
           });
+        }
+
+        // BYOK subscription plans (e.g., Cline): effective cost = token-meter baseline
+        // since the user pays API costs directly.
+        if (
+          (tp.pricing_type === "subscription" || tp.pricing_type === "seat_subscription") &&
+          tokenMeterDefault &&
+          (workload.kind === "tokens_per_month" || workload.kind === "total_tokens_per_month")
+        ) {
+          const raw = tp as Record<string, unknown>;
+          const met = (raw.metering as string | undefined) ?? "";
+          const isBYOK =
+            met.toLowerCase().includes("byok") ||
+            met.toLowerCase().includes("your chosen provider");
+          if (isBYOK) {
+            scenarios.push({
+              kind: "tool_plan_api_pool_effective" as const,
+              tool: tp.tool,
+              plan_id: tp.plan_id,
+              seat_count: seatCount,
+              token_meter: tokenMeterDefault,
+              markup_multiplier: 0,
+              scenario_id: `tool_plan_effective:${key}`,
+            });
+          }
         }
       }
 
@@ -548,6 +891,29 @@ export async function POST(request: Request): Promise<NextResponse> {
         })
         .filter(Boolean);
 
+      let { viability, reason: viabilityReason } = assessToolPlanViability(tp, workload);
+
+      // If the viability check said "unknown" but the engine successfully computed
+      // an effective cost, upgrade to viable — we now have a real number.
+      if (
+        viability === "viability_unknown" &&
+        effective &&
+        effective.monthly_cost_estimate.point > 0
+      ) {
+        viability = "viable";
+        viabilityReason = "";
+      }
+
+      // Non-viable and price-unavailable plans don't "fit" a budget even if their floor is $0
+      const adjustedFitsBudget =
+        viability === "non_viable" || viability === "price_unavailable" ? false : fitsBudget;
+
+      // For credit-based plans, surface the derived credit rate so the UI can show it
+      const rawTp = tp as Record<string, unknown>;
+      const isPricedByCredits =
+        tp.pricing_type === "credits" || tp.pricing_type.includes("credits");
+      const derivedCreditRate = isPricedByCredits ? deriveUsdPerCredit(rawTp) : null;
+
       planEntries.push({
         kind: "tool_plan",
         tool: tp.tool,
@@ -556,7 +922,13 @@ export async function POST(request: Request): Promise<NextResponse> {
         monthly_cost_floor: floor,
         monthly_cost_effective: effective,
         break_even: breakEven,
-        fits_budget: fitsBudget,
+        fits_budget: adjustedFitsBudget,
+        viability,
+        viability_reason: viabilityReason || undefined,
+        credit_rate:
+          derivedCreditRate?.usd_per_credit != null
+            ? { usd_per_credit: derivedCreditRate.usd_per_credit, source: derivedCreditRate.source }
+            : null,
         capabilities: {
           providers: providers.length > 0 ? providers : null,
           families: inferredFamilies.size > 0 ? Array.from(inferredFamilies).sort() : null,
@@ -626,6 +998,15 @@ export async function POST(request: Request): Promise<NextResponse> {
         })
         .filter(Boolean);
 
+      // Subscriptions: price_unavailable if no price; otherwise viable
+      const subViability: PlanViability =
+        sub.price_usd_per_month == null ? "price_unavailable" : "viable";
+      const subViabilityReason =
+        sub.price_usd_per_month == null
+          ? "Pricing not publicly available; check vendor directly."
+          : "";
+      const subFitsBudget = subViability === "price_unavailable" ? false : fitsBudget;
+
       planEntries.push({
         kind: "subscription",
         provider: sub.provider,
@@ -633,7 +1014,9 @@ export async function POST(request: Request): Promise<NextResponse> {
         product: sub.product ?? null,
         monthly_cost_floor: floor,
         break_even: breakEven,
-        fits_budget: fitsBudget,
+        fits_budget: subFitsBudget,
+        viability: subViability,
+        viability_reason: subViabilityReason || undefined,
         capabilities: {
           providers,
           families,
@@ -658,7 +1041,20 @@ export async function POST(request: Request): Promise<NextResponse> {
       });
     }
 
+    // Sort: viable plans first (by cost), then viability_unknown (by cost),
+    // then non_viable, then price_unavailable.
+    const viabilityOrder: Record<string, number> = {
+      viable: 0,
+      viability_unknown: 1,
+      non_viable: 2,
+      price_unavailable: 3,
+    };
+
     planEntries.sort((a, b) => {
+      const va = viabilityOrder[(a as { viability?: string }).viability ?? "viable"] ?? 0;
+      const vb = viabilityOrder[(b as { viability?: string }).viability ?? "viable"] ?? 0;
+      if (va !== vb) return va - vb;
+
       const ac =
         a.monthly_cost_effective?.monthly_cost_estimate?.point ??
         a.monthly_cost_floor?.monthly_cost_estimate?.point ??

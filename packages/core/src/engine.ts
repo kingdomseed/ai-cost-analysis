@@ -268,6 +268,57 @@ function findApiRate(pricing: PricingSnapshotV01, provider: string, channel: str
 }
 
 /**
+ * Resolve the monthly subscription price from a tool plan, handling the
+ * various field name conventions used across the pricing snapshot:
+ *
+ *   - subscription_price_usd              (flat monthly)
+ *   - subscription_price_usd_per_seat     (per-seat, needs seat_count)
+ *   - subscription_price_usd_per_seat_per_month  (per-seat variant)
+ *   - credit_tiers[0].monthly_billing_usd (tiered credits, use lowest tier as floor)
+ *
+ * Field precedence is intentional: subscription_price_usd takes priority over
+ * credit_tiers to handle plans with explicit base prices. If a plan mistakenly
+ * defines both subscription_price_usd and credit_tiers, only subscription_price_usd
+ * is used (credit_tiers is ignored). Current pricing data (2026-02-22) has no such
+ * conflicts; this behavior guards against malformed future entries.
+ *
+ * Returns { monthly, isPerSeat, hasCreditTiers } or null monthly when no price found.
+ */
+function resolvePlanPrice(plan: Record<string, unknown>): {
+  monthly: number | null;
+  isPerSeat: boolean;
+  hasCreditTiers: boolean;
+} {
+  // Flat monthly price
+  const sub = plan.subscription_price_usd;
+  if (typeof sub === "number") {
+    return { monthly: sub, isPerSeat: false, hasCreditTiers: false };
+  }
+
+  // Per-seat: check both field name variants
+  const perSeat = plan.subscription_price_usd_per_seat;
+  if (typeof perSeat === "number") {
+    return { monthly: perSeat, isPerSeat: true, hasCreditTiers: false };
+  }
+  const perSeatPerMonth = plan.subscription_price_usd_per_seat_per_month;
+  if (typeof perSeatPerMonth === "number") {
+    return { monthly: perSeatPerMonth, isPerSeat: true, hasCreditTiers: false };
+  }
+
+  // Credit tiers: use lowest tier's monthly price as the floor
+  const tiers = plan.credit_tiers;
+  if (Array.isArray(tiers) && tiers.length > 0) {
+    const first = tiers[0] as Record<string, unknown>;
+    const tierPrice = first?.monthly_billing_usd;
+    if (typeof tierPrice === "number") {
+      return { monthly: tierPrice, isPerSeat: false, hasCreditTiers: true };
+    }
+  }
+
+  return { monthly: null, isPerSeat: false, hasCreditTiers: false };
+}
+
+/**
  * Match a simplified region (us, eu, cn) against actual cloud regions.
  * Supports prefix matching for simplified region selection.
  */
@@ -672,10 +723,11 @@ export function calculate(input: EngineInput): EngineOutput {
       const warnings: string[] = [];
       const assumptions: CalculationAssumption[] = [];
 
+      const resolved = resolvePlanPrice((plan ?? {}) as Record<string, unknown>);
+
       const seatCount =
-        scenario.seat_count ??
-        (plan?.subscription_price_usd_per_seat != null ? 1 : undefined);
-      if (plan?.subscription_price_usd_per_seat != null) {
+        scenario.seat_count ?? (resolved.isPerSeat ? 1 : undefined);
+      if (resolved.isPerSeat) {
         if (scenario.seat_count == null) {
           warnings.push("Per-seat pricing detected; assuming seat_count=1.");
           assumptions.push({ id: "seat_count", value: 1, notes: "Assumed default for per-seat pricing." });
@@ -683,12 +735,14 @@ export function calculate(input: EngineInput): EngineOutput {
           assumptions.push({ id: "seat_count", value: seatCount ?? 1, notes: "Provided by request." });
         }
       }
+      if (resolved.hasCreditTiers) {
+        assumptions.push({ id: "credit_tier", value: "lowest", notes: "Using lowest credit tier as price floor." });
+      }
 
       const monthly =
-        plan?.subscription_price_usd ??
-        (plan?.subscription_price_usd_per_seat != null && seatCount != null
-          ? plan.subscription_price_usd_per_seat * seatCount
-          : null);
+        resolved.monthly != null && resolved.isPerSeat && seatCount != null
+          ? resolved.monthly * seatCount
+          : resolved.monthly;
 
       if (!plan || monthly == null) {
         warnings.push("Tool plan price missing; cannot compute plan price floor.");
@@ -1081,10 +1135,10 @@ export function calculate(input: EngineInput): EngineOutput {
         warnings.push("Tool plan not found; returning baseline token-meter only.");
       }
 
+      const resolvedPool = resolvePlanPrice((plan ?? {}) as Record<string, unknown>);
       const seatCount =
-        scenario.seat_count ??
-        (plan?.subscription_price_usd_per_seat != null ? 1 : undefined);
-      if (plan?.subscription_price_usd_per_seat != null) {
+        scenario.seat_count ?? (resolvedPool.isPerSeat ? 1 : undefined);
+      if (resolvedPool.isPerSeat) {
         if (scenario.seat_count == null) {
           warnings.push("Per-seat subscription price found; assuming seat_count=1.");
           assumptions.push({ id: "seat_count", value: 1, notes: "Assumed default for per-seat pricing." });
@@ -1094,10 +1148,9 @@ export function calculate(input: EngineInput): EngineOutput {
       }
 
       const subscriptionFee =
-        plan?.subscription_price_usd ??
-        (plan?.subscription_price_usd_per_seat != null && seatCount != null
-          ? plan.subscription_price_usd_per_seat * seatCount
-          : 0);
+        resolvedPool.monthly != null && resolvedPool.isPerSeat && seatCount != null
+          ? resolvedPool.monthly * seatCount
+          : resolvedPool.monthly ?? 0;
 
       const poolUsd = plan?.included_pool_usd ?? 0;
       if (plan?.included_pool_usd == null) {
@@ -1157,7 +1210,7 @@ export function calculate(input: EngineInput): EngineOutput {
       const subscriptionAmount: EvidencedMoneyEstimate = {
         currency: baseCurrency,
         point: subscriptionFee,
-        method: plan?.subscription_price_usd != null || plan?.subscription_price_usd_per_seat != null ? "direct" : "heuristic",
+        method: subscriptionFee > 0 ? "direct" : "heuristic",
         confidence: plan?.verified ? "high" : "medium",
         confidence_reasons: plan?.verified ? [] : ["Subscription price is not verified."],
         evidence: planEvidence,
@@ -1213,10 +1266,10 @@ export function calculate(input: EngineInput): EngineOutput {
       const warnings: string[] = [];
       const assumptions: CalculationAssumption[] = [];
 
+      const resolvedCredits = resolvePlanPrice((plan ?? {}) as Record<string, unknown>);
       const seatCount =
-        scenario.seat_count ??
-        (plan?.subscription_price_usd_per_seat != null ? 1 : undefined);
-      if (plan?.subscription_price_usd_per_seat != null) {
+        scenario.seat_count ?? (resolvedCredits.isPerSeat ? 1 : undefined);
+      if (resolvedCredits.isPerSeat) {
         if (scenario.seat_count == null) {
           warnings.push("Per-seat pricing detected; assuming seat_count=1.");
           assumptions.push({ id: "seat_count", value: 1, notes: "Assumed default." });
@@ -1226,13 +1279,12 @@ export function calculate(input: EngineInput): EngineOutput {
       }
 
       const subscriptionFee =
-        plan?.subscription_price_usd ??
-        (plan?.subscription_price_usd_per_seat != null && seatCount != null
-          ? plan.subscription_price_usd_per_seat * seatCount
-          : 0);
+        resolvedCredits.monthly != null && resolvedCredits.isPerSeat && seatCount != null
+          ? resolvedCredits.monthly * seatCount
+          : resolvedCredits.monthly ?? 0;
 
       if (!plan) warnings.push("Tool plan not found; returning $0 with warnings.");
-      if (subscriptionFee === 0) warnings.push("Subscription fee missing; treated as $0.");
+      if (subscriptionFee === 0 && resolvedCredits.monthly == null) warnings.push("Subscription fee missing; treated as $0.");
 
       // Determine monthly credits usage.
       let credits: number | null = null;
@@ -1290,7 +1342,7 @@ export function calculate(input: EngineInput): EngineOutput {
       const subscriptionAmount: EvidencedMoneyEstimate = {
         currency: baseCurrency,
         point: subscriptionFee,
-        method: plan?.subscription_price_usd != null || plan?.subscription_price_usd_per_seat != null ? "direct" : "heuristic",
+        method: subscriptionFee > 0 ? "direct" : "heuristic",
         confidence: plan?.verified ? "high" : "medium",
         confidence_reasons: plan?.verified ? [] : ["Subscription price is not verified."],
         evidence: planEvidence,
@@ -1377,10 +1429,10 @@ export function calculate(input: EngineInput): EngineOutput {
       const warnings: string[] = [];
       const assumptions: CalculationAssumption[] = [];
 
+      const resolvedQuota = resolvePlanPrice((plan ?? {}) as Record<string, unknown>);
       const seatCount =
-        scenario.seat_count ??
-        (plan?.subscription_price_usd_per_seat != null ? 1 : undefined);
-      if (plan?.subscription_price_usd_per_seat != null) {
+        scenario.seat_count ?? (resolvedQuota.isPerSeat ? 1 : undefined);
+      if (resolvedQuota.isPerSeat) {
         if (scenario.seat_count == null) {
           warnings.push("Per-seat pricing detected; assuming seat_count=1.");
           assumptions.push({ id: "seat_count", value: 1, notes: "Assumed default for per-seat pricing." });
@@ -1390,10 +1442,9 @@ export function calculate(input: EngineInput): EngineOutput {
       }
 
       const subscriptionFee =
-        plan?.subscription_price_usd ??
-        (plan?.subscription_price_usd_per_seat != null && seatCount != null
-          ? plan.subscription_price_usd_per_seat * seatCount
-          : 0);
+        resolvedQuota.monthly != null && resolvedQuota.isPerSeat && seatCount != null
+          ? resolvedQuota.monthly * seatCount
+          : resolvedQuota.monthly ?? 0;
 
       if (!plan) warnings.push("Tool plan not found; returning $0 with warnings.");
 
@@ -1404,7 +1455,7 @@ export function calculate(input: EngineInput): EngineOutput {
       const amount: EvidencedMoneyEstimate = {
         currency: baseCurrency,
         point: subscriptionFee,
-        method: plan?.subscription_price_usd != null || plan?.subscription_price_usd_per_seat != null ? "direct" : "heuristic",
+        method: subscriptionFee > 0 ? "direct" : "heuristic",
         confidence: plan?.verified ? "high" : "medium",
         confidence_reasons: plan?.verified ? [] : ["Tool plan price is not verified."],
         evidence,
@@ -1495,10 +1546,10 @@ export function calculate(input: EngineInput): EngineOutput {
       const warnings: string[] = [];
       const assumptions: CalculationAssumption[] = [];
 
+      const resolvedCU = resolvePlanPrice((plan ?? {}) as Record<string, unknown>);
       const seatCount =
-        scenario.seat_count ??
-        (plan?.subscription_price_usd_per_seat != null ? 1 : undefined);
-      if (plan?.subscription_price_usd_per_seat != null) {
+        scenario.seat_count ?? (resolvedCU.isPerSeat ? 1 : undefined);
+      if (resolvedCU.isPerSeat) {
         if (scenario.seat_count == null) {
           warnings.push("Per-seat pricing detected; assuming seat_count=1.");
           assumptions.push({ id: "seat_count", value: 1, notes: "Assumed default for per-seat pricing." });
@@ -1508,10 +1559,9 @@ export function calculate(input: EngineInput): EngineOutput {
       }
 
       const subscriptionFee =
-        plan?.subscription_price_usd ??
-        (plan?.subscription_price_usd_per_seat != null && seatCount != null
-          ? plan.subscription_price_usd_per_seat * seatCount
-          : 0);
+        resolvedCU.monthly != null && resolvedCU.isPerSeat && seatCount != null
+          ? resolvedCU.monthly * seatCount
+          : resolvedCU.monthly ?? 0;
 
       const unitName = (plan as any)?.unit_name;
       const unitPriceUsd = (plan as any)?.unit_price_usd;
@@ -1520,7 +1570,7 @@ export function calculate(input: EngineInput): EngineOutput {
       const amountFloor: EvidencedMoneyEstimate = {
         currency: baseCurrency,
         point: subscriptionFee,
-        method: plan?.subscription_price_usd != null || plan?.subscription_price_usd_per_seat != null ? "direct" : "heuristic",
+        method: subscriptionFee > 0 ? "direct" : "heuristic",
         confidence: plan?.verified ? "high" : "medium",
         confidence_reasons: plan?.verified ? [] : ["Tool plan price is not verified."],
         evidence,
@@ -1630,10 +1680,10 @@ export function calculate(input: EngineInput): EngineOutput {
       const warnings: string[] = [];
       const assumptions: CalculationAssumption[] = [];
 
+      const resolvedPR = resolvePlanPrice((plan ?? {}) as Record<string, unknown>);
       const seatCount =
-        scenario.seat_count ??
-        (plan?.subscription_price_usd_per_seat != null ? 1 : undefined);
-      if (plan?.subscription_price_usd_per_seat != null) {
+        scenario.seat_count ?? (resolvedPR.isPerSeat ? 1 : undefined);
+      if (resolvedPR.isPerSeat) {
         if (scenario.seat_count == null) {
           warnings.push("Per-seat pricing detected; assuming seat_count=1.");
           assumptions.push({ id: "seat_count", value: 1, notes: "Assumed default for per-seat pricing." });
@@ -1643,15 +1693,14 @@ export function calculate(input: EngineInput): EngineOutput {
       }
 
       const subscriptionFee =
-        plan?.subscription_price_usd ??
-        (plan?.subscription_price_usd_per_seat != null && seatCount != null
-          ? plan.subscription_price_usd_per_seat * seatCount
-          : 0);
+        resolvedPR.monthly != null && resolvedPR.isPerSeat && seatCount != null
+          ? resolvedPR.monthly * seatCount
+          : resolvedPR.monthly ?? 0;
 
       const floor: EvidencedMoneyEstimate = {
         currency: baseCurrency,
         point: subscriptionFee,
-        method: plan?.subscription_price_usd != null || plan?.subscription_price_usd_per_seat != null ? "direct" : "heuristic",
+        method: resolvedPR.monthly != null ? "direct" : "heuristic",
         confidence: plan?.verified ? "high" : "medium",
         confidence_reasons: plan?.verified ? [] : ["Tool plan price is not verified."],
         evidence,
@@ -1780,18 +1829,17 @@ export function calculate(input: EngineInput): EngineOutput {
         const plan = input.pricing.tool_plans.find(
           (p) => p.tool === subject.tool && p.plan_id === subject.plan_id,
         );
+        const resolvedBE = resolvePlanPrice((plan ?? {}) as Record<string, unknown>);
         const seatCount =
-          subject.seat_count ??
-          (plan?.subscription_price_usd_per_seat != null ? 1 : undefined);
-        if (plan?.subscription_price_usd_per_seat != null && subject.seat_count == null) {
+          subject.seat_count ?? (resolvedBE.isPerSeat ? 1 : undefined);
+        if (resolvedBE.isPerSeat && subject.seat_count == null) {
           warnings.push("Per-seat pricing detected; assuming seat_count=1 for break-even.");
           assumptions.push({ id: "seat_count", value: 1, notes: "Assumed default for per-seat pricing." });
         }
         subjectFee =
-          plan?.subscription_price_usd ??
-          (plan?.subscription_price_usd_per_seat != null && seatCount != null
-            ? plan.subscription_price_usd_per_seat * seatCount
-            : 0);
+          resolvedBE.monthly != null && resolvedBE.isPerSeat && seatCount != null
+            ? resolvedBE.monthly * seatCount
+            : resolvedBE.monthly ?? 0;
         subjectVerified = !!plan?.verified;
         subjectEvidence = (plan?.source_ids ?? []).map((id) => ({ source_id: id }));
         if (!plan) warnings.push("Tool plan not found; break-even USD is not computable beyond $0.");

@@ -51,9 +51,7 @@ function providerIdForTool(
   if (explicit) return explicit;
 
   const candidates = new Set(
-    entitlements.entitlements
-      .filter((e) => e.plan_id === planId)
-      .map((e) => e.provider_id),
+    entitlements.entitlements.filter((e) => e.plan_id === planId).map((e) => e.provider_id),
   );
 
   if (candidates.size === 1) {
@@ -145,7 +143,7 @@ export async function GET(): Promise<NextResponse> {
     if (!modelMap.has(key)) {
       modelMap.set(key, { provider: rate.provider, model: rate.model, channels: [] });
     }
-    modelMap.get(key)!.channels.push(rate.channel);
+    modelMap.get(key)?.channels.push(rate.channel);
   }
 
   // From models catalog

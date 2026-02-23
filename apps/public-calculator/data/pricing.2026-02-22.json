@@ -871,7 +871,7 @@
           }
         }
       ],
-      "notes": "Zen lists Gemini 3 Pro prices; this is captured as a separate channel from Google’s direct API pricing.",
+      "notes": "Zen lists Gemini 3 Pro prices; this is captured as a separate channel from Google\u2019s direct API pricing.",
       "source_ids": [
         "opencode_zen_docs"
       ],
@@ -919,7 +919,7 @@
         "cached_input": 0.08,
         "output": 3
       },
-      "notes": "Zen lists a single cached read price; this is not the same structure as Moonshot’s cache hit/miss meter.",
+      "notes": "Zen lists a single cached read price; this is not the same structure as Moonshot\u2019s cache hit/miss meter.",
       "source_ids": [
         "opencode_zen_docs"
       ],
@@ -1018,6 +1018,7 @@
       "pricing_type": "seat_subscription",
       "subscription_price_usd_per_seat": 0,
       "regular_subscription_price_usd_per_seat": 20,
+      "metering": "BYOK token billing via your chosen provider, or Cline Provider credits if enabled.",
       "promotions": [
         {
           "kind": "intro_promo",
@@ -1593,88 +1594,6 @@
       "verified": true
     },
     {
-      "tool": "OpenAI Codex",
-      "plan_id": "openai-codex-credits",
-      "pricing_type": "credits",
-      "subscription_dependency": "Included with ChatGPT plans; limits vary by plan. Can also be used with an API key (billed separately at standard API token rates).",
-      "included_usage_limits": [
-        {
-          "chatgpt_plan": "Plus",
-          "local_messages_per_5h": [
-            45,
-            225
-          ],
-          "cloud_tasks_per_5h": [
-            10,
-            60
-          ],
-          "code_reviews_per_week": [
-            10,
-            25
-          ]
-        },
-        {
-          "chatgpt_plan": "Pro",
-          "local_messages_per_5h": [
-            300,
-            1500
-          ],
-          "cloud_tasks_per_5h": [
-            50,
-            400
-          ],
-          "code_reviews_per_week": [
-            100,
-            250
-          ]
-        },
-        {
-          "chatgpt_plan": "Business",
-          "local_messages_per_5h": [
-            45,
-            225
-          ],
-          "cloud_tasks_per_5h": [
-            10,
-            60
-          ],
-          "code_reviews_per_week": [
-            10,
-            25
-          ]
-        },
-        {
-          "chatgpt_plan": "Enterprise & Edu",
-          "limits": "No fixed limits — usage scales with credits."
-        }
-      ],
-      "average_credit_costs": [
-        {
-          "task_type": "local_tasks",
-          "unit": "message",
-          "gpt_5_3_codex_or_5_2_codex": 5,
-          "gpt_5_1_codex_mini": 1
-        },
-        {
-          "task_type": "cloud_tasks",
-          "unit": "message",
-          "gpt_5_3_codex_or_5_2_codex": 25,
-          "gpt_5_1_codex_mini": null
-        },
-        {
-          "task_type": "code_review",
-          "unit": "pull_request",
-          "gpt_5_3_codex_or_5_2_codex": 25,
-          "gpt_5_1_codex_mini": null
-        }
-      ],
-      "notes": "OpenAI publishes credit costs but does not publish a public USD-per-credit conversion on the Codex pricing page. The page also notes a limited-time period where Codex is available on some lower tiers and/or rate limits are increased; treat promotional language as time-sensitive.",
-      "source_ids": [
-        "openai_codex_pricing"
-      ],
-      "verified": true
-    },
-    {
       "tool": "OpenCode",
       "plan_id": "opencode-zen-payg",
       "pricing_type": "prepaid_usd_credits",
@@ -1972,7 +1891,7 @@
       "subscription_price_usd_per_seat_per_year": 420,
       "included_pool_usd_per_seat": 40,
       "overage_policy": "usage_based_after_credits",
-      "metering": "Seat subscription plus usage-based charges; credits apply first. Pricing changes were announced to take effect 2026-02-24 (Teams sunset → Pro).",
+      "metering": "Seat subscription plus usage-based charges; credits apply first. Pricing changes were announced to take effect 2026-02-24 (Teams sunset \u2192 Pro).",
       "source_ids": [
         "replit_pricing",
         "replit_teams_billing_overview",
@@ -2059,7 +1978,7 @@
         }
       ],
       "metering": "Credits consumed based on model type and workload. Subscription credits refresh monthly; top-up credits do not expire.",
-      "notes": "Verdent docs describe a limited-time 2× credit bonus on subscription credits with 15+ days notice before it ends; no stable token↔credit conversion is published.",
+      "notes": "Verdent docs describe a limited-time 2\u00d7 credit bonus on subscription credits with 15+ days notice before it ends; no stable token\u2194credit conversion is published.",
       "source_ids": [
         "verdent_docs_pricing_overview",
         "verdent_credits_detail"
@@ -2095,7 +2014,7 @@
         }
       ],
       "metering": "Credits consumed based on model type and workload. Subscription credits refresh monthly; top-up credits do not expire.",
-      "notes": "Verdent docs describe a limited-time 2× credit bonus on subscription credits with 15+ days notice before it ends; no stable token↔credit conversion is published.",
+      "notes": "Verdent docs describe a limited-time 2\u00d7 credit bonus on subscription credits with 15+ days notice before it ends; no stable token\u2194credit conversion is published.",
       "source_ids": [
         "verdent_docs_pricing_overview",
         "verdent_credits_detail"
@@ -2131,7 +2050,7 @@
         }
       ],
       "metering": "Credits consumed based on model type and workload. Subscription credits refresh monthly; top-up credits do not expire.",
-      "notes": "Verdent docs describe a limited-time 2× credit bonus on subscription credits with 15+ days notice before it ends; no stable token↔credit conversion is published.",
+      "notes": "Verdent docs describe a limited-time 2\u00d7 credit bonus on subscription credits with 15+ days notice before it ends; no stable token\u2194credit conversion is published.",
       "source_ids": [
         "verdent_docs_pricing_overview",
         "verdent_credits_detail"
