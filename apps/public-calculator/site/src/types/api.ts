@@ -278,6 +278,16 @@ export interface PlanMatrixRequest {
   output_currency?: string;
 }
 
+/**
+ * Plan viability relative to the user's stated workload.
+ *
+ * - "viable"            – plan can plausibly serve the workload
+ * - "non_viable"        – plan's known capacity is clearly insufficient for the workload
+ * - "viability_unknown"  – can't determine (opaque metering, no capacity data)
+ * - "price_unavailable" – pricing data is missing; user should check vendor directly
+ */
+export type PlanViability = "viable" | "non_viable" | "viability_unknown" | "price_unavailable";
+
 export interface PlanMatrixEntry {
   kind: "tool_plan" | "subscription";
   tool?: string;
@@ -289,6 +299,10 @@ export interface PlanMatrixEntry {
   monthly_cost_effective?: ScenarioResult;
   break_even?: ScenarioResult;
   fits_budget: boolean | null;
+  viability: PlanViability;
+  viability_reason?: string;
+  /** Derived credit rate for credit-based plans — shown to help users estimate their own cost */
+  credit_rate?: { usd_per_credit: number; source: string } | null;
   capabilities: {
     providers: string[] | null;
     families: string[] | null;
