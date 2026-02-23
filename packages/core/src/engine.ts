@@ -276,6 +276,12 @@ function findApiRate(pricing: PricingSnapshotV01, provider: string, channel: str
  *   - subscription_price_usd_per_seat_per_month  (per-seat variant)
  *   - credit_tiers[0].monthly_billing_usd (tiered credits, use lowest tier as floor)
  *
+ * Field precedence is intentional: subscription_price_usd takes priority over
+ * credit_tiers to handle plans with explicit base prices. If a plan mistakenly
+ * defines both subscription_price_usd and credit_tiers, only subscription_price_usd
+ * is used (credit_tiers is ignored). Current pricing data (2026-02-22) has no such
+ * conflicts; this behavior guards against malformed future entries.
+ *
  * Returns { monthly, isPerSeat, hasCreditTiers } or null monthly when no price found.
  */
 function resolvePlanPrice(plan: Record<string, unknown>): {

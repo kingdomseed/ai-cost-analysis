@@ -1018,6 +1018,7 @@
       "pricing_type": "seat_subscription",
       "subscription_price_usd_per_seat": 0,
       "regular_subscription_price_usd_per_seat": 20,
+      "metering": "BYOK token billing via your chosen provider, or Cline Provider credits if enabled.",
       "promotions": [
         {
           "kind": "intro_promo",

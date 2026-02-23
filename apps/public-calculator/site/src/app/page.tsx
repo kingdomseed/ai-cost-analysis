@@ -1,16 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { calculate, fetchCatalog, fetchPlanMatrix } from "@/lib/api";
-import type {
-  EvidencedMoneyEstimate,
-  PlanMatrixResponse,
-  ScenarioResult,
-} from "@/types/api";
+import type { EvidencedMoneyEstimate, PlanMatrixResponse, ScenarioResult } from "@/types/api";
 
 const BUDGET_MARKS = [0, 10, 20, 50, 100, 200, 500, 1000];
 const DEFAULT_RATIO = 3;
@@ -28,32 +24,45 @@ function modelDisplayName(model: string): string {
 }
 
 const PROVIDER_PRIORITY: Record<string, number> = {
-  anthropic: 0, openai: 1, google: 2, moonshot: 3,
-  azure: 10, aws: 11, opencode: 12,
+  anthropic: 0,
+  openai: 1,
+  google: 2,
+  moonshot: 3,
+  azure: 10,
+  aws: 11,
+  opencode: 12,
 };
 
 function providerFamily(provider: string): string {
   switch (provider) {
-    case "anthropic": return "Claude";
-    case "openai": return "GPT / OpenAI";
-    case "azure": return "Azure OpenAI";
-    case "google": return "Gemini";
-    case "moonshot": return "Kimi";
-    case "opencode": return "OpenCode";
-    case "aws": return "AWS Bedrock";
-    default: return provider.charAt(0).toUpperCase() + provider.slice(1);
+    case "anthropic":
+      return "Claude";
+    case "openai":
+      return "GPT / OpenAI";
+    case "azure":
+      return "Azure OpenAI";
+    case "google":
+      return "Gemini";
+    case "moonshot":
+      return "Kimi";
+    case "opencode":
+      return "OpenCode";
+    case "aws":
+      return "AWS Bedrock";
+    default:
+      return provider.charAt(0).toUpperCase() + provider.slice(1);
   }
 }
 
 // ─── Provider group classification ───────────────────────────────────────────
 
 type ProviderGroupId =
-  | "pay_as_you_go"    // BYOK, PAYG — no subscription, pure API cost
-  | "api_pool"         // Subscription + USD token pool (Cursor style)
-  | "credits"          // Subscription + opaque credits
-  | "quota"            // Subscription + fixed request/token quota
-  | "flat_sub"         // Consumer subscription (Claude Pro, ChatGPT, Google AI)
-  | "other";           // Free tiers, enterprise, compute units
+  | "pay_as_you_go" // BYOK, PAYG — no subscription, pure API cost
+  | "api_pool" // Subscription + USD token pool (Cursor style)
+  | "credits" // Subscription + opaque credits
+  | "quota" // Subscription + fixed request/token quota
+  | "flat_sub" // Consumer subscription (Claude Pro, ChatGPT, Google AI)
+  | "other"; // Free tiers, enterprise, compute units
 
 interface ProviderGroup {
   id: ProviderGroupId;
@@ -65,27 +74,32 @@ const PROVIDER_GROUPS: ProviderGroup[] = [
   {
     id: "pay_as_you_go",
     label: "Pay-as-you-go / BYOK",
-    description: "No subscription fee. You pay direct API rates for every token. Cost scales exactly with usage.",
+    description:
+      "No subscription fee. You pay direct API rates for every token. Cost scales exactly with usage.",
   },
   {
     id: "api_pool",
     label: "Subscription + token pool",
-    description: "Flat monthly fee includes a USD-denominated token allocation. Use any supported model at its API rate against the pool.",
+    description:
+      "Flat monthly fee includes a USD-denominated token allocation. Use any supported model at its API rate against the pool.",
   },
   {
     id: "credits",
     label: "Subscription + credits",
-    description: "Flat monthly fee includes a credit allowance. Credits are consumed per task at rates that vary by model and complexity.",
+    description:
+      "Flat monthly fee includes a credit allowance. Credits are consumed per task at rates that vary by model and complexity.",
   },
   {
     id: "quota",
     label: "Subscription + usage quota",
-    description: "Flat monthly fee with a fixed monthly quota — measured in premium requests, token volume, or similar units.",
+    description:
+      "Flat monthly fee with a fixed monthly quota — measured in premium requests, token volume, or similar units.",
   },
   {
     id: "flat_sub",
     label: "Consumer subscription",
-    description: "Flat monthly fee for product access. Usage limits are soft or session-based, not published as hard token counts.",
+    description:
+      "Flat monthly fee for product access. Usage limits are soft or session-based, not published as hard token counts.",
   },
   {
     id: "other",
@@ -108,11 +122,8 @@ function isFreeTierPlan(plan: PlanEntry): boolean {
     const cost = plan.monthly_cost_floor?.monthly_cost_estimate?.point;
     // Only count as "free tier" if cost is exactly $0 and the plan has
     // a real quota/credits limit (not BYOK/PAYG which also have $0 floor)
-    if (cost === 0 && (
-      pt === "premium_requests" ||
-      pt === "token_quota" ||
-      pt === "credits"
-    )) return true;
+    if (cost === 0 && (pt === "premium_requests" || pt === "token_quota" || pt === "credits"))
+      return true;
   }
   return false;
 }
@@ -122,8 +133,8 @@ function planGroupId(plan: PlanEntry): ProviderGroupId {
   if (plan.kind === "subscription") return "flat_sub";
 
   const pt = plan.pricing_type ?? "";
-  const isByok = plan.viability === "viability_unknown" &&
-    (pt === "subscription" || pt === "seat_subscription");
+  const isByok =
+    plan.viability === "viability_unknown" && (pt === "subscription" || pt === "seat_subscription");
 
   if (pt === "prepaid_usd_credits" || isByok) return "pay_as_you_go";
   if (pt === "api_pool_usd" || pt === "usd_credits_pool") return "api_pool";
@@ -131,13 +142,15 @@ function planGroupId(plan: PlanEntry): ProviderGroupId {
     pt === "credits" ||
     pt === "seat_subscription_with_credits" ||
     pt === "team_subscription_with_credits"
-  ) return "credits";
+  )
+    return "credits";
   if (
     pt === "token_quota" ||
     pt === "seat_subscription_with_token_quota" ||
     pt === "premium_requests" ||
     pt === "seat_subscription_with_usage_overage"
-  ) return "quota";
+  )
+    return "quota";
   if (pt === "subscription" || pt === "seat_subscription") return "flat_sub";
 
   return "other";
@@ -156,7 +169,10 @@ function planSupportsModel(plan: PlanEntry, modelProvider: string, modelId: stri
   // PAYG and BYOK can access any model at API rates
   if (pt === "prepaid_usd_credits") return true;
   if (pt === "api_pool_usd" || pt === "usd_credits_pool") return true;
-  if (plan.viability === "viability_unknown" && (pt === "subscription" || pt === "seat_subscription")) {
+  if (
+    plan.viability === "viability_unknown" &&
+    (pt === "subscription" || pt === "seat_subscription")
+  ) {
     return true; // BYOK
   }
 
@@ -204,7 +220,12 @@ function pricingTypeLabel(pricingType: string): string {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function Home() {
-  const [catalog, setCatalog] = useState<PlanMatrixResponse["plans"] extends Array<infer _> ? import("@/types/api").CatalogResponse | null : never>(null);
+  const [catalog, setCatalog] =
+    useState<
+      PlanMatrixResponse["plans"] extends Array<infer _>
+        ? import("@/types/api").CatalogResponse | null
+        : never
+    >(null);
   const [catalogError, setCatalogError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"budget" | "tokens">("budget");
   const [outputCurrency, setOutputCurrency] = useState<string>("USD");
@@ -226,16 +247,25 @@ export default function Home() {
 
   // Results
   const [planMatrix, setPlanMatrix] = useState<PlanMatrixResponse | null>(null);
-  const [baselineScenarios, setBaselineScenarios] = useState<Array<{ key: string; label: string; result: ScenarioResult }>>([]);
+  const [baselineScenarios, setBaselineScenarios] = useState<
+    Array<{ key: string; label: string; result: ScenarioResult }>
+  >([]);
   const [isLoading, setIsLoading] = useState(false);
 
   // Deduplicated model options by model name (best/most-direct provider)
   const modelOptions = useMemo(() => {
     if (!catalog) return [];
-    const bestByModel = new Map<string, {
-      key: string; label: string; family: string;
-      provider: string; channel: string; model: string;
-    }>();
+    const bestByModel = new Map<
+      string,
+      {
+        key: string;
+        label: string;
+        family: string;
+        provider: string;
+        channel: string;
+        model: string;
+      }
+    >();
     for (const meter of catalog.token_meters) {
       const existing = bestByModel.get(meter.model);
       const priority = PROVIDER_PRIORITY[meter.provider] ?? 99;
@@ -259,7 +289,7 @@ export default function Home() {
     const groups = new Map<string, typeof modelOptions>();
     for (const opt of modelOptions) {
       if (!groups.has(opt.family)) groups.set(opt.family, []);
-      groups.get(opt.family)!.push(opt);
+      groups.get(opt.family)?.push(opt);
     }
     return groups;
   }, [modelOptions]);
@@ -353,13 +383,15 @@ export default function Home() {
                 input_tokens: resolvedTokens.input,
                 output_tokens: resolvedTokens.output,
               },
-              scenarios: [{
-                kind: "token_meter",
-                provider: m.provider,
-                channel: m.channel,
-                model: m.model,
-                region: "us",
-              }],
+              scenarios: [
+                {
+                  kind: "token_meter",
+                  provider: m.provider,
+                  channel: m.channel,
+                  model: m.model,
+                  region: "us",
+                },
+              ],
             })
               .then((res) => ({ key: m.key, label: m.label, result: res.scenarios[0] }))
               .catch(() => null),
@@ -395,9 +427,18 @@ export default function Home() {
     () => filteredPlans.filter((p) => (p.viability ?? "viable") === "viable"),
     [filteredPlans],
   );
-  const unknownViabilityPlans = useMemo(() => filteredPlans.filter((p) => p.viability === "viability_unknown"), [filteredPlans]);
-  const nonViablePlans = useMemo(() => filteredPlans.filter((p) => p.viability === "non_viable"), [filteredPlans]);
-  const priceUnavailablePlans = useMemo(() => filteredPlans.filter((p) => p.viability === "price_unavailable"), [filteredPlans]);
+  const unknownViabilityPlans = useMemo(
+    () => filteredPlans.filter((p) => p.viability === "viability_unknown"),
+    [filteredPlans],
+  );
+  const nonViablePlans = useMemo(
+    () => filteredPlans.filter((p) => p.viability === "non_viable"),
+    [filteredPlans],
+  );
+  const priceUnavailablePlans = useMemo(
+    () => filteredPlans.filter((p) => p.viability === "price_unavailable"),
+    [filteredPlans],
+  );
 
   // Group viable plans by provider type
   const viableByGroup = useMemo(() => {
@@ -410,11 +451,12 @@ export default function Home() {
     return groups;
   }, [viablePlans]);
 
-  const modelSelectorLabel = selectedModels.length === 0
-    ? "All models"
-    : selectedModels.length === 1
-      ? selectedModels[0].label
-      : `${selectedModels.length} models selected`;
+  const modelSelectorLabel =
+    selectedModels.length === 0
+      ? "All models"
+      : selectedModels.length === 1
+        ? selectedModels[0].label
+        : `${selectedModels.length} models selected`;
 
   return (
     <div className="min-h-screen bg-white">
@@ -423,18 +465,28 @@ export default function Home() {
         <div className="max-w-4xl mx-auto px-6 py-5 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold tracking-tight uppercase">AI Cost Calculator</h1>
-            <p className="text-sm text-muted-foreground mt-0.5">Compare AI tools by budget or usage</p>
+            <p className="text-sm text-muted-foreground mt-0.5">
+              Compare AI tools by budget or usage
+            </p>
           </div>
           <div className="flex items-center gap-2">
-            <label className="text-xs font-medium text-muted-foreground uppercase">Currency</label>
+            <label
+              htmlFor="currency-select"
+              className="text-xs font-medium text-muted-foreground uppercase"
+            >
+              Currency
+            </label>
             <select
+              id="currency-select"
               value={outputCurrency}
               onChange={(e) => setOutputCurrency(e.target.value)}
               disabled={!catalog || catalog.currencies.length === 0}
               className="border border-gray-300 rounded px-2 py-1 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-black"
             >
               {(catalog?.currencies ?? ["USD"]).map((c) => (
-                <option key={c} value={c}>{c}</option>
+                <option key={c} value={c}>
+                  {c}
+                </option>
               ))}
             </select>
           </div>
@@ -468,7 +520,9 @@ export default function Home() {
         {activeTab === "budget" && (
           <div className="border-2 border-black mb-8">
             <div className="border-b-2 border-black px-6 py-4">
-              <p className="text-xs font-bold uppercase text-muted-foreground">What can I afford?</p>
+              <p className="text-xs font-bold uppercase text-muted-foreground">
+                What can I afford?
+              </p>
               <h2 className="text-lg font-bold uppercase mt-0.5">Monthly Budget</h2>
             </div>
             <div className="px-6 pt-8 pb-8">
@@ -477,15 +531,25 @@ export default function Home() {
                 <span className="text-xl text-muted-foreground ml-2">/month</span>
               </div>
               <input
-                type="range" min="0" max="1000" step="5"
+                type="range"
+                min="0"
+                max="1000"
+                step="5"
                 value={budget}
                 onChange={(e) => setBudget(Number(e.target.value))}
                 className="w-full h-4 rounded-none appearance-none cursor-pointer border-2 border-black"
-                style={{ background: `linear-gradient(to right, black ${(budget / 1000) * 100}%, #e5e7eb ${(budget / 1000) * 100}%)` }}
+                style={{
+                  background: `linear-gradient(to right, black ${(budget / 1000) * 100}%, #e5e7eb ${(budget / 1000) * 100}%)`,
+                }}
               />
               <div className="flex justify-between mt-4 text-sm text-muted-foreground">
                 {BUDGET_MARKS.map((mark) => (
-                  <button key={mark} type="button" onClick={() => setBudget(mark)} className="hover:text-black font-medium">
+                  <button
+                    key={mark}
+                    type="button"
+                    onClick={() => setBudget(mark)}
+                    className="hover:text-black font-medium"
+                  >
                     ${mark}
                   </button>
                 ))}
@@ -498,11 +562,12 @@ export default function Home() {
         {activeTab === "tokens" && (
           <div className="border-2 border-black mb-8">
             <div className="border-b-2 border-black px-6 py-4">
-              <p className="text-xs font-bold uppercase text-muted-foreground">What's the cheapest path?</p>
+              <p className="text-xs font-bold uppercase text-muted-foreground">
+                What's the cheapest path?
+              </p>
               <h2 className="text-lg font-bold uppercase mt-0.5">Monthly Token Usage</h2>
             </div>
             <div className="px-6 pt-6 pb-6 space-y-6">
-
               {/* Token input mode */}
               <div>
                 <div className="flex gap-0 border-2 border-black mb-4 w-fit">
@@ -524,21 +589,42 @@ export default function Home() {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1">
                       <Label className="font-bold uppercase text-sm">Input Tokens</Label>
-                      <Input type="number" value={inputTokens} onChange={(e) => setInputTokens(e.target.value)} className="rounded-none border-2 border-black text-base" />
-                      <p className="text-xs text-muted-foreground">{Number(inputTokens).toLocaleString()}</p>
+                      <Input
+                        type="number"
+                        value={inputTokens}
+                        onChange={(e) => setInputTokens(e.target.value)}
+                        className="rounded-none border-2 border-black text-base"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        {Number(inputTokens).toLocaleString()}
+                      </p>
                     </div>
                     <div className="space-y-1">
                       <Label className="font-bold uppercase text-sm">Output Tokens</Label>
-                      <Input type="number" value={outputTokens} onChange={(e) => setOutputTokens(e.target.value)} className="rounded-none border-2 border-black text-base" />
-                      <p className="text-xs text-muted-foreground">{Number(outputTokens).toLocaleString()}</p>
+                      <Input
+                        type="number"
+                        value={outputTokens}
+                        onChange={(e) => setOutputTokens(e.target.value)}
+                        className="rounded-none border-2 border-black text-base"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        {Number(outputTokens).toLocaleString()}
+                      </p>
                     </div>
                   </div>
                 ) : (
                   <div className="space-y-4">
                     <div className="space-y-1">
                       <Label className="font-bold uppercase text-sm">Total Monthly Tokens</Label>
-                      <Input type="number" value={totalTokensInput} onChange={(e) => setTotalTokensInput(e.target.value)} className="rounded-none border-2 border-black text-base" />
-                      <p className="text-xs text-muted-foreground">{Number(totalTokensInput).toLocaleString()}</p>
+                      <Input
+                        type="number"
+                        value={totalTokensInput}
+                        onChange={(e) => setTotalTokensInput(e.target.value)}
+                        className="rounded-none border-2 border-black text-base"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        {Number(totalTokensInput).toLocaleString()}
+                      </p>
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
@@ -546,17 +632,25 @@ export default function Home() {
                         <span className="text-sm font-bold">{inputOutputRatio} : 1</span>
                       </div>
                       <input
-                        type="range" min="1" max="10" step="0.5"
+                        type="range"
+                        min="1"
+                        max="10"
+                        step="0.5"
                         value={inputOutputRatio}
                         onChange={(e) => setInputOutputRatio(Number(e.target.value))}
                         className="w-full h-3 rounded-none appearance-none cursor-pointer border border-black"
-                        style={{ background: `linear-gradient(to right, black ${((inputOutputRatio - 1) / 9) * 100}%, #e5e7eb ${((inputOutputRatio - 1) / 9) * 100}%)` }}
+                        style={{
+                          background: `linear-gradient(to right, black ${((inputOutputRatio - 1) / 9) * 100}%, #e5e7eb ${((inputOutputRatio - 1) / 9) * 100}%)`,
+                        }}
                       />
                       <div className="flex justify-between text-xs text-muted-foreground">
-                        <span>1:1</span><span>3:1 (typical)</span><span>10:1</span>
+                        <span>1:1</span>
+                        <span>3:1 (typical)</span>
+                        <span>10:1</span>
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        → {resolvedTokens.input.toLocaleString()} input / {resolvedTokens.output.toLocaleString()} output
+                        → {resolvedTokens.input.toLocaleString()} input /{" "}
+                        {resolvedTokens.output.toLocaleString()} output
                       </p>
                     </div>
                   </div>
@@ -566,17 +660,25 @@ export default function Home() {
               {/* Totals + baseline costs per selected model */}
               <div className="border-t-2 border-black pt-4 space-y-2">
                 <div className="flex items-baseline justify-between">
-                  <span className="text-xs uppercase font-bold text-muted-foreground">Total tokens/month</span>
+                  <span className="text-xs uppercase font-bold text-muted-foreground">
+                    Total tokens/month
+                  </span>
                   <span className="text-xl font-bold">{totalTokens.toLocaleString()}</span>
                 </div>
-                {baselineScenarios.map(({ key, label, result }) => (
-                  result.monthly_cost_estimate && (
-                    <div key={key} className="flex items-baseline justify-between">
-                      <span className="text-xs uppercase font-bold text-muted-foreground">{label} direct API</span>
-                      <span className="text-xl font-bold">{formatCurrency(result.monthly_cost_estimate)}<span className="text-xs text-muted-foreground ml-1">/mo</span></span>
-                    </div>
-                  )
-                ))}
+                {baselineScenarios.map(
+                  ({ key, label, result }) =>
+                    result.monthly_cost_estimate && (
+                      <div key={key} className="flex items-baseline justify-between">
+                        <span className="text-xs uppercase font-bold text-muted-foreground">
+                          {label} direct API
+                        </span>
+                        <span className="text-xl font-bold">
+                          {formatCurrency(result.monthly_cost_estimate)}
+                          <span className="text-xs text-muted-foreground ml-1">/mo</span>
+                        </span>
+                      </div>
+                    ),
+                )}
               </div>
             </div>
           </div>
@@ -599,7 +701,10 @@ export default function Home() {
               {selectedModelKeys.length > 0 && (
                 <button
                   type="button"
-                  onClick={() => { setSelectedModelKeys([]); setModelSelectionInitialized(true); }}
+                  onClick={() => {
+                    setSelectedModelKeys([]);
+                    setModelSelectionInitialized(true);
+                  }}
                   className="text-xs text-muted-foreground underline hover:text-black"
                 >
                   Clear
@@ -637,113 +742,114 @@ export default function Home() {
               ))}
               {selectedModelKeys.length > 0 && (
                 <p className="text-xs text-muted-foreground mt-3 border-t border-gray-100 pt-3">
-                  Showing plans that provide access to: <strong>{selectedModels.map((m) => m.label).join(", ")}</strong>
+                  Showing plans that provide access to:{" "}
+                  <strong>{selectedModels.map((m) => m.label).join(", ")}</strong>
                 </p>
               )}
             </div>
           </div>
         )}
 
-        {isLoading && (
-          <div className="text-center py-12 text-muted-foreground">Calculating…</div>
-        )}
+        {isLoading && <div className="text-center py-12 text-muted-foreground">Calculating…</div>}
 
         {/* ── Results ── */}
         {!isLoading && planMatrix && (
           <div className="space-y-8">
             {/* ─ Budget tab: separate free tiers from paid plans ─ */}
-            {activeTab === "budget" && (() => {
-              // Free tier plans come from the unfiltered pool (they bypass model filter)
-              const freeTierPlans = allFreeTierViable;
-              const paidViablePlans = viablePlans; // already excludes free tiers
-              const withinBudget = paidViablePlans.filter((p) => p.fits_budget === true);
-              const overBudget = paidViablePlans.filter((p) => p.fits_budget === false);
-              const unknownBudget = paidViablePlans.filter((p) => p.fits_budget == null);
+            {activeTab === "budget" &&
+              (() => {
+                // Free tier plans come from the unfiltered pool (they bypass model filter)
+                const freeTierPlans = allFreeTierViable;
+                const paidViablePlans = viablePlans; // already excludes free tiers
+                const withinBudget = paidViablePlans.filter((p) => p.fits_budget === true);
+                const overBudget = paidViablePlans.filter((p) => p.fits_budget === false);
+                const unknownBudget = paidViablePlans.filter((p) => p.fits_budget == null);
 
-              // Group within-budget by provider type
-              const withinByGroup = new Map<ProviderGroupId, PlanEntry[]>();
-              for (const g of PROVIDER_GROUPS) withinByGroup.set(g.id, []);
-              for (const p of withinBudget) {
-                const gid = planGroupId(p);
-                withinByGroup.get(gid)?.push(p);
-              }
+                // Group within-budget by provider type
+                const withinByGroup = new Map<ProviderGroupId, PlanEntry[]>();
+                for (const g of PROVIDER_GROUPS) withinByGroup.set(g.id, []);
+                for (const p of withinBudget) {
+                  const gid = planGroupId(p);
+                  withinByGroup.get(gid)?.push(p);
+                }
 
-              return (
-                <>
-                  {/* What your budget gets you */}
-                  <div className="border-2 border-black p-4 bg-black text-white">
-                    <h2 className="text-base font-bold uppercase">
-                      What {formatAmount(budget, outputCurrency)}/month gets you
-                    </h2>
-                    <p className="text-xs text-gray-400 mt-1">
-                      Paid plans within your budget, grouped by billing model.
-                    </p>
-                  </div>
-
-                  {withinBudget.length === 0 ? (
-                    <p className="text-sm text-muted-foreground border-2 border-black p-6 text-center">
-                      No paid plans found within {formatAmount(budget, outputCurrency)}/month.
-                      {budget < 20 && " Try a higher budget to see paid options."}
-                    </p>
-                  ) : (
-                    PROVIDER_GROUPS.map((group) => {
-                      const plans = withinByGroup.get(group.id) ?? [];
-                      if (plans.length === 0) return null;
-                      return (
-                        <ProviderGroupSection
-                          key={group.id}
-                          group={group}
-                          plans={plans}
-                          activeTab="budget"
-                          budget={budget}
-                          outputCurrency={outputCurrency}
-                          showBudgeFit={false}
-                        />
-                      );
-                    })
-                  )}
-
-                  {/* Always free */}
-                  {freeTierPlans.length > 0 && (
-                    <div className="space-y-2">
-                      <div className="border-2 border-black p-4">
-                        <h3 className="text-sm font-bold uppercase">Always free</h3>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          These plans cost nothing, regardless of your budget. What you get is limited — capacity details shown below.
-                        </p>
-                      </div>
-                      {freeTierPlans.map((plan) => (
-                        <PlanCard
-                          key={planKey(plan)}
-                          plan={plan}
-                          showBudgetBadge={false}
-                          showFreeTierCapacity
-                        />
-                      ))}
+                return (
+                  <>
+                    {/* What your budget gets you */}
+                    <div className="border-2 border-black p-4 bg-black text-white">
+                      <h2 className="text-base font-bold uppercase">
+                        What {formatAmount(budget, outputCurrency)}/month gets you
+                      </h2>
+                      <p className="text-xs text-gray-400 mt-1">
+                        Paid plans within your budget, grouped by billing model.
+                      </p>
                     </div>
-                  )}
 
-                  {/* Over budget */}
-                  {overBudget.length > 0 && (
-                    <CollapsibleSection
-                      title={`Over ${formatAmount(budget, outputCurrency)}/month`}
-                      description="Paid plans above your current budget — shown for reference."
-                      plans={overBudget}
-                    />
-                  )}
+                    {withinBudget.length === 0 ? (
+                      <p className="text-sm text-muted-foreground border-2 border-black p-6 text-center">
+                        No paid plans found within {formatAmount(budget, outputCurrency)}/month.
+                        {budget < 20 && " Try a higher budget to see paid options."}
+                      </p>
+                    ) : (
+                      PROVIDER_GROUPS.map((group) => {
+                        const plans = withinByGroup.get(group.id) ?? [];
+                        if (plans.length === 0) return null;
+                        return (
+                          <ProviderGroupSection
+                            key={group.id}
+                            group={group}
+                            plans={plans}
+                            activeTab="budget"
+                            budget={budget}
+                            outputCurrency={outputCurrency}
+                            showBudgeFit={false}
+                          />
+                        );
+                      })
+                    )}
 
-                  {/* Budget unknown */}
-                  {unknownBudget.length > 0 && (
-                    <CollapsibleSection
-                      title="Budget fit unknown"
-                      description="Plans where we can't determine if cost fits your budget."
-                      plans={unknownBudget}
-                      dim
-                    />
-                  )}
-                </>
-              );
-            })()}
+                    {/* Always free */}
+                    {freeTierPlans.length > 0 && (
+                      <div className="space-y-2">
+                        <div className="border-2 border-black p-4">
+                          <h3 className="text-sm font-bold uppercase">Always free</h3>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            These plans cost nothing, regardless of your budget. What you get is
+                            limited — capacity details shown below.
+                          </p>
+                        </div>
+                        {freeTierPlans.map((plan) => (
+                          <PlanCard
+                            key={planKey(plan)}
+                            plan={plan}
+                            showBudgetBadge={false}
+                            showFreeTierCapacity
+                          />
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Over budget */}
+                    {overBudget.length > 0 && (
+                      <CollapsibleSection
+                        title={`Over ${formatAmount(budget, outputCurrency)}/month`}
+                        description="Paid plans above your current budget — shown for reference."
+                        plans={overBudget}
+                      />
+                    )}
+
+                    {/* Budget unknown */}
+                    {unknownBudget.length > 0 && (
+                      <CollapsibleSection
+                        title="Budget fit unknown"
+                        description="Plans where we can't determine if cost fits your budget."
+                        plans={unknownBudget}
+                        dim
+                      />
+                    )}
+                  </>
+                );
+              })()}
 
             {/* ─ Token tab: all viable plans by provider group ─ */}
             {activeTab === "tokens" && (
@@ -821,21 +927,37 @@ export default function Home() {
               <div className="space-y-2">
                 <div className="border-2 border-black p-3">
                   <h3 className="text-sm font-bold uppercase">Multi-provider bundles</h3>
-                  <p className="text-xs text-muted-foreground mt-0.5">Combined subscription costs for plans requiring multiple providers.</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Combined subscription costs for plans requiring multiple providers.
+                  </p>
                 </div>
                 {planMatrix.bundles.map((bundle) => (
-                  <div key={bundle.subscription_keys.join("|")} className="border-2 border-black p-4">
+                  <div
+                    key={bundle.subscription_keys.join("|")}
+                    className="border-2 border-black p-4"
+                  >
                     <div className="flex items-center justify-between gap-4">
                       <div>
                         <div className="font-semibold text-sm">{bundle.providers.join(" + ")}</div>
-                        <div className="text-xs text-muted-foreground mt-0.5">{bundle.subscription_keys.join(", ")}</div>
+                        <div className="text-xs text-muted-foreground mt-0.5">
+                          {bundle.subscription_keys.join(", ")}
+                        </div>
                       </div>
                       <div className="text-right">
                         <div className="text-xl font-bold">
-                          {formatCurrency({ currency: bundle.total_monthly_cost.currency, point: bundle.total_monthly_cost.point, method: "derived", confidence: "medium", confidence_reasons: [], evidence: [] })}
+                          {formatCurrency({
+                            currency: bundle.total_monthly_cost.currency,
+                            point: bundle.total_monthly_cost.point,
+                            method: "derived",
+                            confidence: "medium",
+                            confidence_reasons: [],
+                            evidence: [],
+                          })}
                         </div>
                         {bundle.fits_budget != null && (
-                          <div className="text-xs text-muted-foreground">{bundle.fits_budget ? "Within budget" : "Over budget"}</div>
+                          <div className="text-xs text-muted-foreground">
+                            {bundle.fits_budget ? "Within budget" : "Over budget"}
+                          </div>
                         )}
                       </div>
                     </div>
@@ -859,7 +981,12 @@ export default function Home() {
 // ─── Provider group section ───────────────────────────────────────────────────
 
 function ProviderGroupSection({
-  group, plans, activeTab, budget, outputCurrency, showBudgeFit = true,
+  group,
+  plans,
+  activeTab,
+  budget,
+  outputCurrency,
+  showBudgeFit = true,
 }: {
   group: ProviderGroup;
   plans: PlanEntry[];
@@ -891,8 +1018,16 @@ function ProviderGroupSection({
 
 // ─── Collapsible section (viability unknown / non-viable / price unavailable) ─
 
-function CollapsibleSection({ title, description, plans, dim }: {
-  title: string; description: string; plans: PlanEntry[]; dim?: boolean;
+function CollapsibleSection({
+  title,
+  description,
+  plans,
+  dim,
+}: {
+  title: string;
+  description: string;
+  plans: PlanEntry[];
+  dim?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   return (
@@ -911,7 +1046,9 @@ function CollapsibleSection({ title, description, plans, dim }: {
       </button>
       {open && (
         <div className={`space-y-2 ${dim ? "opacity-60" : ""}`}>
-          {plans.map((plan) => <PlanCard key={planKey(plan)} plan={plan} showBudgetBadge={false} />)}
+          {plans.map((plan) => (
+            <PlanCard key={planKey(plan)} plan={plan} showBudgetBadge={false} />
+          ))}
         </div>
       )}
     </div>
@@ -920,7 +1057,13 @@ function CollapsibleSection({ title, description, plans, dim }: {
 
 // ─── Plan card ────────────────────────────────────────────────────────────────
 
-function PlanCard({ plan, showBudgetBadge, budget, outputCurrency, showFreeTierCapacity = false }: {
+function PlanCard({
+  plan,
+  showBudgetBadge,
+  budget: _budget,
+  outputCurrency: _outputCurrency,
+  showFreeTierCapacity = false,
+}: {
   plan: PlanEntry;
   showBudgetBadge: boolean;
   budget?: number;
@@ -940,23 +1083,32 @@ function PlanCard({ plan, showBudgetBadge, budget, outputCurrency, showFreeTierC
     : null;
 
   const NOISE_PREFIXES = [
-    "Metering:", "No markup provided", "Per-seat pricing",
-    "Some entitlements were omitted", "Provider/model access is unknown",
-    "Modalities are unknown", "Some capabilities are sourced",
-    "Provider coverage is derived", "Specific model access",
-    "Tool plan not found", "No USD/credit provided",
-    "Subscription fee missing", "Included USD pool not found",
-    "Selected long-context tier", "Tool plan price missing",
-    "Subscription price missing", "No included_tokens_per_month",
-    "Break-even", "break-even",
+    "Metering:",
+    "No markup provided",
+    "Per-seat pricing",
+    "Some entitlements were omitted",
+    "Provider/model access is unknown",
+    "Modalities are unknown",
+    "Some capabilities are sourced",
+    "Provider coverage is derived",
+    "Specific model access",
+    "Tool plan not found",
+    "No USD/credit provided",
+    "Subscription fee missing",
+    "Included USD pool not found",
+    "Selected long-context tier",
+    "Tool plan price missing",
+    "Subscription price missing",
+    "No included_tokens_per_month",
+    "Break-even",
+    "break-even",
   ];
   const surfacedWarnings = warnings.filter(
     (w) => !NOISE_PREFIXES.some((prefix) => w.startsWith(prefix)),
   );
 
-  const budgetFit = showBudgetBadge && plan.fits_budget != null
-    ? plan.fits_budget ? "within" : "over"
-    : null;
+  const budgetFit =
+    showBudgetBadge && plan.fits_budget != null ? (plan.fits_budget ? "within" : "over") : null;
 
   return (
     <div className="border-2 border-black p-4 bg-white">
@@ -975,11 +1127,13 @@ function PlanCard({ plan, showBudgetBadge, budget, outputCurrency, showFreeTierC
               <span className="text-xs text-gray-400">({companyName})</span>
             )}
             {budgetFit && (
-              <span className={`text-xs font-bold px-1.5 py-0.5 ml-1 ${
-                budgetFit === "within"
-                  ? "bg-green-50 text-green-700 border border-green-200"
-                  : "bg-red-50 text-red-700 border border-red-200"
-              }`}>
+              <span
+                className={`text-xs font-bold px-1.5 py-0.5 ml-1 ${
+                  budgetFit === "within"
+                    ? "bg-green-50 text-green-700 border border-green-200"
+                    : "bg-red-50 text-red-700 border border-red-200"
+                }`}
+              >
                 {budgetFit === "within" ? "✓ fits" : "over budget"}
               </span>
             )}
@@ -1000,10 +1154,12 @@ function PlanCard({ plan, showBudgetBadge, budget, outputCurrency, showFreeTierC
           {/* Model/provider access */}
           {(plan.capabilities.providers?.length ?? 0) > 0 && (
             <div className="mt-1.5 text-xs text-muted-foreground">
-              Access: {plan.capabilities.providers!.join(", ")}
+              Access: {plan.capabilities.providers?.join(", ")}
               {(plan.capabilities.modalities?.length ?? 0) > 0 &&
-                plan.capabilities.modalities!.join(",") !== "text" && (
-                  <span className="ml-2 text-gray-400">· {plan.capabilities.modalities!.join(", ")}</span>
+                plan.capabilities.modalities?.join(",") !== "text" && (
+                  <span className="ml-2 text-gray-400">
+                    · {plan.capabilities.modalities?.join(", ")}
+                  </span>
                 )}
             </div>
           )}
@@ -1018,7 +1174,8 @@ function PlanCard({ plan, showBudgetBadge, budget, outputCurrency, showFreeTierC
           {/* Free tier capacity — shown in "Always free" section */}
           {meteringNote && (
             <div className="mt-2 text-xs text-green-800 bg-green-50 border border-green-200 px-2 py-1.5">
-              <span className="font-bold">What you get: </span>{meteringNote}
+              <span className="font-bold">What you get: </span>
+              {meteringNote}
             </div>
           )}
 
@@ -1032,7 +1189,9 @@ function PlanCard({ plan, showBudgetBadge, budget, outputCurrency, showFreeTierC
           {/* User-relevant warnings */}
           {surfacedWarnings.length > 0 && (
             <div className="mt-1.5 text-xs text-muted-foreground">
-              {surfacedWarnings.slice(0, 2).map((w) => <div key={w}>• {w}</div>)}
+              {surfacedWarnings.slice(0, 2).map((w) => (
+                <div key={w}>• {w}</div>
+              ))}
             </div>
           )}
         </div>
@@ -1068,15 +1227,26 @@ function planKey(plan: PlanEntry): string {
 }
 
 function formatPlanName(planId: string): string {
-  return planId.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+  return planId
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
 }
 
 function getCompanyName(plan: PlanEntry): string {
   const map: Record<string, string> = {
-    Cursor: "Anysphere", "GitHub Copilot": "GitHub", Copilot: "GitHub",
-    Devin: "Cognition", "Bolt.new": "StackBlitz", Windsurf: "Codeium",
-    "Amazon Q Developer": "AWS", anthropic: "Anthropic", openai: "OpenAI",
-    google: "Google", azure: "Microsoft", moonshot: "Moonshot AI",
+    Cursor: "Anysphere",
+    "GitHub Copilot": "GitHub",
+    Copilot: "GitHub",
+    Devin: "Cognition",
+    "Bolt.new": "StackBlitz",
+    Windsurf: "Codeium",
+    "Amazon Q Developer": "AWS",
+    anthropic: "Anthropic",
+    openai: "OpenAI",
+    google: "Google",
+    azure: "Microsoft",
+    moonshot: "Moonshot AI",
   };
   const name = plan.kind === "subscription" ? (plan.provider ?? "") : (plan.tool ?? "");
   return map[name] ?? name;
@@ -1084,10 +1254,18 @@ function getCompanyName(plan: PlanEntry): string {
 
 function getPlanCostBasis(plan: PlanEntry): PlanCostBasis {
   if (plan.monthly_cost_effective) {
-    return { kind: "effective", scenario: plan.monthly_cost_effective, estimate: plan.monthly_cost_effective.monthly_cost_estimate };
+    return {
+      kind: "effective",
+      scenario: plan.monthly_cost_effective,
+      estimate: plan.monthly_cost_effective.monthly_cost_estimate,
+    };
   }
   if (plan.monthly_cost_floor) {
-    return { kind: "floor", scenario: plan.monthly_cost_floor, estimate: plan.monthly_cost_floor.monthly_cost_estimate };
+    return {
+      kind: "floor",
+      scenario: plan.monthly_cost_floor,
+      estimate: plan.monthly_cost_floor.monthly_cost_estimate,
+    };
   }
   return { kind: "none", scenario: null, estimate: null };
 }
@@ -1095,7 +1273,8 @@ function getPlanCostBasis(plan: PlanEntry): PlanCostBasis {
 function formatCurrency(estimate: EvidencedMoneyEstimate): string {
   try {
     return new Intl.NumberFormat("en-US", {
-      style: "currency", currency: estimate.currency,
+      style: "currency",
+      currency: estimate.currency,
       maximumFractionDigits: estimate.point < 10 ? 2 : 0,
     }).format(estimate.point);
   } catch {
@@ -1106,7 +1285,8 @@ function formatCurrency(estimate: EvidencedMoneyEstimate): string {
 function formatAmount(amount: number, currency: string): string {
   try {
     return new Intl.NumberFormat("en-US", {
-      style: "currency", currency,
+      style: "currency",
+      currency,
       maximumFractionDigits: amount < 10 ? 2 : 0,
     }).format(amount);
   } catch {
