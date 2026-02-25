@@ -1,0 +1,7 @@
+[     463ms] [ERROR] Error: <svg> attribute viewBox: Unexpected end of attribute. Expected number, "0 0". @ https://sourcegraph.com/pricing:1502
+[     529ms] [ERROR] ❌ Video slider not found @ https://sourcegraph.com/pricing:1610
+[     919ms] [ERROR] Access to fetch at 'https://opps-api.getwarmly.com/api/sessions/trpc/sessions.createSession' from origin 'https://sourcegraph.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://sourcegraph.com/pricing:0
+[     919ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://opps-api.getwarmly.com/api/sessions/trpc/sessions.createSession:0
+[    1203ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://x.clearbitjs.com/v1/pk_a66b9ed76e62c713c06aab39bfae7234/forms.js?page_path=%2Fpricing:0
+[    1414ms] [ERROR] Access to XMLHttpRequest at 'https://secure.adnxs.com/getuidj' from origin 'https://sourcegraph.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://sourcegraph.com/pricing:0
+[    1415ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://secure.adnxs.com/getuidj:0

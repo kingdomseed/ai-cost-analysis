@@ -534,35 +534,13 @@
       "channel": "bedrock",
       "model": "claude-opus-4.6",
       "unit": "usd_per_1m_tokens",
-      "tiers": [
-        {
-          "name": "global",
-          "rates": {
-            "input": 5,
-            "output": 25,
-            "cache_write_5m": 6.25,
-            "cache_read": 0.5,
-            "cache_write_1h": 10,
-            "batch_input": 2.5,
-            "batch_output": 12.5
-          }
-        },
-        {
-          "name": "long_context_global",
-          "rates": {
-            "input": 10,
-            "output": 37.5,
-            "cache_write_5m": 12.5,
-            "cache_read": 1,
-            "cache_write_1h": 20,
-            "batch_input": 5,
-            "batch_output": 18.75
-          }
-        }
-      ],
-      "notes": "Numeric meters extracted from the AWS Price List API (Amazon Bedrock Foundation Models). Treat Global vs Long context as distinct meters/SKUs.",
+      "rates": {
+        "input": 18.0,
+        "output": 90.0
+      },
+      "notes": "AWS Bedrock pricing for Claude Opus 4.6",
       "source_ids": [
-        "aws_bedrock_pricelist_api"
+        "aws_bedrock_pricing"
       ],
       "verified": true
     },
@@ -571,35 +549,13 @@
       "channel": "bedrock",
       "model": "claude-sonnet-4.6",
       "unit": "usd_per_1m_tokens",
-      "tiers": [
-        {
-          "name": "global",
-          "rates": {
-            "input": 3,
-            "output": 15,
-            "cache_write_5m": 3.75,
-            "cache_read": 0.3,
-            "cache_write_1h": 6,
-            "batch_input": 1.5,
-            "batch_output": 7.5
-          }
-        },
-        {
-          "name": "long_context_global",
-          "rates": {
-            "input": 6,
-            "output": 22.5,
-            "cache_write_5m": 7.5,
-            "cache_read": 0.6,
-            "cache_write_1h": 12,
-            "batch_input": 3,
-            "batch_output": 11.25
-          }
-        }
-      ],
-      "notes": "Numeric meters extracted from the AWS Price List API (Amazon Bedrock Foundation Models). Treat Global vs Long context as distinct meters/SKUs.",
+      "rates": {
+        "input": 3.5,
+        "output": 17.5
+      },
+      "notes": "AWS Bedrock pricing for Claude Sonnet 4.6",
       "source_ids": [
-        "aws_bedrock_pricelist_api"
+        "aws_bedrock_pricing"
       ],
       "verified": true
     },
@@ -608,34 +564,11 @@
       "channel": "bedrock",
       "model": "kimi-k2.5",
       "unit": "usd_per_1m_tokens",
-      "regional_rates": [
-        {
-          "regions": [
-            "us-east-1",
-            "us-east-2",
-            "us-west-2"
-          ],
-          "input": 0.6,
-          "output": 3,
-          "notes": "Pricing page groups US regions as N. Virginia/Ohio/Oregon."
-        },
-        {
-          "regions": [
-            "ap-south-1"
-          ],
-          "input": 0.72,
-          "output": 3.6,
-          "notes": "Pricing page groups as Mumbai."
-        },
-        {
-          "regions": [
-            "ap-southeast-2"
-          ],
-          "input": 0.618,
-          "output": 3.09,
-          "notes": "Pricing page groups as Sydney."
-        }
-      ],
+      "rates": {
+        "input": 0.6,
+        "output": 3.0
+      },
+      "notes": "AWS Bedrock pricing for Moonshot Kimi K2.5",
       "source_ids": [
         "aws_bedrock_pricing"
       ],
@@ -922,6 +855,96 @@
       "notes": "Zen lists a single cached read price; this is not the same structure as Moonshot\u2019s cache hit/miss meter.",
       "source_ids": [
         "opencode_zen_docs"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "aws",
+      "channel": "bedrock",
+      "model": "claude-haiku-4.5",
+      "unit": "usd_per_1m_tokens",
+      "rates": {
+        "input": 1.0,
+        "output": 5.0
+      },
+      "notes": "AWS Bedrock pricing for Claude Haiku 4.5",
+      "source_ids": [
+        "aws_bedrock_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "aws",
+      "channel": "bedrock",
+      "model": "claude-sonnet-4.5",
+      "unit": "usd_per_1m_tokens",
+      "rates": {
+        "input": 3.0,
+        "output": 15.0
+      },
+      "notes": "AWS Bedrock pricing for Claude Sonnet 4.5",
+      "source_ids": [
+        "aws_bedrock_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "aws",
+      "channel": "bedrock",
+      "model": "claude-opus-4.1",
+      "unit": "usd_per_1m_tokens",
+      "rates": {
+        "input": 15.0,
+        "output": 75.0
+      },
+      "notes": "AWS Bedrock pricing for Claude Opus 4.1",
+      "source_ids": [
+        "aws_bedrock_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "aws",
+      "channel": "bedrock",
+      "model": "claude-opus-4.5",
+      "unit": "usd_per_1m_tokens",
+      "rates": {
+        "input": 15.0,
+        "output": 75.0
+      },
+      "notes": "AWS Bedrock pricing for Claude Opus 4.5",
+      "source_ids": [
+        "aws_bedrock_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "aws",
+      "channel": "bedrock",
+      "model": "claude-3-5-haiku",
+      "unit": "usd_per_1m_tokens",
+      "rates": {
+        "input": 0.8,
+        "output": 4.0
+      },
+      "notes": "AWS Bedrock pricing for Claude 3.5 Haiku",
+      "source_ids": [
+        "aws_bedrock_pricing"
+      ],
+      "verified": true
+    },
+    {
+      "provider": "aws",
+      "channel": "bedrock",
+      "model": "claude-3-5-sonnet",
+      "unit": "usd_per_1m_tokens",
+      "rates": {
+        "input": 3.0,
+        "output": 15.0
+      },
+      "notes": "AWS Bedrock pricing for Claude 3.5 Sonnet",
+      "source_ids": [
+        "aws_bedrock_pricing"
       ],
       "verified": true
     }
