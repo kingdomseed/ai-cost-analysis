@@ -1,0 +1,99 @@
+.agents/skills/autofix/SKILL.md
+  s_2f16e0e318343c::t_23bdb96303367a 1-339
+.agents/skills/autofix/github.md
+  s_2f16e0e318343c::t_42eecf023eca8f 1-145
+.agents/skills/code-review/SKILL.md
+  s_2f16e0e318343c::t_da7caa656db82a 1-158
+.agents/skills/codebase-design/DEEPENING.md
+  s_2f16e0e318343c::t_58d84fb99d3526 1-37
+.agents/skills/codebase-design/DESIGN-IT-TWICE.md
+  s_2f16e0e318343c::t_83e871a9a685a9 1-44
+.agents/skills/codebase-design/SKILL.md
+  s_2f16e0e318343c::t_531c5dd990a283 1-114
+.agents/skills/diagnosing-bugs/SKILL.md
+  s_2f16e0e318343c::t_4eebcd57d38f60 1-134
+.agents/skills/diagnosing-bugs/scripts/hitl-loop.template.sh
+  s_2f16e0e318343c::t_1d80c6cab76043 1-41
+.agents/skills/domain-modeling/ADR-FORMAT.md
+  s_2f16e0e318343c::t_79751d104d1fc6 1-47
+.agents/skills/domain-modeling/CONTEXT-FORMAT.md
+  s_2f16e0e318343c::t_8dbe32efe638b9 1-60
+.agents/skills/domain-modeling/SKILL.md
+  s_2f16e0e318343c::t_582139bdb7f853 1-74
+.agents/skills/git-guardrails-claude-code/SKILL.md
+  s_2f16e0e318343c::t_c283404e8a5c93 1-95
+.agents/skills/git-guardrails-claude-code/scripts/block-dangerous-git.sh
+  s_2f16e0e318343c::t_2ca0fcc20537e7 1-25
+.agents/skills/implement/SKILL.md
+  s_2f16e0e318343c::t_5a8b1abf9cb009 1-15
+.agents/skills/improve-codebase-architecture/HTML-REPORT.md
+  s_2f16e0e318343c::t_fa107ab25dde6c 1-123
+.agents/skills/improve-codebase-architecture/SKILL.md
+  s_2f16e0e318343c::t_cdd3002b798589 1-66
+.agents/skills/migrate-to-shoehorn/SKILL.md
+  s_2f16e0e318343c::t_23b7578ce3e59c 1-118
+.agents/skills/prototype/LOGIC.md
+  s_2f16e0e318343c::t_902607a0977532 1-79
+.agents/skills/prototype/SKILL.md
+  s_2f16e0e318343c::t_e757276feb824a 1-31
+.agents/skills/prototype/UI.md
+  s_2f16e0e318343c::t_1ff3310acc0cdb 1-112
+.agents/skills/qa/SKILL.md
+  s_2f16e0e318343c::t_b577a2bfbf1b4b 1-130
+.agents/skills/request-refactor-plan/SKILL.md
+  s_2f16e0e318343c::t_e388288873af57 1-68
+.agents/skills/resolving-merge-conflicts/SKILL.md
+  s_2f16e0e318343c::t_46c441e94d4ace 1-14
+.agents/skills/review/SKILL.md
+  s_2f16e0e318343c::t_8d113d1adb268c 1-69
+.agents/skills/setup-matt-pocock-skills/SKILL.md
+  s_2f16e0e318343c::t_692de887519f89 1-127
+.agents/skills/setup-matt-pocock-skills/domain.md
+  s_2f16e0e318343c::t_ddd58a41a361cc 1-51
+.agents/skills/setup-matt-pocock-skills/issue-tracker-github.md
+  s_2f16e0e318343c::t_331b52e23d510f 1-34
+.agents/skills/setup-matt-pocock-skills/issue-tracker-gitlab.md
+  s_2f16e0e318343c::t_bf8e47a9b61951 1-35
+.agents/skills/setup-matt-pocock-skills/issue-tracker-local.md
+  s_2f16e0e318343c::t_28e67e5bceb222 1-19
+.agents/skills/setup-matt-pocock-skills/triage-labels.md
+  s_2f16e0e318343c::t_708dda4c936ef1 1-15
+.agents/skills/setup-pre-commit/SKILL.md
+  s_2f16e0e318343c::t_7aa67d9f0541ed 1-91
+.agents/skills/tdd/SKILL.md
+  s_2f16e0e318343c::t_e4fb5f3e6cda88 1-108
+.agents/skills/tdd/mocking.md
+  s_2f16e0e318343c::t_f85db8062df5d2 1-59
+.agents/skills/tdd/refactoring.md
+  s_2f16e0e318343c::t_07d1a5fbf0815c 1-10
+.agents/skills/tdd/tests.md
+  s_2f16e0e318343c::t_7079720e472274 1-61
+.agents/skills/to-issues/SKILL.md
+  s_2f16e0e318343c::t_8cac059fa2b1e6 1-84
+.agents/skills/to-prd/SKILL.md
+  s_2f16e0e318343c::t_c1c13cef4c268b 1-75
+.agents/skills/triage/AGENT-BRIEF.md
+  s_2f16e0e318343c::t_065c23f9427484 1-207
+.agents/skills/triage/OUT-OF-SCOPE.md
+  s_2f16e0e318343c::t_e4a45fcf75c683 1-105
+.agents/skills/triage/SKILL.md
+  s_2f16e0e318343c::t_14097032ea985d 1-112
+.agents/skills/ubiquitous-language/SKILL.md
+  s_2f16e0e318343c::t_8ab4871f687666 1-93
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "851c28320892f256ff25aa69c755556761f92333",
+  "prompts": {},
+  "sessions": {
+    "s_2f16e0e318343c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f1210-c2ff-7ab2-af9f-692b82c013b5",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Jason Holt <jason@jasonholtdigital.com>"
+    }
+  }
+}
