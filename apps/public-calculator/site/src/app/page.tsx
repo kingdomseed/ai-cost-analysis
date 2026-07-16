@@ -469,6 +469,12 @@ export default function Home() {
               Compare AI tools by budget or usage
             </p>
           </div>
+          <a 
+            href="/cursor" 
+            className="text-sm text-muted-foreground hover:text-black transition-colors"
+          >
+            Cursor Calculator →
+          </a>
           <div className="flex items-center gap-2">
             <label
               htmlFor="currency-select"

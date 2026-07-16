@@ -1,0 +1,80 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - img [ref=e7]
+          - generic [ref=e9]: Cursor Cost Calculator
+        - link "Main →" [ref=e10] [cursor=pointer]:
+          - /url: /
+    - main [ref=e11]:
+      - generic [ref=e13]:
+        - button "I have a budget" [ref=e14]
+        - button "I know my usage" [ref=e15]
+      - generic [ref=e16]:
+        - paragraph [ref=e17]: What's your monthly budget?
+        - generic [ref=e19]:
+          - generic [ref=e20]: $
+          - textbox [ref=e21]: "60"
+        - generic [ref=e22]:
+          - slider [ref=e23] [cursor=pointer]: "60"
+          - generic [ref=e24]:
+            - generic [ref=e25]: $20
+            - generic [ref=e26]: $200
+            - generic [ref=e27]: $500
+      - generic [ref=e28]:
+        - generic [ref=e29]: Models to compare
+        - generic [ref=e31] [cursor=pointer]:
+          - generic [ref=e35]: Claude 4.6 Sonnet
+          - img [ref=e36]
+      - generic [ref=e38]:
+        - generic [ref=e39] [cursor=pointer]:
+          - checkbox "Max Mode (+20%) Extended context window, 20% higher API rates" [ref=e40]
+          - generic [ref=e41]:
+            - text: Max Mode (+20%)
+            - paragraph [ref=e42]: Extended context window, 20% higher API rates
+        - generic [ref=e44] [cursor=pointer]:
+          - checkbox "Enable Caching Cache reads are 10× cheaper than input" [active] [ref=e45]
+          - generic [ref=e46]:
+            - text: Enable Caching
+            - paragraph [ref=e47]: Cache reads are 10× cheaper than input
+      - button "Advanced options" [ref=e49]:
+        - img [ref=e50]
+        - text: Advanced options
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - img [ref=e55]
+          - generic [ref=e57]: Your Best Option
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - heading "Pro" [level=2] [ref=e60]
+            - paragraph [ref=e61]: Best for daily tab users and limited agent users
+          - generic [ref=e62]:
+            - paragraph [ref=e63]: $60
+            - paragraph [ref=e64]: /month
+        - generic [ref=e65]:
+          - generic [ref=e66]:
+            - generic [ref=e67]: Base subscription
+            - generic [ref=e68]: $20
+          - generic [ref=e69]:
+            - generic [ref=e70]: API pool included
+            - generic [ref=e71]: $20
+          - generic [ref=e72]:
+            - generic [ref=e73]: Overage
+            - generic [ref=e74]: +$40.00
+        - generic [ref=e75]:
+          - paragraph [ref=e76]: "What you get with Claude 4.6 Sonnet:"
+          - paragraph [ref=e77]: 10.00M tokens
+          - paragraph [ref=e78]: ≈ 7.50M in / 2.50M out
+        - generic [ref=e79]: "Compare to: Pro Plus ($60) or Ultra ($200)"
+      - generic [ref=e80]:
+        - paragraph [ref=e81]:
+          - strong [ref=e82]: "How plans work:"
+          - text: All plans include unlimited Auto and Composer 1.5 through a separate pool. The API pool is used for all other models. Once exhausted, you pay overage at the same rates.
+        - paragraph [ref=e83]:
+          - strong [ref=e84]: "Max Mode:"
+          - text: Extends context to maximum supported but adds 20% to API rates.
+        - paragraph [ref=e85]: "Source: cursor.com/docs/models-and-pricing · Last updated March 2026"
+  - button "Open Next.js Dev Tools" [ref=e91] [cursor=pointer]:
+    - img [ref=e92]
+  - alert [ref=e95]
