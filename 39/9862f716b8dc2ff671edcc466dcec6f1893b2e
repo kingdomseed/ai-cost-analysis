@@ -1,0 +1,47 @@
+.agents/skills/simplify-code-isomorphically/SKILL.md
+  s_21898373643195::t_b7b32f8376eab6 1-222
+.agents/skills/simplify-code-isomorphically/agents/openai.yaml
+  s_21898373643195::t_ca31470b0b1926 1-9
+.agents/skills/simplify-code-isomorphically/assets/refactor-pencil-small.svg
+  s_21898373643195::t_6b3d8650f9e4d9 1-3
+.agents/skills/simplify-code-isomorphically/references/de-effect.md
+  s_21898373643195::t_0053ba87e90b12 1-168
+.agents/skills/simplify-code-isomorphically/references/de-layer.md
+  s_21898373643195::t_0014c60660702c 1-116
+.agents/skills/simplify-code-isomorphically/references/de-prop.md
+  s_21898373643195::t_716b6b0bf63306 1-404
+.agents/skills/simplify-code-isomorphically/references/de-render.md
+  s_21898373643195::t_1aa78d02f4805a 1-118
+.agents/skills/simplify-code-isomorphically/references/de-repeat.md
+  s_21898373643195::t_8d8faf439aee4c 1-372
+.agents/skills/simplify-code-isomorphically/references/de-selector.md
+  s_21898373643195::t_7300ede7795efa 1-124
+.agents/skills/simplify-code-isomorphically/references/de-slop-and-de-smell.md
+  s_21898373643195::t_2e9b1a9cf45434 1-347
+.agents/skills/simplify-code-isomorphically/references/de-state.md
+  s_21898373643195::t_c5e403fddddd27 1-120
+.agents/skills/simplify-code-isomorphically/references/de-type.md
+  s_21898373643195::t_0f06cb9775ba7f 1-132
+.agents/skills/simplify-code-isomorphically/references/guidance-examples.md
+  s_21898373643195::t_581a7c2846e0b4 1-455
+.agents/skills/simplify-code-isomorphically/scripts/smell_scan.py
+  s_21898373643195::t_8ca57f86922650 1-452
+.agents/skills/typescript/SKILL.md
+  s_21898373643195::t_352fefdfc872bf 1-146
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "399862f716b8dc2ff671edcc466dcec6f1893b2e",
+  "prompts": {},
+  "sessions": {
+    "s_21898373643195": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f4c72-0f0f-7f92-818d-a03bb95323cb",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Jason Holt <jason@jasonholtdigital.com>"
+    }
+  }
+}
