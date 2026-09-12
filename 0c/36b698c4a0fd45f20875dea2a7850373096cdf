@@ -1,0 +1,21 @@
+AGENTS.md
+  s_255b820d5a4073::t_e34848eb729c14 3,19,39,50-51,67
+apps/public-calculator/site/AGENTS.md
+  s_255b820d5a4073::t_cbf8ea2eebed98 1,3-5,7-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "0c36b698c4a0fd45f20875dea2a7850373096cdf",
+  "prompts": {},
+  "sessions": {
+    "s_255b820d5a4073": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a09753-dbe9-7c51-9c92-221940bf618c",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Jason Holt <st199007@stud.uni-stuttgart.de>"
+    }
+  }
+}
