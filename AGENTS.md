@@ -1,6 +1,6 @@
 # Repository Guidelines
 
-This repo supports two deliverables: **(1) private personal usage/spend analysis** and **(2) a public cost calculator**. Keep boundaries between “public” and “private” data clear, and treat pricing as **time-sensitive (Feb 2026+)**.
+This repo supports two deliverables: **(1) private personal usage/spend analysis** and **(2) a public cost calculator**. Keep boundaries between “public” and “private” data clear, and treat pricing as **time-sensitive**.
 
 ## Core Principles (Calculator)
 
@@ -16,7 +16,7 @@ This repo supports two deliverables: **(1) private personal usage/spend analysis
 
 - `apps/public-calculator/site/` — Next.js 16 app (App Router) for the public calculator.
 - `apps/public-calculator/data/` — public, versioned datasets (`pricing.*.json`, `entitlements.*.json`).
-- `apps/personal-analysis/` — future scripts for private rollups (yearly/monthly totals, by model/provider).
+- `apps/personal-analysis/` — scripts for private rollups (yearly/monthly totals, by model/provider).
 - `docs/public-calculator/` — specs, decision rules, and research workflow.
 - `docs/public-calculator/research/YYYY-MM-DD-pricing-sweep/` — dated sweep notes + source ledger + gaps.
 - `data/private/` — raw exports/invoices + derived outputs (**gitignored**).
@@ -36,7 +36,7 @@ Public calculator (Next.js):
 
 Useful basics:
 - `git check-ignore -v <path>` — confirm private data stays ignored.
-- `jq -e . apps/public-calculator/data/pricing.2026-02-21.json` — quick JSON integrity check.
+- `jq -e . <changed-pricing-file.json>` — quick JSON integrity check for the dataset being edited.
 
 ## Coding Style & Naming Conventions
 
@@ -47,7 +47,8 @@ Useful basics:
 ## Testing Guidelines
 
 - `cd apps/public-calculator/site && npm run test:core` — runs backend engine unit tests (Node test runner via `tsx`).
-- `cd apps/public-calculator/site && npm run build` — still the minimum end-to-end smoke check (typecheck + route compilation).
+- For calculator code or configuration changes, run `npm run build` from `apps/public-calculator/site` for typechecking and route compilation. Inspect the running calculator when the change affects a user flow; a build alone does not verify that flow.
+- For pricing-dataset changes, run `npm run validate:datasets` from the site and affected core tests. For prose-only changes, check sources and links without building the app.
 
 ## Commit & Pull Request Guidelines
 
@@ -63,7 +64,7 @@ Do **not** commit invoices, raw usage exports, or any personal identifiers. Keep
 
 ## Agent-Specific Notes
 
-- Refresh Next.js docs index (from `apps/public-calculator/site/`): `npx @next/codemod@canary agents-md --output AGENTS.md`.
+- For framework-dependent changes, use the site AGENTS.md guidance and the resolved Next.js version. Do not overwrite the instruction file to refresh a docs index.
 
 ## Pricing Research Rules
 
